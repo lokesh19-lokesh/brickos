@@ -20,6 +20,12 @@
 }
 
 @layer base {
+  html, body, #root {
+    overflow-x: hidden;
+    max-width: 100vw;
+    width: 100%;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
     letter-spacing: -0.02em;
@@ -42,6 +48,61 @@
   background: #94a3b8;
 }
 
+/* Floating Brick Animation Keyframes */
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(2.5deg);
+  }
+}
+
+@keyframes floatReverse {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(12px) rotate(-2deg);
+  }
+}
+
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.03);
+  }
+}
+
+@keyframes brickPulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 4px 12px rgba(229, 57, 53, 0.15));
+  }
+  50% {
+    transform: scale(1.05) translateY(-3px);
+    filter: drop-shadow(0 8px 20px rgba(229, 57, 53, 0.3));
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 6s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: floatReverse 7s ease-in-out infinite;
+}
+
+.animate-float-gentle {
+  animation: floatGentle 5s ease-in-out infinite;
+}
+
+.animate-brick-pulse {
+  animation: brickPulse 4s ease-in-out infinite;
+}
+
 /* Print Styles for Invoices & Reports */
 @media print {
   body {
@@ -59,3 +120,4 @@
     border: 1px solid #e2e8f0 !important;
   }
 }
+

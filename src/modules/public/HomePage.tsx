@@ -53,11 +53,78 @@ export const HomePage: React.FC = () => {
   return (
     <div className="space-y-24 pb-20">
       {/* 1. HERO SECTION - INDUSTRIAL BRICK MANUFACTURING CLOUD OS */}
-      <section className="relative pt-8 pb-20 lg:pt-14 lg:pb-28 overflow-hidden bg-gradient-to-b from-white via-slate-50/50 to-slate-100/60">
+      <section className="relative pt-8 pb-20 lg:pt-14 lg:pb-28 overflow-hidden w-full max-w-full bg-gradient-to-b from-white via-slate-50/50 to-slate-100/60">
         {/* Background Decorative Grids */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-40 pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* FLOATING 3D ANIMATED BRICK ICON - LEFT FLANK */}
+          <div className="hidden 2xl:flex absolute -left-6 top-16 items-center gap-3.5 p-3.5 bg-white/95 backdrop-blur-md rounded-2xl border border-red-200/90 shadow-xl animate-float-slow z-20 max-w-xs select-none">
+            {/* 3D Isometric Red Clay Brick SVG */}
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-50 to-red-100/80 border border-red-200 flex items-center justify-center shrink-0 shadow-inner">
+              <svg viewBox="0 0 64 64" className="w-8 h-8 drop-shadow-md">
+                {/* Top Face */}
+                <polygon points="32,10 54,21 32,32 10,21" fill="#E53935" />
+                {/* Left Face */}
+                <polygon points="10,21 32,32 32,54 10,43" fill="#B71C1C" />
+                {/* Right Face */}
+                <polygon points="32,32 54,21 54,43 32,54" fill="#C62828" />
+                {/* Brick Holes */}
+                <ellipse cx="23" cy="21" rx="3.5" ry="1.8" fill="#7F0000" opacity="0.75" />
+                <ellipse cx="32" cy="25" rx="3.5" ry="1.8" fill="#7F0000" opacity="0.75" />
+                <ellipse cx="41" cy="21" rx="3.5" ry="1.8" fill="#7F0000" opacity="0.75" />
+              </svg>
+            </div>
+            <div>
+              <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-[#D32F2F]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#E53935] animate-ping" />
+                <span>Kiln Chamber #4</span>
+              </div>
+              <div className="text-xs font-black text-slate-900 leading-tight">Red Clay Brick (9×4×3")</div>
+              <div className="text-[10px] text-slate-500 font-semibold">Grade A • Comp: 10.5 N/mm²</div>
+            </div>
+          </div>
+
+          {/* FLOATING 3D ANIMATED BRICK ICON - RIGHT FLANK */}
+          <div className="hidden 2xl:flex absolute -right-6 top-24 items-center gap-3.5 p-3.5 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-300 shadow-xl animate-float-reverse z-20 max-w-xs select-none">
+            {/* 3D Isometric Fly Ash Cement Block SVG */}
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 border border-slate-300 flex items-center justify-center shrink-0 shadow-inner">
+              <svg viewBox="0 0 64 64" className="w-8 h-8 drop-shadow-md">
+                {/* Top Face */}
+                <polygon points="32,10 54,21 32,32 10,21" fill="#94A3B8" />
+                {/* Left Face */}
+                <polygon points="10,21 32,32 32,54 10,43" fill="#475569" />
+                {/* Right Face */}
+                <polygon points="32,32 54,21 54,43 32,54" fill="#64748B" />
+                {/* Hollow Studs / Texture */}
+                <polygon points="20,19 28,15 36,19 28,23" fill="#334155" opacity="0.8" />
+                <polygon points="36,23 44,19 50,22 42,26" fill="#334155" opacity="0.8" />
+              </svg>
+            </div>
+            <div>
+              <div className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-emerald-700">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+                <span>Hydraulic Press #1</span>
+              </div>
+              <div className="text-xs font-black text-slate-900 leading-tight">Fly Ash Cement Block</div>
+              <div className="text-[10px] text-slate-500 font-semibold">High Density • 35,000 / Shift</div>
+            </div>
+          </div>
+
+          {/* FLOATING MINI PAVER BLOCK BADGE */}
+          <div className="hidden 2xl:inline-flex absolute left-8 -top-2 items-center gap-2 px-3 py-1 bg-amber-50 rounded-full border border-amber-200/90 text-amber-900 text-xs font-bold shadow-sm animate-float-gentle select-none">
+            <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 text-amber-600 fill-current">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+            </svg>
+            <span>Interlocking Paver Blocks (60mm & 80mm)</span>
+          </div>
+
+          {/* FLOATING MINI STACK BADGE */}
+          <div className="hidden 2xl:inline-flex absolute right-8 -top-2 items-center gap-2 px-3 py-1 bg-red-50 rounded-full border border-red-200/90 text-[#D32F2F] text-xs font-bold shadow-sm animate-float-slow select-none">
+            <span className="text-sm">🧱</span>
+            <span>Automated Mix Proportion (BOM)</span>
+          </div>
+
           {/* Top Hero Text Header */}
           <div className="text-center max-w-4xl mx-auto space-y-5">
             {/* Pill */}
@@ -66,12 +133,27 @@ export const HomePage: React.FC = () => {
               <span>Dedicated Cloud ERP & Operating System for Brick & Block Manufacturers</span>
             </div>
 
-            {/* Main Headline */}
+            {/* Main Headline with Animated 3D Isometric Brick */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#1E293B] tracking-tight leading-[1.12]">
               The Operating System for Modern{' '}
-              <span className="text-[#E53935] relative inline-block">
-                Brick Manufacturing
-                <svg className="absolute -bottom-2 left-0 w-full h-3 text-[#E53935]/30" viewBox="0 0 100 12" preserveAspectRatio="none">
+              <span className="text-[#E53935] relative inline-flex items-center gap-2">
+                <span>Brick Manufacturing</span>
+                {/* Animated 3D Isometric Brick Icon */}
+                <span className="inline-block align-middle animate-brick-pulse">
+                  <svg viewBox="0 0 64 64" className="w-9 h-9 sm:w-11 sm:h-11 drop-shadow-lg">
+                    {/* Top Face */}
+                    <polygon points="32,8 56,20 32,32 8,20" fill="#EF5350" />
+                    {/* Left Face */}
+                    <polygon points="8,20 32,32 32,56 8,44" fill="#B71C1C" />
+                    {/* Right Face */}
+                    <polygon points="32,32 56,20 56,44 32,56" fill="#E53935" />
+                    {/* Brick Holes */}
+                    <ellipse cx="23" cy="20" rx="4" ry="2" fill="#7F0000" opacity="0.75" />
+                    <ellipse cx="32" cy="24" rx="4" ry="2" fill="#7F0000" opacity="0.75" />
+                    <ellipse cx="41" cy="20" rx="4" ry="2" fill="#7F0000" opacity="0.75" />
+                  </svg>
+                </span>
+                <svg className="absolute -bottom-2 left-0 w-full h-3 text-[#E53935]/30 pointer-events-none" viewBox="0 0 100 12" preserveAspectRatio="none">
                   <path d="M0,8 Q50,0 100,8" stroke="currentColor" strokeWidth="4" fill="none" />
                 </svg>
               </span>
@@ -82,13 +164,47 @@ export const HomePage: React.FC = () => {
               Automate raw material weighbridge entries, hydraulic machine press batches, daily piece-rate labour wages, customer ledgers, and 1-click GST dispatch invoices — engineered specifically for brick & block kilns.
             </p>
 
-            {/* Brick & Block Types Supported Tag Chips */}
-            <div className="flex flex-wrap items-center justify-center gap-2 pt-1 text-xs font-semibold text-slate-600">
-              <span className="px-3 py-1 bg-white rounded-lg border border-slate-200 shadow-2xs">🧱 Fly Ash Bricks</span>
-              <span className="px-3 py-1 bg-white rounded-lg border border-slate-200 shadow-2xs">🔥 Red Clay Kiln Bricks</span>
-              <span className="px-3 py-1 bg-white rounded-lg border border-slate-200 shadow-2xs">🏗️ Interlocking Paver Blocks</span>
-              <span className="px-3 py-1 bg-white rounded-lg border border-slate-200 shadow-2xs">📦 Concrete Hollow Blocks</span>
-              <span className="px-3 py-1 bg-white rounded-lg border border-slate-200 shadow-2xs">📐 AAC Lightweight Blocks</span>
+            {/* Brick & Block Types Supported Tag Chips with Animated 3D Mini Icons */}
+            <div className="flex flex-wrap items-center justify-center gap-2.5 pt-1 text-xs font-semibold text-slate-700">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-xl border border-slate-200 shadow-2xs hover:border-red-300 hover:shadow-xs transition-all cursor-default group">
+                <svg viewBox="0 0 32 32" className="w-4 h-4 text-slate-500 group-hover:scale-110 transition-transform">
+                  <polygon points="16,4 28,10 16,16 4,10" fill="#94A3B8" />
+                  <polygon points="4,10 16,16 16,28 4,22" fill="#475569" />
+                  <polygon points="16,16 28,10 28,22 16,28" fill="#64748B" />
+                </svg>
+                <span>Fly Ash Bricks</span>
+              </span>
+
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-xl border border-slate-200 shadow-2xs hover:border-red-300 hover:shadow-xs transition-all cursor-default group">
+                <svg viewBox="0 0 32 32" className="w-4 h-4 text-red-500 group-hover:scale-110 transition-transform">
+                  <polygon points="16,4 28,10 16,16 4,10" fill="#EF5350" />
+                  <polygon points="4,10 16,16 16,28 4,22" fill="#B71C1C" />
+                  <polygon points="16,16 28,10 28,22 16,28" fill="#E53935" />
+                </svg>
+                <span>Red Clay Kiln Bricks</span>
+              </span>
+
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-xl border border-slate-200 shadow-2xs hover:border-red-300 hover:shadow-xs transition-all cursor-default group">
+                <svg viewBox="0 0 32 32" className="w-4 h-4 text-amber-500 group-hover:scale-110 transition-transform">
+                  <polygon points="16,4 26,9 21,16 26,23 16,27 6,23 11,16 6,9" fill="#F59E0B" />
+                </svg>
+                <span>Interlocking Paver Blocks</span>
+              </span>
+
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-xl border border-slate-200 shadow-2xs hover:border-red-300 hover:shadow-xs transition-all cursor-default group">
+                <svg viewBox="0 0 32 32" className="w-4 h-4 text-slate-600 group-hover:scale-110 transition-transform">
+                  <polygon points="16,4 28,10 16,16 4,10" fill="#CBD5E1" />
+                  <polygon points="4,10 16,16 16,28 4,22" fill="#64748B" />
+                  <polygon points="16,16 28,10 28,22 16,28" fill="#94A3B8" />
+                  <polygon points="11,9 15,7 19,9 15,11" fill="#334155" />
+                </svg>
+                <span>Concrete Hollow Blocks</span>
+              </span>
+
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-xl border border-slate-200 shadow-2xs hover:border-red-300 hover:shadow-xs transition-all cursor-default group">
+                <span className="text-sm">📐</span>
+                <span>AAC Lightweight Blocks</span>
+              </span>
             </div>
 
             {/* CTA Buttons */}
