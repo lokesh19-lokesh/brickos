@@ -119,16 +119,16 @@ export const PublicLayout: React.FC = () => {
               )}
             </div>
 
-            {user ? (
+            <Link to="/login">
+              <Button variant="outline" size="md" className="whitespace-nowrap px-3 xl:px-4 text-xs xl:text-sm font-semibold">
+                Sign In
+              </Button>
+            </Link>
+
+            {user && (
               <Link to={user.role === 'super_admin' ? '/admin/dashboard' : '/dashboard'}>
                 <Button variant="secondary" size="md" className="whitespace-nowrap px-3 xl:px-4 text-xs xl:text-sm">
                   Dashboard
-                </Button>
-              </Link>
-            ) : (
-              <Link to="/login">
-                <Button variant="outline" size="md" className="whitespace-nowrap px-3 xl:px-4 text-xs xl:text-sm">
-                  Login
                 </Button>
               </Link>
             )}
@@ -143,7 +143,7 @@ export const PublicLayout: React.FC = () => {
           {/* Mobile menu toggle */}
           <div className="flex items-center gap-2 lg:hidden">
             <Link to="/login">
-              <Button variant="outline" size="sm">Login</Button>
+              <Button variant="outline" size="sm">Sign In</Button>
             </Link>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -165,8 +165,13 @@ export const PublicLayout: React.FC = () => {
               <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="p-2 hover:bg-slate-50 rounded-lg">FAQ</a>
             </nav>
             <div className="pt-2 border-t border-slate-100 flex flex-col gap-2">
+              <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
+                <Button variant="outline" size="md" className="w-full font-semibold">
+                  Sign In
+                </Button>
+              </Link>
               <Link to="/register" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant="primary" size="md" className="w-full">
+                <Button variant="primary" size="md" className="w-full font-bold">
                   Start Your Factory Free
                 </Button>
               </Link>
