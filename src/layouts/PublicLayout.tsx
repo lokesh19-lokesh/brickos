@@ -49,13 +49,15 @@ export const PublicLayout: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-11 h-11 rounded-xl bg-[#E53935] flex items-center justify-center text-white shadow-md shadow-red-500/20 group-hover:scale-105 transition-transform">
-              <Building2 className="w-6 h-6 stroke-[2.2]" />
-            </div>
+            <img 
+              src="/logo.png" 
+              alt="Patterns BrickOS" 
+              className="h-10 w-auto object-contain drop-shadow-xs group-hover:scale-105 transition-transform" 
+            />
             <div>
               <div className="flex items-center gap-1">
-                <span className="text-xl font-extrabold text-[#1E293B] tracking-tight">Brick</span>
-                <span className="text-xl font-extrabold text-[#E53935]">Flow</span>
+                <span className="text-xl font-black text-[#1E293B] tracking-tight">Brick</span>
+                <span className="text-xl font-black text-[#E53935]">Flow</span>
                 <span className="text-[10px] uppercase font-bold bg-[#FFEBEE] text-[#D32F2F] px-1.5 py-0.5 rounded tracking-widest ml-1 border border-red-200/50">ERP</span>
               </div>
               <p className="text-[10px] text-slate-400 font-medium tracking-wide -mt-0.5">Cloud OS for Brick Manufacturing</p>
@@ -201,9 +203,11 @@ export const PublicLayout: React.FC = () => {
             {/* Col 1: Brand Info */}
             <div className="lg:col-span-2 space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#E53935] flex items-center justify-center text-white font-bold shadow-md">
-                  <Building2 className="w-5 h-5" />
-                </div>
+                <img 
+                  src="/logo.png" 
+                  alt="Patterns BrickOS" 
+                  className="h-9 w-auto object-contain bg-white/10 p-1 rounded-xl" 
+                />
                 <span className="text-2xl font-black text-white">Brick<span className="text-[#E53935]">Flow</span> ERP</span>
               </div>
               <p className="text-xs text-slate-400 leading-relaxed max-w-sm">

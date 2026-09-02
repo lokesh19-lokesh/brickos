@@ -66,10 +66,12 @@ export const LoginPage: React.FC = () => {
       <div className="w-full max-w-md space-y-6">
         {/* Brand Header */}
         <div className="text-center space-y-2">
-          <Link to="/" className="inline-flex items-center gap-2.5 group">
-            <div className="w-12 h-12 rounded-2xl bg-[#E53935] flex items-center justify-center text-white shadow-lg shadow-red-500/20 group-hover:scale-105 transition-transform">
-              <Building2 className="w-7 h-7" />
-            </div>
+          <Link to="/" className="inline-flex items-center gap-3 group">
+            <img 
+              src="/logo.png" 
+              alt="Patterns BrickOS" 
+              className="h-11 w-auto object-contain drop-shadow-xs group-hover:scale-105 transition-transform" 
+            />
             <div className="text-left">
               <span className="text-2xl font-black text-[#1E293B]">Brick<span className="text-[#E53935]">Flow</span></span>
               <span className="text-[10px] font-bold uppercase bg-[#FFEBEE] text-[#D32F2F] px-1.5 py-0.5 rounded ml-1.5 border border-red-200">ERP</span>

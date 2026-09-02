@@ -39,7 +39,9 @@ import { AdminFactoriesPage } from '@/modules/super-admin/AdminFactoriesPage';
 import { AdminSubscriptionsPage } from '@/modules/super-admin/AdminSubscriptionsPage';
 import { AdminPlansPage } from '@/modules/super-admin/AdminPlansPage';
 import { AdminDemoPage } from '@/modules/super-admin/AdminDemoPage';
+import { AdminUsersPage } from '@/modules/super-admin/AdminUsersPage';
 import { AdminAuditLogsPage } from '@/modules/super-admin/AdminAuditLogsPage';
+import { AdminSettingsPage } from '@/modules/super-admin/AdminSettingsPage';
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -95,7 +97,9 @@ export const AppRoutes: React.FC = () => {
         <Route path="/admin/subscriptions" element={<AdminSubscriptionsPage />} />
         <Route path="/admin/plans" element={<AdminPlansPage />} />
         <Route path="/admin/demo" element={<AdminDemoPage />} />
+        <Route path="/admin/users" element={<AdminUsersPage />} />
         <Route path="/admin/audit-logs" element={<AdminAuditLogsPage />} />
+        <Route path="/admin/settings" element={<AdminSettingsPage />} />
       </Route>
 
       {/* Fallback */}

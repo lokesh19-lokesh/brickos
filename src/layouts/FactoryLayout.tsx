@@ -188,14 +188,16 @@ export const FactoryLayout: React.FC = () => {
           {/* Factory Brand Header */}
           <div className="h-16 px-4 border-b border-slate-100 flex items-center justify-between shrink-0">
             <Link to="/dashboard" className="flex items-center gap-3 min-w-0">
-              <div className="w-10 h-10 rounded-xl bg-[#E53935] flex items-center justify-center text-white shrink-0 shadow-sm font-black">
-                <Building2 className="w-5 h-5" />
-              </div>
+              <img 
+                src="/logo.png" 
+                alt="Patterns BrickOS" 
+                className="h-9 w-auto object-contain shrink-0" 
+              />
               {!sidebarCollapsed && (
                 <div className="min-w-0">
                   <div className="flex items-center gap-1">
-                    <span className="font-extrabold text-[#1E293B] text-base leading-tight truncate">Brick</span>
-                    <span className="font-extrabold text-[#E53935] text-base leading-tight">Flow</span>
+                    <span className="font-black text-[#1E293B] text-base leading-tight truncate">Brick</span>
+                    <span className="font-black text-[#E53935] text-base leading-tight">Flow</span>
                     <span className="text-[9px] font-bold bg-[#FFEBEE] text-[#D32F2F] px-1 py-0.2 rounded ml-1">OS</span>
                   </div>
                   <p className="text-[11px] font-semibold text-slate-500 truncate">{factory?.name || 'Brick Works'}</p>
@@ -260,10 +262,8 @@ export const FactoryLayout: React.FC = () => {
             <div className="fixed inset-y-0 left-0 w-72 bg-white shadow-2xl flex flex-col">
               <div className="h-16 px-4 border-b border-slate-100 flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-[#E53935] flex items-center justify-center text-white font-bold">
-                    <Building2 className="w-4 h-4" />
-                  </div>
-                  <span className="font-bold text-slate-900">BrickFlow ERP</span>
+                  <img src="/logo.png" alt="Patterns BrickOS" className="h-8 w-auto object-contain" />
+                  <span className="font-black text-[#1E293B]">Brick<span className="text-[#E53935]">Flow</span> ERP</span>
                 </div>
                 <button onClick={() => setMobileMenuOpen(false)} className="p-2 text-slate-400 hover:text-slate-700">
                   <X className="w-5 h-5" />

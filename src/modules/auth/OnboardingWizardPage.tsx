@@ -106,9 +106,7 @@ export const OnboardingWizardPage: React.FC = () => {
         {/* Top Wizard Branding & Progress Header */}
         <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-2xl bg-[#E53935] text-white flex items-center justify-center font-black shadow-md">
-              <Building2 className="w-6 h-6" />
-            </div>
+            <img src="/logo.png" alt="Patterns BrickOS" className="h-10 w-auto object-contain" />
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-lg font-black text-[#1E293B]">Factory Onboarding Wizard</span>

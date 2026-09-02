@@ -264,10 +264,12 @@ export const InvoicesPage: React.FC = () => {
               {/* Header */}
               <div className="flex justify-between items-start border-b-2 border-slate-800 pb-4">
                 <div className="space-y-1 max-w-md">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-10 h-10 rounded-xl bg-[#E53935] text-white flex items-center justify-center font-black">
-                      <Building2 className="w-6 h-6" />
-                    </div>
+                  <div className="flex items-center gap-3">
+                    <img 
+                      src="/logo.png" 
+                      alt="Patterns BrickOS" 
+                      className="h-11 w-auto object-contain" 
+                    />
                     <div>
                       <h2 className="text-xl font-black text-slate-900 leading-none">{factory?.name || 'Shree Ram Brick Industries'}</h2>
                       <p className="text-[11px] text-slate-500 font-semibold mt-0.5">Fly Ash & Concrete Brick Manufacturers</p>

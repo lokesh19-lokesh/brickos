@@ -23,10 +23,8 @@ export const ForgotPasswordPage: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-12">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center space-y-2">
-          <Link to="/" className="inline-flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-[#E53935] flex items-center justify-center text-white font-bold">
-              <Building2 className="w-6 h-6" />
-            </div>
+          <Link to="/" className="inline-flex items-center gap-3">
+            <img src="/logo.png" alt="Patterns BrickOS" className="h-10 w-auto object-contain" />
             <span className="text-2xl font-black text-[#1E293B]">Brick<span className="text-[#E53935]">Flow</span></span>
           </Link>
           <h2 className="text-xl font-bold text-[#1E293B]">Reset Your Password</h2>
@@ -110,10 +108,8 @@ export const ResetPasswordPage: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-12">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center space-y-2">
-          <Link to="/" className="inline-flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-[#E53935] flex items-center justify-center text-white font-bold">
-              <Building2 className="w-6 h-6" />
-            </div>
+          <Link to="/" className="inline-flex items-center gap-3">
+            <img src="/logo.png" alt="Patterns BrickOS" className="h-10 w-auto object-contain" />
             <span className="text-2xl font-black text-[#1E293B]">Brick<span className="text-[#E53935]">Flow</span></span>
           </Link>
           <h2 className="text-xl font-bold text-[#1E293B]">Set New Password</h2>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Shield, Lock, Mail, ArrowRight } from 'lucide-react';
+import { Shield, Lock, Mail, ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Alert } from '@/components/ui/PageHeader';
@@ -44,17 +44,30 @@ export const AdminLoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950 px-4 py-12 text-slate-100">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-100 via-slate-50 to-white px-4 py-12">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center space-y-2">
-          <div className="w-14 h-14 rounded-2xl bg-purple-600 text-white flex items-center justify-center mx-auto shadow-xl shadow-purple-900/40">
-            <Shield className="w-8 h-8" />
-          </div>
-          <h2 className="text-2xl font-black text-white">Super Admin Control Portal</h2>
-          <p className="text-xs text-slate-400">Multi-tenant subscription orchestrator & platform management</p>
+          <Link to="/" className="inline-flex items-center gap-3 group">
+            <img 
+              src="/logo.png" 
+              alt="Patterns BrickOS" 
+              className="h-11 w-auto object-contain drop-shadow-xs group-hover:scale-105 transition-transform" 
+            />
+            <div className="text-left">
+              <div className="flex items-center gap-1.5">
+                <span className="text-2xl font-black text-[#1E293B]">Brick<span className="text-[#E53935]">Flow</span></span>
+                <span className="bg-[#FFEBEE] text-[#D32F2F] text-[9px] font-extrabold uppercase tracking-wider px-1.5 py-0.2 rounded border border-red-200/60">
+                  SUPER ADMIN
+                </span>
+              </div>
+              <p className="text-[10px] text-slate-400 font-semibold tracking-wider">Multi-tenant Cloud Orchestrator</p>
+            </div>
+          </Link>
+          <h2 className="text-xl font-bold text-[#1E293B] pt-2">Super Admin Control Portal</h2>
+          <p className="text-xs text-slate-500">Platform subscription orchestration & tenant administration</p>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 p-8 rounded-3xl shadow-2xl space-y-5">
+        <div className="bg-white border border-slate-200 p-8 rounded-3xl shadow-sm space-y-5">
           {error && (
             <Alert type="error" title="Access Denied">
               {error}
@@ -68,7 +81,6 @@ export const AdminLoginPage: React.FC = () => {
               value={email}
               onChange={e => setEmail(e.target.value)}
               leftIcon={<Mail className="w-4 h-4" />}
-              className="bg-slate-950 border-slate-800 text-white"
               required
               isRequired
             />
@@ -79,7 +91,6 @@ export const AdminLoginPage: React.FC = () => {
               value={password}
               onChange={e => setPassword(e.target.value)}
               leftIcon={<Lock className="w-4 h-4" />}
-              className="bg-slate-950 border-slate-800 text-white"
               required
               isRequired
             />
@@ -89,24 +100,35 @@ export const AdminLoginPage: React.FC = () => {
               size="lg"
               type="submit"
               isLoading={loading}
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold"
+              className="w-full font-bold shadow-sm"
             >
-              Access Admin Console
+              Sign In to Control Plane
             </Button>
           </form>
 
-          <div className="pt-2 border-t border-slate-800 text-center">
-            <button
-              onClick={handleQuickAdmin}
-              className="text-xs font-semibold text-purple-400 hover:text-purple-300 transition-colors cursor-pointer"
-            >
-              ⚡ Instant 1-Click Root Bypass (Demo)
-            </button>
+          <div className="relative py-2">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-200" />
+            </div>
+            <div className="relative flex justify-center text-xs">
+              <span className="bg-white px-2 text-slate-400 font-medium">Developer Quick Bypass</span>
+            </div>
           </div>
+
+          <Button
+            variant="outline"
+            size="md"
+            type="button"
+            onClick={handleQuickAdmin}
+            leftIcon={<Sparkles className="w-4 h-4 text-[#E53935]" />}
+            className="w-full text-xs font-semibold"
+          >
+            1-Click Super Admin Login
+          </Button>
         </div>
 
-        <div className="text-center text-xs text-slate-500">
-          <Link to="/login" className="hover:text-slate-300">
+        <div className="text-center text-xs text-slate-400">
+          <Link to="/login" className="hover:text-slate-600 transition-colors">
             ← Return to Factory User Login
           </Link>
         </div>
