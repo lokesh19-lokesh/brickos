@@ -77,7 +77,7 @@ export const labourService = {
     });
 
     dbStore.set('attendance', [...attendance]);
-    dbStore.addAuditLog(factoryId, 'usr_current', 'Supervisor', 'factory_manager', 'Labour', 'UPDATE', `ATT-${records[0]?.date || 'Today'}`, 'Daily Attendance Roster', `Recorded attendance for ${records.length} workers.`);
+    dbStore.addAuditLog(factoryId, 'usr_current', 'Factory Owner', 'factory_owner', 'Labour', 'UPDATE', `ATT-${records[0]?.date || 'Today'}`, 'Daily Attendance Roster', `Recorded attendance for ${records.length} workers.`);
 
     return savedRecords;
   },
@@ -126,7 +126,7 @@ export const labourService = {
     }
 
     dbStore.set('wageSlips', [newSlip, ...slips]);
-    dbStore.addAuditLog(factoryId, 'usr_current', 'Accountant', 'factory_user', 'Labour Wages', 'CREATE', newSlip.id, `Wage Slip ${newSlip.employeeName} (${newSlip.period})`, `Generated wage slip for ${newSlip.employeeName}: Gross ₹${newSlip.grossAmount}, Net ₹${newSlip.netPayable}`);
+    dbStore.addAuditLog(factoryId, 'usr_current', 'Factory Owner', 'factory_owner', 'Labour Wages', 'CREATE', newSlip.id, `Wage Slip ${newSlip.employeeName} (${newSlip.period})`, `Generated wage slip for ${newSlip.employeeName}: Gross ₹${newSlip.grossAmount}, Net ₹${newSlip.netPayable}`);
 
     return newSlip;
   },

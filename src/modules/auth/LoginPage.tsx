@@ -86,27 +86,22 @@ export const LoginPage: React.FC = () => {
             </span>
             <span className="text-[10px] text-slate-400 font-normal">Click to test instant access</span>
           </div>
-          <div className="grid grid-cols-3 gap-2 pt-1">
+          <div className="grid grid-cols-2 gap-2.5 pt-1">
             <button
               type="button"
               onClick={() => handleDemoLogin('factory_owner', 'owner@shreerambricks.com')}
-              className="p-2 rounded-xl bg-slate-50 hover:bg-red-50 hover:border-red-200 border border-slate-200/80 text-[11px] font-bold text-slate-800 text-center transition-all cursor-pointer"
+              className="p-2.5 rounded-xl bg-slate-50 hover:bg-red-50 hover:border-red-200 border border-slate-200/80 text-xs font-bold text-slate-800 text-center transition-all cursor-pointer flex flex-col items-center justify-center"
             >
-              Factory Owner
+              <span className="text-[#D32F2F]">Factory Owner</span>
+              <span className="text-[10px] text-slate-500 font-normal">owner@shreerambricks.com</span>
             </button>
             <button
               type="button"
-              onClick={() => handleDemoLogin('factory_manager', 'manager@shreerambricks.com')}
-              className="p-2 rounded-xl bg-slate-50 hover:bg-red-50 hover:border-red-200 border border-slate-200/80 text-[11px] font-bold text-slate-800 text-center transition-all cursor-pointer"
+              onClick={() => handleDemoLogin('super_admin', 'admin@patterns.cloud')}
+              className="p-2.5 rounded-xl bg-slate-50 hover:bg-purple-50 hover:border-purple-200 border border-slate-200/80 text-xs font-bold text-purple-800 text-center transition-all cursor-pointer flex flex-col items-center justify-center"
             >
-              Plant Manager
-            </button>
-            <button
-              type="button"
-              onClick={() => handleDemoLogin('factory_user', 'accountant@shreerambricks.com')}
-              className="p-2 rounded-xl bg-slate-50 hover:bg-red-50 hover:border-red-200 border border-slate-200/80 text-[11px] font-bold text-slate-800 text-center transition-all cursor-pointer"
-            >
-              Accountant
+              <span className="text-purple-700">Super Admin</span>
+              <span className="text-[10px] text-slate-500 font-normal">admin@patterns.cloud</span>
             </button>
           </div>
         </div>

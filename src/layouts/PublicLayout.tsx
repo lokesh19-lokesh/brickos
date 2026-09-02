@@ -93,38 +93,18 @@ export const PublicLayout: React.FC = () => {
                   <p className="text-[10px] uppercase font-bold text-slate-400 px-2 py-1 tracking-wider">Instant 1-Click Sandbox</p>
                   <button
                     onClick={() => handleQuickLogin('factory_owner')}
-                    className="w-full text-left p-2 rounded-lg hover:bg-red-50 hover:text-[#D32F2F] text-xs font-medium flex items-center justify-between group transition-colors"
+                    className="w-full text-left p-2.5 rounded-lg hover:bg-red-50 hover:text-[#D32F2F] text-xs font-medium flex items-center justify-between group transition-colors"
                   >
                     <div>
                       <div className="font-bold text-slate-900 group-hover:text-[#D32F2F]">Factory Owner</div>
-                      <div className="text-[11px] text-slate-500">Full ERP & Financials</div>
-                    </div>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-[#D32F2F]" />
-                  </button>
-                  <button
-                    onClick={() => handleQuickLogin('factory_manager')}
-                    className="w-full text-left p-2 rounded-lg hover:bg-red-50 hover:text-[#D32F2F] text-xs font-medium flex items-center justify-between group transition-colors"
-                  >
-                    <div>
-                      <div className="font-bold text-slate-900 group-hover:text-[#D32F2F]">Plant Manager</div>
-                      <div className="text-[11px] text-slate-500">Production & Labour Roster</div>
-                    </div>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-[#D32F2F]" />
-                  </button>
-                  <button
-                    onClick={() => handleQuickLogin('factory_user')}
-                    className="w-full text-left p-2 rounded-lg hover:bg-red-50 hover:text-[#D32F2F] text-xs font-medium flex items-center justify-between group transition-colors"
-                  >
-                    <div>
-                      <div className="font-bold text-slate-900 group-hover:text-[#D32F2F]">Accountant / Billing</div>
-                      <div className="text-[11px] text-slate-500">GST Invoices & Payments</div>
+                      <div className="text-[11px] text-slate-500">Full ERP, Production & Financials</div>
                     </div>
                     <ArrowRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-[#D32F2F]" />
                   </button>
                   <div className="border-t border-slate-100 my-1" />
                   <button
                     onClick={() => handleQuickLogin('super_admin')}
-                    className="w-full text-left p-2 rounded-lg hover:bg-slate-100 text-xs font-medium flex items-center justify-between group text-purple-700"
+                    className="w-full text-left p-2.5 rounded-lg hover:bg-purple-50 text-xs font-medium flex items-center justify-between group text-purple-700"
                   >
                     <div>
                       <div className="font-bold">Super Admin Platform</div>

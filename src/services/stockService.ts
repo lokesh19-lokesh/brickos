@@ -68,7 +68,7 @@ export const stockService = {
       factoryId,
       'usr_current',
       createdBy,
-      'factory_manager',
+      'factory_owner',
       'Stock',
       'UPDATE',
       newTxn.id,

@@ -76,8 +76,8 @@ export const productionService = {
     dbStore.addAuditLog(
       factoryId,
       'usr_current',
-      newBatch.supervisorName || 'Supervisor',
-      'factory_manager',
+      newBatch.supervisorName || 'Factory Owner',
+      'factory_owner',
       'Production',
       'CREATE',
       newBatch.id,
@@ -101,8 +101,8 @@ export const productionService = {
     dbStore.addAuditLog(
       updated.factoryId,
       'usr_current',
-      'Plant Manager',
-      'factory_manager',
+      'Factory Owner',
+      'factory_owner',
       'Production',
       'STATUS_CHANGE',
       updated.id,

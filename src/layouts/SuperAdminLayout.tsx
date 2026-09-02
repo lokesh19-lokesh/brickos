@@ -49,9 +49,9 @@ export const SuperAdminLayout: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans antialiased">
+    <div className="h-screen bg-slate-50 text-slate-900 flex flex-col font-sans antialiased overflow-hidden">
       {/* Super Admin Top Strip */}
-      <div className="bg-[#1E293B] text-slate-200 text-xs px-4 py-1.5 flex items-center justify-between border-b border-slate-800 shrink-0">
+      <div className="bg-[#1E293B] text-slate-200 text-xs px-4 py-1.5 flex items-center justify-between border-b border-slate-800 shrink-0 z-30">
         <div className="flex items-center gap-2">
           <span className="bg-[#E53935] text-white font-black text-[10px] px-2 py-0.5 rounded uppercase tracking-wider">
             Super Admin Control Plane
@@ -83,18 +83,10 @@ export const SuperAdminLayout: React.FC = () => {
                   }}
                   className="w-full text-left p-2 rounded-lg hover:bg-red-50 text-xs font-semibold flex items-center justify-between text-slate-800 hover:text-[#D32F2F]"
                 >
-                  <span>Factory Owner</span>
-                </button>
-                <button
-                  onClick={async () => {
-                    await switchRole('factory_manager');
-                    setDemoSwitchOpen(false);
-                    navigate('/dashboard');
-                    toast.info('Switched to Plant Manager persona');
-                  }}
-                  className="w-full text-left p-2 rounded-lg hover:bg-red-50 text-xs font-semibold flex items-center justify-between text-slate-800 hover:text-[#D32F2F]"
-                >
-                  <span>Plant Manager</span>
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#E53935]" />
+                    <span>Factory Owner</span>
+                  </div>
                 </button>
                 <div className="border-t border-slate-100 my-1" />
                 <button
@@ -105,7 +97,10 @@ export const SuperAdminLayout: React.FC = () => {
                   }}
                   className="w-full text-left p-2 rounded-lg bg-[#FFEBEE] text-[#D32F2F] text-xs font-bold flex items-center justify-between"
                 >
-                  <span>Super Admin Portal</span>
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-purple-600" />
+                    <span>Super Admin Platform</span>
+                  </div>
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#E53935]" />
                 </button>
               </div>

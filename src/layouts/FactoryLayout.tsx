@@ -107,9 +107,9 @@ export const FactoryLayout: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col antialiased">
+    <div className="h-screen bg-slate-50 flex flex-col antialiased overflow-hidden">
       {/* Top Demo Notification Strip */}
-      <div className="bg-[#1E293B] text-slate-200 text-xs px-4 py-1.5 flex items-center justify-between border-b border-slate-800 shrink-0">
+      <div className="bg-[#1E293B] text-slate-200 text-xs px-4 py-1.5 flex items-center justify-between border-b border-slate-800 shrink-0 z-30">
         <div className="flex items-center gap-2">
           <span className="bg-[#E53935] text-white font-bold text-[10px] px-1.5 py-0.5 rounded uppercase tracking-wider">Demo Mode</span>
           <span className="hidden sm:inline">Active Factory:</span>
@@ -137,32 +137,13 @@ export const FactoryLayout: React.FC = () => {
                     setDemoSwitchOpen(false);
                     toast.info('Switched to Factory Owner persona');
                   }}
-                  className="w-full text-left p-2 rounded-lg hover:bg-red-50 text-xs font-semibold flex items-center justify-between"
+                  className="w-full text-left p-2 rounded-lg hover:bg-red-50 text-xs font-semibold flex items-center justify-between text-slate-900"
                 >
-                  <span>Factory Owner</span>
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#E53935]" />
+                    <span>Factory Owner</span>
+                  </div>
                   {role === 'factory_owner' && <CheckCircle2 className="w-3.5 h-3.5 text-[#E53935]" />}
-                </button>
-                <button
-                  onClick={async () => {
-                    await switchRole('factory_manager');
-                    setDemoSwitchOpen(false);
-                    toast.info('Switched to Plant Manager persona');
-                  }}
-                  className="w-full text-left p-2 rounded-lg hover:bg-red-50 text-xs font-semibold flex items-center justify-between"
-                >
-                  <span>Plant Manager</span>
-                  {role === 'factory_manager' && <CheckCircle2 className="w-3.5 h-3.5 text-[#E53935]" />}
-                </button>
-                <button
-                  onClick={async () => {
-                    await switchRole('factory_user');
-                    setDemoSwitchOpen(false);
-                    toast.info('Switched to Accountant persona');
-                  }}
-                  className="w-full text-left p-2 rounded-lg hover:bg-red-50 text-xs font-semibold flex items-center justify-between"
-                >
-                  <span>Accountant / Staff</span>
-                  {role === 'factory_user' && <CheckCircle2 className="w-3.5 h-3.5 text-[#E53935]" />}
                 </button>
                 <div className="border-t border-slate-100 my-1" />
                 <button
@@ -173,7 +154,10 @@ export const FactoryLayout: React.FC = () => {
                   }}
                   className="w-full text-left p-2 rounded-lg hover:bg-purple-50 text-xs font-semibold text-purple-700 flex items-center justify-between"
                 >
-                  <span>Super Admin Portal</span>
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-purple-600" />
+                    <span>Super Admin Portal</span>
+                  </div>
                   <ExternalLink className="w-3 h-3" />
                 </button>
               </div>

@@ -170,53 +170,29 @@ export const AdminDemoPage: React.FC = () => {
             Switch your active account with 1 click to experience the app from different user perspectives without logging in and out.
           </p>
 
-          <div className="grid grid-cols-2 gap-2.5 pt-2">
+          <div className="grid grid-cols-2 gap-3 pt-2">
             <button
               onClick={() => handleSwitchRole('factory_owner', 'Factory Owner')}
-              className={`p-3 rounded-2xl border text-left cursor-pointer transition-all ${
+              className={`p-3.5 rounded-2xl border text-left cursor-pointer transition-all ${
                 user?.role === 'factory_owner'
                   ? 'bg-[#FFEBEE] border-[#E53935] text-[#E53935]'
                   : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700'
               }`}
             >
               <div className="font-bold text-xs">Factory Owner</div>
-              <div className="text-[10px] text-slate-500 mt-0.5">Full financial & P&L access</div>
-            </button>
-
-            <button
-              onClick={() => handleSwitchRole('factory_manager', 'Plant Manager')}
-              className={`p-3 rounded-2xl border text-left cursor-pointer transition-all ${
-                user?.role === 'factory_manager'
-                  ? 'bg-[#FFEBEE] border-[#E53935] text-[#E53935]'
-                  : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700'
-              }`}
-            >
-              <div className="font-bold text-xs">Plant Manager</div>
-              <div className="text-[10px] text-slate-500 mt-0.5">Production, stock & labour</div>
-            </button>
-
-            <button
-              onClick={() => handleSwitchRole('factory_user', 'Dispatch Operator')}
-              className={`p-3 rounded-2xl border text-left cursor-pointer transition-all ${
-                user?.role === 'factory_user'
-                  ? 'bg-[#FFEBEE] border-[#E53935] text-[#E53935]'
-                  : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700'
-              }`}
-            >
-              <div className="font-bold text-xs">Dispatch Clerk</div>
-              <div className="text-[10px] text-slate-500 mt-0.5">Sales dispatches & gate passes</div>
+              <div className="text-[10px] text-slate-500 mt-0.5">Full ERP, Production, Stock & P&L</div>
             </button>
 
             <button
               onClick={() => handleSwitchRole('super_admin', 'Super Admin')}
-              className={`p-3 rounded-2xl border text-left cursor-pointer transition-all ${
+              className={`p-3.5 rounded-2xl border text-left cursor-pointer transition-all ${
                 user?.role === 'super_admin'
-                  ? 'bg-[#FFEBEE] border-[#E53935] text-[#E53935]'
+                  ? 'bg-purple-50 border-purple-600 text-purple-700'
                   : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700'
               }`}
             >
               <div className="font-bold text-xs">Super Admin</div>
-              <div className="text-[10px] text-slate-500 mt-0.5">Multi-tenant control plane</div>
+              <div className="text-[10px] text-slate-500 mt-0.5">Multi-tenant SaaS control plane</div>
             </button>
           </div>
         </div>

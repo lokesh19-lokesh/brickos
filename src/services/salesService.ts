@@ -170,8 +170,8 @@ export const salesService = {
     dbStore.addAuditLog(
       factoryId,
       'usr_current',
-      'Accountant',
-      'factory_user',
+      'Factory Owner',
+      'factory_owner',
       'Sales & Invoices',
       'CREATE',
       newSale.id,

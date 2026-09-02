@@ -43,8 +43,8 @@ export const expenseService = {
     dbStore.addAuditLog(
       factoryId,
       'usr_current',
-      payload.paidBy || 'Accountant',
-      'factory_user',
+      payload.paidBy || 'Factory Owner',
+      'factory_owner',
       'Expenses',
       'CREATE',
       newExpense.id,
@@ -109,8 +109,8 @@ export const paymentService = {
     dbStore.addAuditLog(
       factoryId,
       'usr_current',
-      'Accountant',
-      'factory_user',
+      'Factory Owner',
+      'factory_owner',
       'Payments',
       'PAYMENT',
       newPayment.id,

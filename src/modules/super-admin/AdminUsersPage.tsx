@@ -81,8 +81,6 @@ export const AdminUsersPage: React.FC = () => {
         let variant: 'success' | 'danger' | 'warning' | 'info' = 'info';
         if (row.role === 'super_admin') variant = 'danger';
         if (row.role === 'factory_owner') variant = 'warning';
-        if (row.role === 'factory_manager') variant = 'info';
-        if (row.role === 'factory_user') variant = 'success';
         return <Badge variant={variant}>{row.role.replace('_', ' ').toUpperCase()}</Badge>;
       },
     },
@@ -102,7 +100,7 @@ export const AdminUsersPage: React.FC = () => {
     <div className="space-y-6">
       <PageHeader
         title="Platform Users & Access Control"
-        description="Global directory of all platform administrators, factory owners, plant managers, and dispatch operators."
+        description="Global directory of all platform administrators and factory owners."
         breadcrumbs={[
           { label: 'Super Admin', href: '/admin/dashboard' },
           { label: 'Platform Users' },
@@ -132,7 +130,7 @@ export const AdminUsersPage: React.FC = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title="Create Platform User Account"
-        description="Provision administrative credentials or plant staff accounts."
+        description="Provision administrative credentials or factory owner accounts."
         maxWidth="md"
       >
         <form onSubmit={handleCreateUser} className="space-y-4">
@@ -172,8 +170,6 @@ export const AdminUsersPage: React.FC = () => {
               isRequired
             >
               <option value="factory_owner">Factory Owner</option>
-              <option value="factory_manager">Plant Manager</option>
-              <option value="factory_user">Dispatch / Billing Clerk</option>
               <option value="super_admin">Super Admin</option>
             </Select>
 

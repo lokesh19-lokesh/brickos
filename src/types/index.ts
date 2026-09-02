@@ -1,4 +1,4 @@
-export type UserRole = 'super_admin' | 'factory_owner' | 'factory_manager' | 'factory_user';
+export type UserRole = 'super_admin' | 'factory_owner';
 
 export type SubscriptionStatus = 'trial' | 'active' | 'expired' | 'suspended' | 'cancelled';
 
