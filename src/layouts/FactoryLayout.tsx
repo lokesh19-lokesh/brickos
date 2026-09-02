@@ -5,7 +5,7 @@ import {
   Users, UserCheck, Briefcase, ShoppingBag, FileText, Receipt, 
   CreditCard, BarChart3, Settings, Search, Bell, LogOut, ChevronDown, 
   Menu, X, Sparkles, Plus, CheckCircle2, AlertTriangle, Info, ExternalLink,
-  ShieldAlert, RefreshCw
+  ShieldAlert, RefreshCw, Home
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
@@ -164,8 +164,12 @@ export const FactoryLayout: React.FC = () => {
             )}
           </div>
 
-          <Link to="/" className="text-slate-400 hover:text-white transition-colors hidden sm:inline">
-            Public Site
+          <Link 
+            to="/" 
+            className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-md border border-slate-700 transition-colors shadow-2xs"
+          >
+            <Home className="w-3.5 h-3.5 text-slate-400" />
+            <span>Back to Home</span>
           </Link>
         </div>
       </div>

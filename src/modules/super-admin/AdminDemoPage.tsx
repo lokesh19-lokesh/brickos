@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Sparkles, RotateCcw, Users, Database, Download, 
-  Upload, CheckCircle2, Factory, ShoppingCart, Layers, Shield 
+  Upload, CheckCircle2, Factory, ShoppingCart, Layers, Shield, Home 
 } from 'lucide-react';
 import { dbStore } from '@/services/mockDatabase';
 import { useAuth } from '@/context/AuthContext';
@@ -157,6 +157,17 @@ export const AdminDemoPage: React.FC = () => {
           { label: 'Super Admin', href: '/admin/dashboard' },
           { label: 'Demo Sandbox' },
         ]}
+        actions={
+          <Button
+            variant="outline"
+            size="md"
+            leftIcon={<Home className="w-4 h-4" />}
+            onClick={() => navigate('/')}
+            className="cursor-pointer"
+          >
+            Back to Home
+          </Button>
+        }
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

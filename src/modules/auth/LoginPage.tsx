@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Building2, Lock, Mail, Eye, EyeOff, Sparkles, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Building2, Lock, Mail, Eye, EyeOff, Sparkles, ArrowRight, ShieldCheck, ArrowLeft, Home } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Alert } from '@/components/ui/PageHeader';
@@ -64,6 +64,18 @@ export const LoginPage: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-100 via-slate-50 to-white px-4 py-12">
       <div className="w-full max-w-md space-y-6">
+        {/* Navigation Back Link */}
+        <div className="flex items-center justify-between">
+          <Link 
+            to="/" 
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-[#E53935] transition-colors bg-white/80 hover:bg-white px-3 py-1.5 rounded-xl border border-slate-200/80 shadow-2xs cursor-pointer"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Back to Home</span>
+          </Link>
+          <span className="text-[11px] font-semibold text-slate-400">Patterns BrickOS</span>
+        </div>
+
         {/* Brand Header */}
         <div className="text-center space-y-2">
           <Link to="/" className="inline-block group">

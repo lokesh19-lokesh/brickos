@@ -3,7 +3,7 @@ import { Link, NavLink, Outlet, useNavigate, useLocation } from 'react-router-do
 import { 
   Shield, LayoutDashboard, Building2, CreditCard, Sparkles, 
   Users, History, Settings, LogOut, ArrowLeft, RefreshCw, Menu, X,
-  Layers, FileText, ChevronDown, CheckCircle2, Search, Bell
+  Layers, FileText, ChevronDown, CheckCircle2, Search, Bell, Home
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
@@ -107,8 +107,12 @@ export const SuperAdminLayout: React.FC = () => {
             )}
           </div>
 
-          <Link to="/" className="text-slate-400 hover:text-white transition-colors text-xs hidden sm:inline">
-            Public Site
+          <Link 
+            to="/" 
+            className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-md border border-slate-700 transition-colors shadow-2xs"
+          >
+            <Home className="w-3.5 h-3.5 text-slate-400" />
+            <span>Back to Home</span>
           </Link>
         </div>
       </div>
