@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Building2, Lock, Mail, Eye, EyeOff, Sparkles, ArrowRight, ShieldCheck, ArrowLeft, Home } from 'lucide-react';
+import { Building2, Lock, Mail, Eye, EyeOff, Sparkles, ArrowRight, ShieldCheck, ArrowLeft, Home, KeyRound, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Alert } from '@/components/ui/PageHeader';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import { UserRole } from '@/types';
+import { SuperAdminAccessModal } from '@/components/common/SuperAdminAccessModal';
 
 export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -15,26 +16,21 @@ export const LoginPage: React.FC = () => {
   const [rememberMe, setRememberMe] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [adminModalOpen, setAdminModalOpen] = useState(false);
 
   const { login, switchRole } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
+  const from = (location.state as any)?.from?.pathname || '/dashboard';
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    if (!email.trim() || !password.trim()) {
-      setError('Please enter both your registered email address and password.');
-      return;
-    }
-
     try {
       setLoading(true);
+      setError(null);
       await login({ email, password });
-      toast.success('Signed in successfully!');
-      
-      const from = (location.state as any)?.from?.pathname || '/dashboard';
+      toast.success('Welcome back to BrickOS!');
       navigate(from, { replace: true });
     } catch (err: any) {
       setError(err.message || 'Invalid credentials or inactive account.');
@@ -44,16 +40,17 @@ export const LoginPage: React.FC = () => {
   };
 
   const handleDemoLogin = async (role: UserRole, demoEmail: string) => {
+    if (role === 'super_admin') {
+      setAdminModalOpen(true);
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
       await switchRole(role);
       toast.success(`Logged in as ${role.replace('_', ' ')}`);
-      if (role === 'super_admin') {
-        navigate('/admin/dashboard');
-      } else {
-        navigate('/dashboard');
-      }
+      navigate('/dashboard');
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -196,11 +193,21 @@ export const LoginPage: React.FC = () => {
         {/* Super admin link */}
         <div className="text-center text-xs text-slate-400">
           Super Admin?{' '}
-          <Link to="/admin/login" className="font-semibold text-slate-600 hover:text-slate-900 underline">
+          <button
+            type="button"
+            onClick={() => setAdminModalOpen(true)}
+            className="font-semibold text-slate-600 hover:text-[#E53935] underline cursor-pointer"
+          >
             Super Admin Control Portal
-          </Link>
+          </button>
         </div>
       </div>
+
+      {/* Super Admin Master Access Key Modal */}
+      <SuperAdminAccessModal
+        isOpen={adminModalOpen}
+        onClose={() => setAdminModalOpen(false)}
+      />
     </div>
   );
 };

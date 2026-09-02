@@ -13,6 +13,7 @@ import { dbStore } from '@/services/mockDatabase';
 import { notificationService } from '@/services/reportService';
 import { NotificationItem, UserRole } from '@/types';
 import { GlobalSearchModal } from '@/components/ui/GlobalSearchModal';
+import { SuperAdminAccessModal } from '@/components/common/SuperAdminAccessModal';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Card';
 import { cn } from '@/lib/cn';
@@ -25,6 +26,7 @@ export const FactoryLayout: React.FC = () => {
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [quickActionOpen, setQuickActionOpen] = useState(false);
   const [demoSwitchOpen, setDemoSwitchOpen] = useState(false);
+  const [adminModalOpen, setAdminModalOpen] = useState(false);
 
   const mainScrollRef = useRef<HTMLElement>(null);
 
@@ -147,12 +149,11 @@ export const FactoryLayout: React.FC = () => {
                 </button>
                 <div className="border-t border-slate-100 my-1" />
                 <button
-                  onClick={async () => {
-                    await switchRole('super_admin');
+                  onClick={() => {
                     setDemoSwitchOpen(false);
-                    navigate('/admin/dashboard');
+                    setAdminModalOpen(true);
                   }}
-                  className="w-full text-left p-2 rounded-lg hover:bg-purple-50 text-xs font-semibold text-purple-700 flex items-center justify-between"
+                  className="w-full text-left p-2 rounded-lg hover:bg-purple-50 text-xs font-semibold text-purple-700 flex items-center justify-between cursor-pointer"
                 >
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-purple-600" />
@@ -490,6 +491,12 @@ export const FactoryLayout: React.FC = () => {
 
       {/* Global Cmd+K Search Modal */}
       <GlobalSearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+
+      {/* Super Admin Master Access Key Modal */}
+      <SuperAdminAccessModal
+        isOpen={adminModalOpen}
+        onClose={() => setAdminModalOpen(false)}
+      />
     </div>
   );
 };

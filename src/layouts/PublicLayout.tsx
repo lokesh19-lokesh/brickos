@@ -2,26 +2,29 @@ import React, { useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { 
   Building2, Layers, ShieldCheck, ArrowRight, Phone, MessageSquare, 
-  Menu, X, Sparkles, CheckCircle2, ChevronDown 
+  Menu, X, Sparkles, CheckCircle2, ChevronDown, Shield 
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/context/AuthContext';
 import { UserRole } from '@/types';
+import { SuperAdminAccessModal } from '@/components/common/SuperAdminAccessModal';
 
 export const PublicLayout: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [demoDropdownOpen, setDemoDropdownOpen] = useState(false);
+  const [adminModalOpen, setAdminModalOpen] = useState(false);
   const { user, switchRole } = useAuth();
   const navigate = useNavigate();
 
   const handleQuickLogin = async (role: UserRole) => {
+    if (role === 'super_admin') {
+      setDemoDropdownOpen(false);
+      setAdminModalOpen(true);
+      return;
+    }
     await switchRole(role);
     setDemoDropdownOpen(false);
-    if (role === 'super_admin') {
-      navigate('/admin/dashboard');
-    } else {
-      navigate('/dashboard');
-    }
+    navigate('/dashboard');
   };
 
   return (
@@ -262,11 +265,22 @@ export const PublicLayout: React.FC = () => {
             <div className="flex items-center gap-6">
               <a href="#" className="hover:text-slate-400">Privacy Policy</a>
               <a href="#" className="hover:text-slate-400">Terms of Service</a>
-              <Link to="/admin/login" className="hover:text-slate-400">Super Admin Portal</Link>
+              <button 
+                onClick={() => setAdminModalOpen(true)} 
+                className="hover:text-slate-300 cursor-pointer"
+              >
+                Super Admin Portal
+              </button>
             </div>
           </div>
         </div>
       </footer>
+
+      {/* Super Admin Access Key Modal */}
+      <SuperAdminAccessModal 
+        isOpen={adminModalOpen} 
+        onClose={() => setAdminModalOpen(false)} 
+      />
     </div>
   );
 };
