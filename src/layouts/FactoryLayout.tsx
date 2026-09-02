@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { Link, NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { 
   Building2, LayoutDashboard, Package, Layers, Factory, Boxes, 
@@ -26,12 +26,21 @@ export const FactoryLayout: React.FC = () => {
   const [quickActionOpen, setQuickActionOpen] = useState(false);
   const [demoSwitchOpen, setDemoSwitchOpen] = useState(false);
 
+  const mainScrollRef = useRef<HTMLElement>(null);
+
   const { user, factory, role, logout, switchRole } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
 
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
+
+  // Synchronously reset main viewport scroll to top on every navigation before paint
+  useLayoutEffect(() => {
+    if (mainScrollRef.current) {
+      mainScrollRef.current.scrollTop = 0;
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     const factoryId = factory?.id || 'fact_01';
@@ -483,7 +492,7 @@ export const FactoryLayout: React.FC = () => {
           </header>
 
           {/* Main ERP Page Content Viewport */}
-          <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+          <main ref={mainScrollRef} className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
             <div className="max-w-7xl mx-auto">
               <Outlet />
             </div>

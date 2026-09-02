@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
+import React, { useState, useRef, useLayoutEffect } from 'react';
+import { Link, NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { 
   Shield, LayoutDashboard, Building2, CreditCard, Sparkles, 
   Users, History, Settings, LogOut, ArrowLeft, RefreshCw, Menu, X,
@@ -16,9 +16,17 @@ export const SuperAdminLayout: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
   const [demoSwitchOpen, setDemoSwitchOpen] = useState(false);
+  const mainScrollRef = useRef<HTMLElement>(null);
   const { user, logout, switchRole } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useLayoutEffect(() => {
+    if (mainScrollRef.current) {
+      mainScrollRef.current.scrollTop = 0;
+    }
+  }, [location.pathname]);
 
   const handleResetData = async () => {
     if (window.confirm('Reset all demo database records to clean initial seed state?')) {
@@ -245,7 +253,7 @@ export const SuperAdminLayout: React.FC = () => {
         )}
 
         {/* Main Admin Content */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-slate-50 text-slate-900">
+        <main ref={mainScrollRef} className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-slate-50 text-slate-900">
           <div className="max-w-7xl mx-auto">
             <Outlet />
           </div>
