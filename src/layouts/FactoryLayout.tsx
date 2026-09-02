@@ -100,7 +100,7 @@ export const FactoryLayout: React.FC = () => {
     {
       group: 'ANALYTICS & CONTROL',
       items: [
-        { label: 'Reports & P&L Statement', path: '/reports', icon: BarChart3 },
+        { label: 'Profit & Loss & Reports', path: '/reports', icon: BarChart3 },
         { label: 'Factory Settings', path: '/settings', icon: Settings },
       ],
     },

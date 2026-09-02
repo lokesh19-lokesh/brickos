@@ -519,7 +519,7 @@ export const HomePage: React.FC = () => {
             <div className="w-12 h-12 rounded-xl bg-[#FFEBEE] text-[#D32F2F] flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
               <BarChart3 className="w-6 h-6" />
             </div>
-            <h4 className="text-base font-bold text-[#1E293B] mb-2">P&L & Financial Reports</h4>
+            <h4 className="text-base font-bold text-[#1E293B] mb-2">Profit & Loss & Financial Reports</h4>
             <p className="text-xs text-slate-600 leading-relaxed">
               Know your exact monthly cost of raw materials, labour, electricity, diesel, and net profit margins. Export reports to Excel or PDF in seconds.
             </p>
