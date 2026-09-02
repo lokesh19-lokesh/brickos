@@ -52,31 +52,50 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="space-y-24 pb-20">
-      {/* 1. HERO SECTION */}
-      <section className="relative pt-12 pb-20 lg:pt-20 lg:pb-28 overflow-hidden bg-gradient-to-b from-white via-red-50/20 to-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto space-y-6">
+      {/* 1. HERO SECTION - INDUSTRIAL BRICK MANUFACTURING CLOUD OS */}
+      <section className="relative pt-8 pb-20 lg:pt-14 lg:pb-28 overflow-hidden bg-gradient-to-b from-white via-slate-50/50 to-slate-100/60">
+        {/* Background Decorative Grids */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-40 pointer-events-none" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Top Hero Text Header */}
+          <div className="text-center max-w-4xl mx-auto space-y-5">
             {/* Pill */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FFEBEE] border border-red-200 text-[#D32F2F] text-xs font-bold tracking-wide shadow-2xs">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Tailor-made for Indian Brick & Block Manufacturers</span>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FFEBEE] border border-red-200 text-[#D32F2F] text-xs font-bold tracking-wide shadow-2xs animate-in fade-in">
+              <span className="w-2 h-2 rounded-full bg-[#E53935] animate-pulse" />
+              <span>Dedicated Cloud ERP & Operating System for Brick & Block Manufacturers</span>
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#1E293B] tracking-tight leading-[1.1]">
-              Complete ERP Management for <span className="text-[#E53935]">Brick Manufacturing</span>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#1E293B] tracking-tight leading-[1.12]">
+              The Operating System for Modern{' '}
+              <span className="text-[#E53935] relative inline-block">
+                Brick Manufacturing
+                <svg className="absolute -bottom-2 left-0 w-full h-3 text-[#E53935]/30" viewBox="0 0 100 12" preserveAspectRatio="none">
+                  <path d="M0,8 Q50,0 100,8" stroke="currentColor" strokeWidth="4" fill="none" />
+                </svg>
+              </span>
             </h1>
 
             {/* Subtitle */}
-            <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal">
-              Manage raw materials, machine batches, kiln chambers, transactional stock, piece-rate labour wages, customer receivables, GST tax invoices, and real-time P&L from one powerful cloud platform.
+            <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal max-w-3xl mx-auto">
+              Automate raw material weighbridge entries, hydraulic machine press batches, daily piece-rate labour wages, customer ledgers, and 1-click GST dispatch invoices — engineered specifically for brick & block kilns.
             </p>
 
+            {/* Brick & Block Types Supported Tag Chips */}
+            <div className="flex flex-wrap items-center justify-center gap-2 pt-1 text-xs font-semibold text-slate-600">
+              <span className="px-3 py-1 bg-white rounded-lg border border-slate-200 shadow-2xs">🧱 Fly Ash Bricks</span>
+              <span className="px-3 py-1 bg-white rounded-lg border border-slate-200 shadow-2xs">🔥 Red Clay Kiln Bricks</span>
+              <span className="px-3 py-1 bg-white rounded-lg border border-slate-200 shadow-2xs">🏗️ Interlocking Paver Blocks</span>
+              <span className="px-3 py-1 bg-white rounded-lg border border-slate-200 shadow-2xs">📦 Concrete Hollow Blocks</span>
+              <span className="px-3 py-1 bg-white rounded-lg border border-slate-200 shadow-2xs">📐 AAC Lightweight Blocks</span>
+            </div>
+
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-3">
               <Link to="/register">
-                <Button variant="primary" size="lg" rightIcon={<ArrowRight className="w-5 h-5" />} className="w-full sm:w-auto shadow-md">
-                  Start Your Factory Free
+                <Button variant="primary" size="lg" rightIcon={<ArrowRight className="w-5 h-5" />} className="w-full sm:w-auto shadow-md font-bold text-base px-8 py-4">
+                  Start 14-Day Free Factory Trial
                 </Button>
               </Link>
               <Button
@@ -84,17 +103,17 @@ export const HomePage: React.FC = () => {
                 size="lg"
                 onClick={() => setDemoModalOpen(true)}
                 leftIcon={<Play className="w-4 h-4 text-[#E53935]" />}
-                className="w-full sm:w-auto font-semibold"
+                className="w-full sm:w-auto font-bold text-base bg-white hover:bg-slate-50 border-slate-300"
               >
-                Request Live Demo
+                Schedule Factory Demo
               </Button>
             </div>
 
-            {/* Trust badges */}
-            <div className="flex flex-wrap items-center justify-center gap-6 pt-4 text-xs font-semibold text-slate-500">
+            {/* Trust Badges */}
+            <div className="flex flex-wrap items-center justify-center gap-6 pt-2 text-xs font-semibold text-slate-500">
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                <span>14-Day Full Free Trial</span>
+                <span>14-Day Full Access</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500" />
@@ -102,69 +121,151 @@ export const HomePage: React.FC = () => {
               </div>
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                <span>Instant Multi-Role Sandbox</span>
+                <span>Instant Multi-Role Demo</span>
               </div>
             </div>
           </div>
 
-          {/* Polished Visual Preview of ERP Dashboard */}
-          <div className="mt-14 relative max-w-5xl mx-auto">
-            <div className="relative rounded-2xl border-4 border-slate-900/10 shadow-2xl bg-white overflow-hidden">
-              {/* Fake Browser Top Bar */}
-              <div className="bg-[#1E293B] px-4 py-3 flex items-center justify-between border-b border-slate-800 text-xs text-slate-300">
+          {/* REAL BRICK FACTORY + LIVE CLOUD ERP SHOWCASE */}
+          <div className="mt-14 relative max-w-6xl mx-auto">
+            {/* Outer Frame with Industrial Glass Effect */}
+            <div className="relative rounded-3xl border border-slate-300/80 shadow-2xl bg-white p-3 sm:p-4 overflow-hidden group">
+              {/* Browser Window Bar */}
+              <div className="bg-[#1E293B] rounded-t-2xl px-4 py-3 flex items-center justify-between text-xs text-slate-300">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-red-500" />
                   <div className="w-3 h-3 rounded-full bg-amber-500" />
                   <div className="w-3 h-3 rounded-full bg-emerald-500" />
-                  <span className="ml-2 font-mono text-[11px] text-slate-400">app.brickflow.io/dashboard</span>
+                  <span className="ml-2 font-mono text-[11px] text-slate-300 flex items-center gap-1.5">
+                    <span className="text-[#E53935]">●</span> app.brickflow.io/dashboard • Plant Line #1 & Kiln Chamber Active
+                  </span>
                 </div>
-                <div className="flex items-center gap-2 text-[11px] font-bold text-amber-400">
-                  <span>Factory: Shree Ram Brick Industries (SRB-01)</span>
+                <div className="hidden sm:flex items-center gap-2 text-[11px] font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30">
+                  <span>Factory Online: Shree Ram Brick Industries</span>
                 </div>
               </div>
 
-              {/* Preview Dashboard Content */}
-              <div className="p-6 bg-slate-50/80 space-y-6">
-                {/* Metric Preview Row */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  <div className="p-4 bg-white rounded-xl border border-slate-200/80 shadow-2xs">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Today's Production</span>
-                    <div className="text-xl font-extrabold text-slate-900 mt-1">31,450 <span className="text-xs font-normal text-slate-500">Pcs</span></div>
-                    <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded mt-1 inline-block">+12.4% vs Avg</span>
+              {/* Main Factory Visual Container with Live ERP HUD Overlays */}
+              <div className="relative h-[380px] sm:h-[480px] lg:h-[540px] rounded-b-2xl overflow-hidden bg-slate-900">
+                {/* Real High-Definition Brick Manufacturing Plant Image */}
+                <img 
+                  src="/hero-brick-factory.jpg" 
+                  alt="Modern Automated Brick Manufacturing Plant" 
+                  className="w-full h-full object-cover object-center filter brightness-95 group-hover:scale-[1.02] transition-transform duration-700 ease-out" 
+                />
+
+                {/* Dark Gradient Overlay for Readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent pointer-events-none" />
+
+                {/* FLOATING ERP HUD WIDGET 1: Top-Left Live Production Batch */}
+                <div className="absolute top-4 left-4 sm:top-6 sm:left-6 bg-white/95 backdrop-blur-md p-3 sm:p-4 rounded-2xl border border-white/60 shadow-xl max-w-xs animate-in fade-in slide-in-from-top-4">
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <span className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+                      Live Hydraulic Press
+                    </span>
+                    <span className="text-[10px] font-mono text-slate-400">Shift #1</span>
                   </div>
-                  <div className="p-4 bg-white rounded-xl border border-slate-200/80 shadow-2xs">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Finished Goods Stock</span>
-                    <div className="text-xl font-extrabold text-[#E53935] mt-1">1,68,200 <span className="text-xs font-normal text-slate-500">Pcs</span></div>
-                    <span className="text-[10px] font-bold text-slate-600">Valuation: ₹9.85 Lakh</span>
+                  <div className="text-sm sm:text-base font-black text-slate-900 leading-tight">
+                    Batch #BP-2026-042: 35,000 Pcs
                   </div>
-                  <div className="p-4 bg-white rounded-xl border border-slate-200/80 shadow-2xs">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Customer Receivables</span>
-                    <div className="text-xl font-extrabold text-amber-600 mt-1">₹1,61,150</div>
-                    <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded mt-1 inline-block">4 Invoices Overdue</span>
+                  <div className="text-[11px] text-slate-600 font-semibold mt-0.5">
+                    4-Inch Fly Ash Bricks (Comp: 12.5 N/mm²)
                   </div>
-                  <div className="p-4 bg-white rounded-xl border border-slate-200/80 shadow-2xs">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Net Profit (MTD)</span>
-                    <div className="text-xl font-extrabold text-emerald-600 mt-1">₹3,42,800</div>
-                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded mt-1 inline-block">32.8% Margin</span>
+                  <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-500">
+                    <span>BOM Auto-Deduction:</span>
+                    <strong className="text-slate-800 font-mono">14.2 MT Fly Ash | 2.8 MT Cement</strong>
                   </div>
                 </div>
 
-                {/* Simulated Chart Banner */}
-                <div className="p-4 bg-white rounded-xl border border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="space-y-1 text-center sm:text-left">
-                    <div className="text-xs font-bold text-slate-900">Live Interactive Cloud Control Plane</div>
-                    <p className="text-[11px] text-slate-500">Experience the full power of automated BOM deduction, daily muster roll & GST e-way billing.</p>
+                {/* FLOATING ERP HUD WIDGET 2: Top-Right Finished Goods Inventory */}
+                <div className="absolute top-4 right-4 sm:top-6 sm:right-6 bg-white/95 backdrop-blur-md p-3 sm:p-4 rounded-2xl border border-white/60 shadow-xl max-w-xs hidden sm:block animate-in fade-in slide-in-from-top-4">
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-[#D32F2F] bg-[#FFEBEE] px-2 py-0.5 rounded-full border border-red-200">
+                      Yard Stock Valuation
+                    </span>
+                    <span className="text-[10px] font-bold text-emerald-600">Audit Ready</span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="text-base sm:text-lg font-black text-[#E53935] font-mono">
+                    1,68,200 <span className="text-xs font-normal text-slate-700">Finished Bricks</span>
+                  </div>
+                  <p className="text-[11px] text-slate-600 font-semibold">Total Stock Value: <strong className="text-slate-900">₹9,85,000</strong></p>
+                  <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[10px]">
+                    <span className="text-emerald-700 font-bold">Grade A Quality: 96.4%</span>
+                    <span className="text-slate-400">0% Unaccounted Loss</span>
+                  </div>
+                </div>
+
+                {/* FLOATING ERP HUD WIDGET 3: Bottom-Left Piece-Rate Labour Wages */}
+                <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 bg-white/95 backdrop-blur-md p-3 sm:p-4 rounded-2xl border border-white/60 shadow-xl max-w-xs hidden md:block animate-in fade-in slide-in-from-bottom-4">
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
+                      Daily Wage Muster Roll
+                    </span>
+                    <span className="text-[10px] font-bold text-slate-500">42 Workers</span>
+                  </div>
+                  <div className="text-sm sm:text-base font-black text-slate-900">
+                    ₹14,450 Earned Today
+                  </div>
+                  <p className="text-[11px] text-slate-600">Rate: <strong>₹420 / 1000 Bricks</strong> (Moulding Gang A)</p>
+                  <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-500">
+                    <span>Attendance:</span>
+                    <strong className="text-emerald-600 font-bold">40 Present • 2 Half Day</strong>
+                  </div>
+                </div>
+
+                {/* FLOATING ERP HUD WIDGET 4: Bottom-Right Instant Dispatch & GST Tax Invoice */}
+                <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 bg-[#1E293B]/95 backdrop-blur-md text-white p-3 sm:p-4 rounded-2xl border border-slate-700 shadow-2xl max-w-sm">
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-500/40">
+                      Dispatched Truck
+                    </span>
+                    <span className="font-mono text-[10px] text-amber-300">MH-12-DT-8821</span>
+                  </div>
+                  <div className="text-sm sm:text-base font-bold text-white">
+                    10,000 Fly Ash Bricks Loaded
+                  </div>
+                  <div className="text-[11px] text-slate-300 mt-0.5">
+                    GST Invoice #INV-2026-089 • <strong className="text-emerald-400 font-mono">₹54,600</strong>
+                  </div>
+                  <div className="mt-3 flex items-center gap-2">
                     <button
                       onClick={() => handleQuickSandbox('factory_owner')}
-                      className="px-4 py-2 bg-[#E53935] hover:bg-[#D32F2F] text-white text-xs font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
+                      className="flex-1 py-2 px-3 bg-[#E53935] hover:bg-[#D32F2F] text-white text-xs font-bold rounded-xl text-center transition-colors cursor-pointer flex items-center justify-center gap-1.5 shadow-md"
                     >
-                      Open Live Dashboard Demo →
+                      <Sparkles className="w-3.5 h-3.5" />
+                      <span>Open Live Interactive ERP</span>
                     </button>
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* KEY MANUFACTURING STATS BANNER */}
+          <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+            <div className="p-4 bg-white rounded-2xl border border-slate-200/80 shadow-2xs text-center space-y-1">
+              <div className="text-2xl sm:text-3xl font-black text-[#1E293B] font-mono">500+</div>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-wide">Active Brick Plants</p>
+              <p className="text-[10px] text-slate-400">Across 18 Indian States</p>
+            </div>
+
+            <div className="p-4 bg-white rounded-2xl border border-slate-200/80 shadow-2xs text-center space-y-1">
+              <div className="text-2xl sm:text-3xl font-black text-[#E53935] font-mono">₹150+ Cr</div>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-wide">Dispatches Invoiced</p>
+              <p className="text-[10px] text-slate-400">100% GST & E-Way Ready</p>
+            </div>
+
+            <div className="p-4 bg-white rounded-2xl border border-slate-200/80 shadow-2xs text-center space-y-1">
+              <div className="text-2xl sm:text-3xl font-black text-emerald-600 font-mono">65%</div>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-wide">Wastage Reduction</p>
+              <p className="text-[10px] text-slate-400">Zero Raw Material Theft</p>
+            </div>
+
+            <div className="p-4 bg-white rounded-2xl border border-slate-200/80 shadow-2xs text-center space-y-1">
+              <div className="text-2xl sm:text-3xl font-black text-blue-600 font-mono">4.9/5★</div>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-wide">Manufacturer Rating</p>
+              <p className="text-[10px] text-slate-400">1-Click WhatsApp Billing</p>
             </div>
           </div>
         </div>
@@ -306,6 +407,56 @@ export const HomePage: React.FC = () => {
             <p className="text-xs text-slate-600 leading-relaxed">
               Know your exact monthly cost of raw materials, labour, electricity, diesel, and net profit margins. Export reports to Excel or PDF in seconds.
             </p>
+          </div>
+        </div>
+
+        {/* Real Brick Yard & Quality Inspection Visual Section */}
+        <div className="mt-12 bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-sm">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div className="lg:col-span-5 space-y-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FFEBEE] text-[#D32F2F] text-xs font-bold border border-red-200">
+                <span>📦 Finished Goods & Yard Management</span>
+              </div>
+              <h3 className="text-2xl font-black text-[#1E293B]">
+                Track Every Brick Lot from Hydraulic Press to Truck Dispatch
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                BrickFlow ERP automatically categorizes your inventory into curing stacks, Grade A finished stock, Grade B seconds, and breakage scrap. Every pallet has full batch traceability.
+              </p>
+              <div className="space-y-2 pt-2 text-xs font-semibold text-slate-700">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <span>Automated Curing Timer & Compressive Strength Logs</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <span>Weighbridge & Truck Loading Audit Verification</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <span>Real-time Physical Audit vs Ledger Stock Reconciliation</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-7">
+              <div className="relative rounded-2xl overflow-hidden shadow-lg border border-slate-200 group">
+                <img 
+                  src="/brick-pallet-stack.jpg" 
+                  alt="Brick Yard Stacks & Pallet Inspection" 
+                  className="w-full h-72 sm:h-80 object-cover object-center group-hover:scale-105 transition-transform duration-500" 
+                />
+                <div className="absolute bottom-3 left-3 right-3 bg-slate-900/90 backdrop-blur-md p-3 rounded-xl text-white text-xs flex items-center justify-between">
+                  <div>
+                    <span className="font-bold text-amber-400 block">Yard Stack Lot Traceability</span>
+                    <span className="text-[10px] text-slate-300">Terracotta Clay (Lot #A4B7) • Fly Ash Blocks (Batch #F025)</span>
+                  </div>
+                  <span className="text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded">
+                    Audit Verified
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
