@@ -281,7 +281,7 @@ export const InvoicesPage: React.FC = () => {
                   <p className="text-[11px] font-mono font-bold text-slate-900">
                     GSTIN: {factory?.gstNumber || '27AABCS1429B1Z8'}
                   </p>
-                  <p className="text-[11px] text-slate-600">Phone: {factory?.phone || '+91 98220 12345'} • Email: {factory?.email || 'info@shreerambricks.com'}</p>
+                  <p className="text-[11px] text-slate-600">Phone: {factory?.phone || '+91 85006 93113'} • Email: {factory?.email || 'info@shreerambricks.com'}</p>
                 </div>
 
                 <div className="text-right space-y-1">

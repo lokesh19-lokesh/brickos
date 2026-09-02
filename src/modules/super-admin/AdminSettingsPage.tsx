@@ -11,7 +11,7 @@ export const AdminSettingsPage: React.FC = () => {
   const [settings, setSettings] = useState({
     platformName: 'BrickFlow ERP Platform',
     supportEmail: 'support@brickflow.io',
-    salesPhone: '+91 98220 12345',
+    salesPhone: '+91 85006 93113',
     trialPeriodDays: 14,
     defaultCurrency: 'INR (₹)',
     enforce2FA: false,

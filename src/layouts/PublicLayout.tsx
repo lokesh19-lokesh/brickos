@@ -27,16 +27,16 @@ export const PublicLayout: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 font-sans">
       {/* Top Notification Bar */}
-      <div className="bg-[#1E293B] text-white text-xs py-2 px-4 text-center border-b border-slate-800">
+      <div className="bg-[#1E293B] text-white text-xs py-2.5 px-4 text-center border-b border-slate-800">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="hidden sm:flex items-center gap-2">
             <span className="bg-[#E53935] text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">New</span>
             <span>Automated Kiln Chamber & Weighbridge Integration now live in BrickFlow ERP 2.0</span>
           </div>
           <div className="flex items-center gap-4 mx-auto sm:mx-0">
-            <a href="tel:+919822012345" className="flex items-center gap-1.5 hover:text-red-400 transition-colors">
+            <a href="tel:+918500693113" className="flex items-center gap-1.5 hover:text-red-400 transition-colors font-medium">
               <Phone className="w-3.5 h-3.5 text-[#E53935]" />
-              <span>+91 98220 12345 (Sales & Demo)</span>
+              <span>+91 85006 93113 (Sales & Demo)</span>
             </a>
             <span className="text-slate-600 hidden md:inline">•</span>
             <span className="hidden md:inline text-slate-300">Mon - Sat: 9 AM - 8 PM IST</span>
@@ -46,41 +46,33 @@ export const PublicLayout: React.FC = () => {
 
       {/* Main SaaS Header */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
+          {/* Left: Logo */}
+          <Link to="/" className="flex items-center shrink-0 mr-6 lg:mr-10 group">
             <img 
               src="/logo.png" 
               alt="Patterns BrickOS" 
-              className="h-10 w-auto object-contain drop-shadow-xs group-hover:scale-105 transition-transform" 
+              className="h-14 sm:h-16 w-auto object-contain transition-transform group-hover:scale-105" 
             />
-            <div>
-              <div className="flex items-center gap-1">
-                <span className="text-xl font-black text-[#1E293B] tracking-tight">Brick</span>
-                <span className="text-xl font-black text-[#E53935]">Flow</span>
-                <span className="text-[10px] uppercase font-bold bg-[#FFEBEE] text-[#D32F2F] px-1.5 py-0.5 rounded tracking-widest ml-1 border border-red-200/50">ERP</span>
-              </div>
-              <p className="text-[10px] text-slate-400 font-medium tracking-wide -mt-0.5">Cloud OS for Brick Manufacturing</p>
-            </div>
           </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-8 text-sm font-semibold text-slate-600">
-            <a href="#why-brickflow" className="hover:text-[#E53935] transition-colors">Why BrickFlow</a>
-            <a href="#features" className="hover:text-[#E53935] transition-colors">Features</a>
-            <a href="#modules" className="hover:text-[#E53935] transition-colors">ERP Modules</a>
-            <a href="#how-it-works" className="hover:text-[#E53935] transition-colors">How It Works</a>
-            <a href="#pricing" className="hover:text-[#E53935] transition-colors">Pricing</a>
-            <a href="#faq" className="hover:text-[#E53935] transition-colors">FAQ</a>
+          {/* Center: Desktop Nav */}
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-sm font-semibold text-slate-700">
+            <a href="#why-brickflow" className="hover:text-[#E53935] transition-colors whitespace-nowrap">Why BrickFlow</a>
+            <a href="#features" className="hover:text-[#E53935] transition-colors whitespace-nowrap">Features</a>
+            <a href="#modules" className="hover:text-[#E53935] transition-colors whitespace-nowrap">ERP Modules</a>
+            <a href="#how-it-works" className="hover:text-[#E53935] transition-colors whitespace-nowrap">How It Works</a>
+            <a href="#pricing" className="hover:text-[#E53935] transition-colors whitespace-nowrap">Pricing</a>
+            <a href="#faq" className="hover:text-[#E53935] transition-colors whitespace-nowrap">FAQ</a>
           </nav>
 
-          {/* Right Action Buttons */}
-          <div className="hidden sm:flex items-center gap-3">
+          {/* Right: Action Buttons */}
+          <div className="hidden sm:flex items-center gap-3 shrink-0">
             {/* Quick Demo Selector */}
             <div className="relative">
               <button
                 onClick={() => setDemoDropdownOpen(!demoDropdownOpen)}
-                className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors cursor-pointer border border-slate-200"
+                className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-slate-700 bg-slate-100/90 hover:bg-slate-200 rounded-xl transition-colors cursor-pointer border border-slate-200 shadow-2xs whitespace-nowrap"
               >
                 <Sparkles className="w-3.5 h-3.5 text-[#E53935]" />
                 <span>Explore Live Demos</span>
@@ -137,20 +129,20 @@ export const PublicLayout: React.FC = () => {
 
             {user ? (
               <Link to={user.role === 'super_admin' ? '/admin/dashboard' : '/dashboard'}>
-                <Button variant="secondary" size="md">
+                <Button variant="secondary" size="md" className="whitespace-nowrap">
                   Go to Dashboard
                 </Button>
               </Link>
             ) : (
               <Link to="/login">
-                <Button variant="outline" size="md">
+                <Button variant="outline" size="md" className="whitespace-nowrap">
                   Login
                 </Button>
               </Link>
             )}
 
             <Link to="/register">
-              <Button variant="primary" size="md" rightIcon={<ArrowRight className="w-4 h-4" />}>
+              <Button variant="primary" size="md" rightIcon={<ArrowRight className="w-4 h-4" />} className="whitespace-nowrap font-bold">
                 Start Your Factory
               </Button>
             </Link>
@@ -203,12 +195,13 @@ export const PublicLayout: React.FC = () => {
             {/* Col 1: Brand Info */}
             <div className="lg:col-span-2 space-y-4">
               <div className="flex items-center gap-3">
-                <img 
-                  src="/logo.png" 
-                  alt="Patterns BrickOS" 
-                  className="h-9 w-auto object-contain bg-white/10 p-1 rounded-xl" 
-                />
-                <span className="text-2xl font-black text-white">Brick<span className="text-[#E53935]">Flow</span> ERP</span>
+                <div className="bg-white px-3 py-1.5 rounded-xl inline-block shadow-sm">
+                  <img 
+                    src="/logo.png" 
+                    alt="BrickFlow ERP" 
+                    className="h-10 w-auto object-contain" 
+                  />
+                </div>
               </div>
               <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
                 India's #1 Cloud Operating System for Fly Ash, Red Clay, Cement & Paver Block manufacturing plants. Built to streamline production, stop inventory leakage, and automate GST compliance.
@@ -263,11 +256,11 @@ export const PublicLayout: React.FC = () => {
               <ul className="space-y-2 text-xs text-slate-400">
                 <li className="flex items-center gap-2">
                   <Phone className="w-3.5 h-3.5 text-[#E53935]" />
-                  <span>+91 98220 12345</span>
+                  <a href="tel:+918500693113" className="hover:text-white transition-colors">+91 85006 93113</a>
                 </li>
                 <li className="flex items-center gap-2">
                   <MessageSquare className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>WhatsApp: +91 98220 12345</span>
+                  <a href="https://wa.me/918500693113" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">WhatsApp: +91 85006 93113</a>
                 </li>
                 <li><span>Email: support@brickflow.io</span></li>
                 <li><span>HQ: Industrial Tech Hub, Pune, Maharashtra</span></li>

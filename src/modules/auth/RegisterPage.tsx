@@ -124,9 +124,12 @@ export const RegisterPage: React.FC = () => {
       <div className="max-w-2xl w-full space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
-          <Link to="/" className="inline-flex items-center gap-3">
-            <img src="/logo.png" alt="Patterns BrickOS" className="h-10 w-auto object-contain" />
-            <span className="text-2xl font-black text-[#1E293B]">Brick<span className="text-[#E53935]">Flow</span> ERP</span>
+          <Link to="/" className="inline-block group">
+            <img 
+              src="/logo.png" 
+              alt="BrickFlow ERP" 
+              className="h-14 w-auto mx-auto object-contain transition-transform group-hover:scale-105" 
+            />
           </Link>
           <h2 className="text-2xl font-extrabold text-[#1E293B]">Create Your Factory Account</h2>
           <p className="text-xs text-slate-500">14-Day Free Access • Full Multi-Module Features • Instant Activation</p>

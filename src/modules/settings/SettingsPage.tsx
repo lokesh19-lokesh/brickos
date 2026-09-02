@@ -27,7 +27,7 @@ export const SettingsPage: React.FC = () => {
     name: factory?.name || 'Shree Ram Brick Industries',
     code: factory?.code || 'SRB-01',
     ownerName: factory?.ownerName || 'Rajesh Sharma',
-    phone: factory?.phone || '+91 98220 12345',
+    phone: factory?.phone || '+91 85006 93113',
     email: factory?.email || 'info@shreerambricks.com',
     address: factory?.address || 'Plot 45-B, Industrial Estate, Hadapsar',
     city: factory?.city || 'Pune',

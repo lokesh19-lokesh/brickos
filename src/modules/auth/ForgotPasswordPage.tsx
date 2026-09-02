@@ -23,9 +23,12 @@ export const ForgotPasswordPage: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-12">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center space-y-2">
-          <Link to="/" className="inline-flex items-center gap-3">
-            <img src="/logo.png" alt="Patterns BrickOS" className="h-10 w-auto object-contain" />
-            <span className="text-2xl font-black text-[#1E293B]">Brick<span className="text-[#E53935]">Flow</span></span>
+          <Link to="/" className="inline-block group">
+            <img 
+              src="/logo.png" 
+              alt="BrickFlow ERP" 
+              className="h-14 w-auto mx-auto object-contain transition-transform group-hover:scale-105" 
+            />
           </Link>
           <h2 className="text-xl font-bold text-[#1E293B]">Reset Your Password</h2>
           <p className="text-xs text-slate-500">Enter your registered email address and we'll send a password recovery link.</p>
@@ -108,9 +111,12 @@ export const ResetPasswordPage: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-12">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center space-y-2">
-          <Link to="/" className="inline-flex items-center gap-3">
-            <img src="/logo.png" alt="Patterns BrickOS" className="h-10 w-auto object-contain" />
-            <span className="text-2xl font-black text-[#1E293B]">Brick<span className="text-[#E53935]">Flow</span></span>
+          <Link to="/" className="inline-block group">
+            <img 
+              src="/logo.png" 
+              alt="BrickFlow ERP" 
+              className="h-14 w-auto mx-auto object-contain transition-transform group-hover:scale-105" 
+            />
           </Link>
           <h2 className="text-xl font-bold text-[#1E293B]">Set New Password</h2>
           <p className="text-xs text-slate-500">Create a secure password for your factory ERP account.</p>

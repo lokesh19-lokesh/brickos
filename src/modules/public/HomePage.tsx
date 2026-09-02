@@ -675,7 +675,7 @@ export const HomePage: React.FC = () => {
           <form onSubmit={handleDemoSubmit} className="space-y-4">
             <Input label="Your Name" placeholder="e.g. Rajesh Sharma" required isRequired />
             <Input label="Factory Name" placeholder="e.g. Shree Ram Brick Industries" required isRequired />
-            <Input label="Mobile / WhatsApp Number" placeholder="+91 98220 12345" required isRequired />
+            <Input label="Mobile / WhatsApp Number" placeholder="+91 85006 93113" required isRequired />
             <Input label="City / State" placeholder="e.g. Pune, Maharashtra" required isRequired />
             <div className="pt-2">
               <Button variant="primary" size="md" type="submit" className="w-full">

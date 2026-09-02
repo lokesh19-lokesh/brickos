@@ -121,22 +121,15 @@ export const SuperAdminLayout: React.FC = () => {
           </button>
           
           {/* Logo & Brand Title */}
-          <Link to="/admin/dashboard" className="flex items-center gap-3">
+          <Link to="/admin/dashboard" className="flex items-center gap-2.5">
             <img 
               src="/logo.png" 
-              alt="Patterns BrickOS" 
-              className="h-9 w-auto object-contain shrink-0" 
+              alt="BrickFlow ERP" 
+              className="h-10 sm:h-11 w-auto object-contain shrink-0" 
             />
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-black text-[#1E293B] text-base leading-tight">Brick</span>
-                <span className="font-black text-[#E53935] text-base leading-tight">Flow</span>
-                <span className="bg-[#FFEBEE] text-[#D32F2F] text-[9px] font-extrabold uppercase tracking-wider px-1.5 py-0.2 rounded border border-red-200/60 ml-1">
-                  SUPER ADMIN
-                </span>
-              </div>
-              <p className="text-[10px] text-slate-500 font-medium">Multi-tenant Cloud Orchestrator</p>
-            </div>
+            <span className="bg-[#FFEBEE] text-[#D32F2F] text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded border border-red-200/60 ml-1">
+              SUPER ADMIN
+            </span>
           </Link>
         </div>
 
@@ -221,10 +214,7 @@ export const SuperAdminLayout: React.FC = () => {
             <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs" onClick={() => setMobileMenuOpen(false)} />
             <div className="fixed inset-y-0 left-0 w-72 bg-white shadow-2xl flex flex-col p-4">
               <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
-                <div className="flex items-center gap-2">
-                  <img src="/logo.png" alt="Patterns BrickOS" className="h-8 w-auto object-contain" />
-                  <span className="font-black text-[#1E293B]">Brick<span className="text-[#E53935]">Flow</span> Admin</span>
-                </div>
+                <img src="/logo.png" alt="BrickFlow ERP" className="h-10 w-auto object-contain" />
                 <button onClick={() => setMobileMenuOpen(false)} className="p-2 text-slate-400 hover:text-slate-700">
                   <X className="w-5 h-5" />
                 </button>

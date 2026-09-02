@@ -190,19 +190,9 @@ export const FactoryLayout: React.FC = () => {
             <Link to="/dashboard" className="flex items-center gap-3 min-w-0">
               <img 
                 src="/logo.png" 
-                alt="Patterns BrickOS" 
-                className="h-9 w-auto object-contain shrink-0" 
+                alt="BrickFlow ERP" 
+                className={cn('w-auto object-contain shrink-0 transition-all', sidebarCollapsed ? 'h-9' : 'h-11')} 
               />
-              {!sidebarCollapsed && (
-                <div className="min-w-0">
-                  <div className="flex items-center gap-1">
-                    <span className="font-black text-[#1E293B] text-base leading-tight truncate">Brick</span>
-                    <span className="font-black text-[#E53935] text-base leading-tight">Flow</span>
-                    <span className="text-[9px] font-bold bg-[#FFEBEE] text-[#D32F2F] px-1 py-0.2 rounded ml-1">OS</span>
-                  </div>
-                  <p className="text-[11px] font-semibold text-slate-500 truncate">{factory?.name || 'Brick Works'}</p>
-                </div>
-              )}
             </Link>
           </div>
 
@@ -261,10 +251,7 @@ export const FactoryLayout: React.FC = () => {
             <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs" onClick={() => setMobileMenuOpen(false)} />
             <div className="fixed inset-y-0 left-0 w-72 bg-white shadow-2xl flex flex-col">
               <div className="h-16 px-4 border-b border-slate-100 flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <img src="/logo.png" alt="Patterns BrickOS" className="h-8 w-auto object-contain" />
-                  <span className="font-black text-[#1E293B]">Brick<span className="text-[#E53935]">Flow</span> ERP</span>
-                </div>
+                <img src="/logo.png" alt="BrickFlow ERP" className="h-10 w-auto object-contain" />
                 <button onClick={() => setMobileMenuOpen(false)} className="p-2 text-slate-400 hover:text-slate-700">
                   <X className="w-5 h-5" />
                 </button>

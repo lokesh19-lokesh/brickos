@@ -66,17 +66,12 @@ export const LoginPage: React.FC = () => {
       <div className="w-full max-w-md space-y-6">
         {/* Brand Header */}
         <div className="text-center space-y-2">
-          <Link to="/" className="inline-flex items-center gap-3 group">
+          <Link to="/" className="inline-block group">
             <img 
               src="/logo.png" 
-              alt="Patterns BrickOS" 
-              className="h-11 w-auto object-contain drop-shadow-xs group-hover:scale-105 transition-transform" 
+              alt="BrickFlow ERP" 
+              className="h-14 w-auto mx-auto object-contain drop-shadow-xs group-hover:scale-105 transition-transform" 
             />
-            <div className="text-left">
-              <span className="text-2xl font-black text-[#1E293B]">Brick<span className="text-[#E53935]">Flow</span></span>
-              <span className="text-[10px] font-bold uppercase bg-[#FFEBEE] text-[#D32F2F] px-1.5 py-0.5 rounded ml-1.5 border border-red-200">ERP</span>
-              <p className="text-[10px] text-slate-400 font-semibold tracking-wider">Cloud Factory Management</p>
-            </div>
           </Link>
           <h2 className="text-xl font-bold text-[#1E293B] pt-2">Sign in to your factory</h2>
           <p className="text-xs text-slate-500">Access production, inventory, wages, and GST invoices</p>

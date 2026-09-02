@@ -81,7 +81,7 @@ const SEED_DATA: DatabaseSchema = {
       name: 'Shree Ram Brick Industries',
       code: 'SRB-01',
       ownerName: 'Rajesh Sharma',
-      phone: '+91 98220 12345',
+      phone: '+91 85006 93113',
       email: 'info@shreerambricks.com',
       address: 'Plot 45-B, Industrial Estate, Hadapsar',
       city: 'Pune',

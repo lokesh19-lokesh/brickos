@@ -47,21 +47,15 @@ export const AdminLoginPage: React.FC = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-100 via-slate-50 to-white px-4 py-12">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center space-y-2">
-          <Link to="/" className="inline-flex items-center gap-3 group">
+          <Link to="/" className="inline-flex flex-col items-center gap-2 group">
             <img 
               src="/logo.png" 
-              alt="Patterns BrickOS" 
-              className="h-11 w-auto object-contain drop-shadow-xs group-hover:scale-105 transition-transform" 
+              alt="BrickFlow ERP" 
+              className="h-14 w-auto object-contain drop-shadow-xs group-hover:scale-105 transition-transform" 
             />
-            <div className="text-left">
-              <div className="flex items-center gap-1.5">
-                <span className="text-2xl font-black text-[#1E293B]">Brick<span className="text-[#E53935]">Flow</span></span>
-                <span className="bg-[#FFEBEE] text-[#D32F2F] text-[9px] font-extrabold uppercase tracking-wider px-1.5 py-0.2 rounded border border-red-200/60">
-                  SUPER ADMIN
-                </span>
-              </div>
-              <p className="text-[10px] text-slate-400 font-semibold tracking-wider">Multi-tenant Cloud Orchestrator</p>
-            </div>
+            <span className="bg-[#FFEBEE] text-[#D32F2F] text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded border border-red-200/60">
+              SUPER ADMIN CONTROL
+            </span>
           </Link>
           <h2 className="text-xl font-bold text-[#1E293B] pt-2">Super Admin Control Portal</h2>
           <p className="text-xs text-slate-500">Platform subscription orchestration & tenant administration</p>
