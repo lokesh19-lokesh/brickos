@@ -28,7 +28,6 @@ serve(async (req: Request) => {
 
     const serviceClient = getSupabaseServiceClient();
 
-    // Fetch plan
     const { data: plan, error: planErr } = await serviceClient
       .from('subscription_plans')
       .select('*')
@@ -43,7 +42,6 @@ serve(async (req: Request) => {
     const priceMultiplier = billingPeriod === 'yearly' ? 10 : 1;
     const totalAmount = Number(plan.price) * priceMultiplier;
 
-    // Insert new subscription
     const { data: subscription, error: subErr } = await serviceClient
       .from('subscriptions')
       .insert({
@@ -62,7 +60,6 @@ serve(async (req: Request) => {
       return formatError('SUBSCRIPTION_FAILED', subErr.message, 500);
     }
 
-    // Insert payment record
     await serviceClient.from('subscription_payments').insert({
       factory_id: factoryId,
       subscription_id: subscription.id,
@@ -75,6 +72,8 @@ serve(async (req: Request) => {
 
     return formatSuccess(subscription, `Successfully upgraded to ${plan.name}.`);
   } catch (err: any) {
-    return formatError('SERVER_ERROR', err.message || 'Internal server error', 500);
+    const statusCode = err.statusCode || 500;
+    const code = err.code || 'SERVER_ERROR';
+    return formatError(code, err.message || 'Internal server error', statusCode);
   }
 });

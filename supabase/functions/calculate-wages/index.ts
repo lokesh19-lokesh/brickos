@@ -35,7 +35,6 @@ serve(async (req: Request) => {
 
     const serviceClient = getSupabaseServiceClient();
 
-    // 1. Fetch employees
     let empQuery = serviceClient.from('employees').select('*').eq('factory_id', factoryId).eq('status', 'active');
     if (employeeId) {
       empQuery = empQuery.eq('id', employeeId);
@@ -47,9 +46,7 @@ serve(async (req: Request) => {
 
     const wageRecords = [];
 
-    // 2. Loop through employees & calculate wages
     for (const emp of employees) {
-      // Fetch attendance in period
       const { data: records } = await serviceClient
         .from('attendance')
         .select('*')
@@ -71,10 +68,9 @@ serve(async (req: Request) => {
       const overtimeAmount = totalOvertimeHours * ((Number(emp.daily_wage || 0) / 8) * 1.5);
       const pieceRateAmount = emp.wage_type === 'piece_rate' ? (totalUnitsProduced / 1000) * Number(emp.piece_rate_per_thousand || 0) : 0;
       const grossAmount = baseWage + overtimeAmount + pieceRateAmount;
-      const advanceDeduction = 0.00; // configurable
+      const advanceDeduction = 0.00;
       const netPayable = Math.max(0, grossAmount - advanceDeduction);
 
-      // Upsert wage record
       const { data: wageRecord, error: wageErr } = await serviceClient
         .from('wage_records')
         .insert({
@@ -110,6 +106,8 @@ serve(async (req: Request) => {
       records: wageRecords,
     }, 'Wages calculated and wage records generated successfully.');
   } catch (err: any) {
-    return formatError('SERVER_ERROR', err.message || 'Internal server error', 500);
+    const statusCode = err.statusCode || 500;
+    const code = err.code || 'SERVER_ERROR';
+    return formatError(code, err.message || 'Internal server error', statusCode);
   }
 });

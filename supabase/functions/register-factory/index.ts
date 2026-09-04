@@ -62,6 +62,8 @@ serve(async (req: Request) => {
 
     return formatSuccess(data, 'Factory registered and 14-day free trial activated successfully.');
   } catch (err: any) {
-    return formatError('SERVER_ERROR', err.message || 'Internal server error', 500);
+    const statusCode = err.statusCode || 500;
+    const code = err.code || 'SERVER_ERROR';
+    return formatError(code, err.message || 'Internal server error', statusCode);
   }
 });

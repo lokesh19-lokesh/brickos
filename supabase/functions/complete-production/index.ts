@@ -37,17 +37,14 @@ serve(async (req: Request) => {
       remarks,
     } = body;
 
-    // Resolve tenant securely
     const factoryId = await resolveUserFactory(user.id, requestedFactoryId);
 
-    // Validation
     if (!batchCode || !productId || outputQuantity === undefined || !consumptions?.length) {
       return formatError('VALIDATION_ERROR', 'Batch code, product ID, output quantity, and raw material consumptions are required.', 422);
     }
 
     const serviceClient = getSupabaseServiceClient();
 
-    // Call atomic PostgreSQL function
     const { data, error } = await serviceClient.rpc('complete_production', {
       p_factory_id: factoryId,
       p_batch_code: batchCode,
@@ -76,6 +73,8 @@ serve(async (req: Request) => {
 
     return formatSuccess(data.data, data.message || 'Production batch completed successfully.');
   } catch (err: any) {
-    return formatError('SERVER_ERROR', err.message || 'Internal server error', 500);
+    const statusCode = err.statusCode || 500;
+    const code = err.code || 'SERVER_ERROR';
+    return formatError(code, err.message || 'Internal server error', statusCode);
   }
 });

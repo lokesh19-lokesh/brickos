@@ -30,17 +30,14 @@ serve(async (req: Request) => {
       notes,
     } = body;
 
-    // Resolve tenant securely
     const factoryId = await resolveUserFactory(user.id, requestedFactoryId);
 
-    // Validation
     if (!customerId || !items?.length) {
       return formatError('VALIDATION_ERROR', 'Customer ID and sale line items are required.', 422);
     }
 
     const serviceClient = getSupabaseServiceClient();
 
-    // Call atomic PostgreSQL function
     const { data, error } = await serviceClient.rpc('complete_sale', {
       p_factory_id: factoryId,
       p_customer_id: customerId,
@@ -62,6 +59,8 @@ serve(async (req: Request) => {
 
     return formatSuccess(data.data, data.message || 'Sale created and invoice generated successfully.');
   } catch (err: any) {
-    return formatError('SERVER_ERROR', err.message || 'Internal server error', 500);
+    const statusCode = err.statusCode || 500;
+    const code = err.code || 'SERVER_ERROR';
+    return formatError(code, err.message || 'Internal server error', statusCode);
   }
 });

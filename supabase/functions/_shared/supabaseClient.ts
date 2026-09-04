@@ -5,6 +5,17 @@
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.48.1';
 
+export class AppError extends Error {
+  statusCode: number;
+  code: string;
+
+  constructor(code: string, message: string, statusCode = 400) {
+    super(message);
+    this.code = code;
+    this.statusCode = statusCode;
+  }
+}
+
 export function getSupabaseServiceClient() {
   const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
   const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
@@ -29,7 +40,7 @@ export async function getAuthenticatedUser(req: Request) {
   const supabase = getSupabaseUserClient(req);
   const { data: { user }, error } = await supabase.auth.getUser();
   if (error || !user) {
-    throw new Error('UNAUTHORIZED: Invalid or missing authorization token.');
+    throw new AppError('UNAUTHORIZED', 'Invalid or missing authorization token. Please sign in.', 401);
   }
   return { user, supabase };
 }
@@ -40,34 +51,33 @@ export async function resolveUserFactory(userId: string, requestedFactoryId?: st
   // 1. Check if user is super admin
   const { data: profile } = await serviceClient
     .from('profiles')
-    .select('role')
+    .select('id, role')
     .eq('auth_user_id', userId)
     .single();
 
   const isSuperAdmin = profile?.role === 'super_admin';
+  const profileId = profile?.id;
+
+  if (!profileId) {
+    throw new AppError('PROFILE_NOT_FOUND', 'User profile not found.', 404);
+  }
 
   // 2. Fetch user's active factory memberships
   const { data: memberships, error } = await serviceClient
     .from('factory_users')
     .select('factory_id, role, factories(id, name, code, status)')
-    .eq('user_id', (
-      await serviceClient
-        .from('profiles')
-        .select('id')
-        .eq('auth_user_id', userId)
-        .single()
-    ).data?.id)
+    .eq('user_id', profileId)
     .eq('status', 'active');
 
   if (error || (!memberships?.length && !isSuperAdmin)) {
-    throw new Error('NO_FACTORY_MEMBERSHIP: User does not belong to any active factory.');
+    throw new AppError('NO_FACTORY_MEMBERSHIP', 'User does not belong to any active factory.', 403);
   }
 
   // If specific factory requested, verify membership
   if (requestedFactoryId) {
     const hasAccess = isSuperAdmin || memberships.some(m => m.factory_id === requestedFactoryId);
     if (!hasAccess) {
-      throw new Error('FORBIDDEN_FACTORY: User does not have access to the requested factory.');
+      throw new AppError('FORBIDDEN_FACTORY', 'User does not have access to the requested factory.', 403);
     }
     return requestedFactoryId;
   }

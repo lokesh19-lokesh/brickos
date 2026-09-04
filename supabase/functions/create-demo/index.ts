@@ -22,7 +22,6 @@ serve(async (req: Request) => {
 
     const serviceClient = getSupabaseServiceClient();
 
-    // 1. Create Profile if missing
     const { data: profile } = await serviceClient
       .from('profiles')
       .select('id')
@@ -32,7 +31,6 @@ serve(async (req: Request) => {
     const profileId = profile?.id;
     const demoCode = `DEMO-${Math.floor(1000 + Math.random() * 9000)}`;
 
-    // 2. Create Demo Factory
     const { data: factory, error: fErr } = await serviceClient
       .from('factories')
       .insert({
@@ -57,7 +55,6 @@ serve(async (req: Request) => {
       return formatError('DEMO_CREATION_FAILED', fErr?.message || 'Failed to create demo factory', 500);
     }
 
-    // 3. Link Membership
     if (profileId) {
       await serviceClient.from('factory_users').insert({
         factory_id: factory.id,
@@ -67,7 +64,6 @@ serve(async (req: Request) => {
       });
     }
 
-    // 4. Create Demo Sandbox Entry (Expires in 7 days)
     await serviceClient.from('demo_accounts').insert({
       factory_id: factory.id,
       created_by: profileId,
@@ -75,7 +71,6 @@ serve(async (req: Request) => {
       status: 'active',
     });
 
-    // 5. Populate Sample Products & Materials
     const { data: prod } = await serviceClient
       .from('products')
       .insert({
@@ -106,7 +101,6 @@ serve(async (req: Request) => {
       .select()
       .single();
 
-    // Initial stock
     if (prod) {
       await serviceClient.from('finished_stock_transactions').insert({
         factory_id: factory.id,
@@ -137,6 +131,8 @@ serve(async (req: Request) => {
       isDemo: true,
     }, 'Demo sandbox factory provisioned successfully.');
   } catch (err: any) {
-    return formatError('SERVER_ERROR', err.message || 'Internal server error', 500);
+    const statusCode = err.statusCode || 500;
+    const code = err.code || 'SERVER_ERROR';
+    return formatError(code, err.message || 'Internal server error', statusCode);
   }
 });

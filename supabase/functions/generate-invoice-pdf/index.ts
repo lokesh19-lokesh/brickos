@@ -39,7 +39,6 @@ serve(async (req: Request) => {
       return formatError('NOT_FOUND', 'Invoice not found.', 404);
     }
 
-    // Return rendered print template payload
     return formatSuccess({
       invoiceNumber: invoice.invoice_number,
       invoiceDate: invoice.invoice_date,
@@ -67,6 +66,8 @@ serve(async (req: Request) => {
       printReady: true,
     }, 'Invoice print payload generated.');
   } catch (err: any) {
-    return formatError('SERVER_ERROR', err.message || 'Internal server error', 500);
+    const statusCode = err.statusCode || 500;
+    const code = err.code || 'SERVER_ERROR';
+    return formatError(code, err.message || 'Internal server error', statusCode);
   }
 });

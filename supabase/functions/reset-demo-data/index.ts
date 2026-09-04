@@ -23,7 +23,6 @@ serve(async (req: Request) => {
     const factoryId = await resolveUserFactory(user.id, requestedFactoryId);
     const serviceClient = getSupabaseServiceClient();
 
-    // Verify it's a demo factory
     const { data: factory } = await serviceClient
       .from('factories')
       .select('is_demo, name')
@@ -34,7 +33,6 @@ serve(async (req: Request) => {
       return formatError('FORBIDDEN', 'Reset operation is only permitted for demo/sandbox factories.', 403);
     }
 
-    // Wipe operational transactions
     await serviceClient.from('sale_items').delete().filter('sale_id', 'in', `(SELECT id FROM sales WHERE factory_id = '${factoryId}')`);
     await serviceClient.from('invoices').delete().eq('factory_id', factoryId);
     await serviceClient.from('sales').delete().eq('factory_id', factoryId);
@@ -53,7 +51,6 @@ serve(async (req: Request) => {
     await serviceClient.from('expenses').delete().eq('factory_id', factoryId);
     await serviceClient.from('ledger_entries').delete().eq('factory_id', factoryId);
 
-    // Re-seed initial inventory
     const { data: products } = await serviceClient.from('products').select('id').eq('factory_id', factoryId);
     if (products?.length) {
       for (const prod of products) {
@@ -88,6 +85,8 @@ serve(async (req: Request) => {
       resetTimestamp: new Date().toISOString(),
     }, 'Demo sandbox data reset to clean initial state.');
   } catch (err: any) {
-    return formatError('SERVER_ERROR', err.message || 'Internal server error', 500);
+    const statusCode = err.statusCode || 500;
+    const code = err.code || 'SERVER_ERROR';
+    return formatError(code, err.message || 'Internal server error', statusCode);
   }
 });

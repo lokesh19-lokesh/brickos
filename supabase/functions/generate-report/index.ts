@@ -73,6 +73,8 @@ serve(async (req: Request) => {
 
     return formatError('INVALID_REPORT_TYPE', `Unknown report type: ${reportType}`, 400);
   } catch (err: any) {
-    return formatError('SERVER_ERROR', err.message || 'Internal server error', 500);
+    const statusCode = err.statusCode || 500;
+    const code = err.code || 'SERVER_ERROR';
+    return formatError(code, err.message || 'Internal server error', statusCode);
   }
 });

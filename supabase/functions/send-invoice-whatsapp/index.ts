@@ -60,6 +60,8 @@ ${invoice.factories?.bank_details?.upiId ? `💳 *UPI ID:* ${invoice.factories.b
       whatsappUrl,
     }, 'WhatsApp sharing URL generated.');
   } catch (err: any) {
-    return formatError('SERVER_ERROR', err.message || 'Internal server error', 500);
+    const statusCode = err.statusCode || 500;
+    const code = err.code || 'SERVER_ERROR';
+    return formatError(code, err.message || 'Internal server error', statusCode);
   }
 });

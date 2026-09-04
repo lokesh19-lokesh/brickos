@@ -15,6 +15,7 @@ FUNCTIONS=(
   "generate-invoice"
   "generate-invoice-pdf"
   "send-invoice-whatsapp"
+  "send-email"
   "record-customer-payment"
   "record-vendor-payment"
   "calculate-wages"
