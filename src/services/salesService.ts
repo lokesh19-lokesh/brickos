@@ -167,6 +167,10 @@ export const salesService = {
     dbStore.set('saleOrders', [newSale, ...sales]);
     dbStore.set('invoices', [newInvoice, ...invoices]);
 
+    import('./supabaseSync').then(({ supabaseSync }) => {
+      supabaseSync.pushSaleOrderToDatabase(newSale, newInvoice);
+    });
+
     dbStore.addAuditLog(
       factoryId,
       'usr_current',

@@ -73,6 +73,12 @@ export const productionService = {
     }
 
     dbStore.set('productionBatches', [newBatch, ...batches]);
+
+    // Push batch to Supabase Database
+    import('./supabaseSync').then(({ supabaseSync }) => {
+      supabaseSync.pushProductionBatchToDatabase(newBatch);
+    });
+
     dbStore.addAuditLog(
       factoryId,
       'usr_current',
@@ -97,6 +103,10 @@ export const productionService = {
     const updated = { ...batches[index], status };
     batches[index] = updated;
     dbStore.set('productionBatches', [...batches]);
+
+    import('@/lib/supabase').then(({ supabase }) => {
+      (supabase as any).from('production_batches').update({ status }).eq('id', id).then();
+    });
 
     dbStore.addAuditLog(
       updated.factoryId,

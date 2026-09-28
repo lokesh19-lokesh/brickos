@@ -3,6 +3,7 @@ import { User, UserRole, Factory, SubscriptionStatus } from '@/types';
 import { authService, LoginCredentials, RegisterPayload } from '@/services/authService';
 import { factoryService } from '@/services/factoryService';
 import { dbStore } from '@/services/mockDatabase';
+import { supabase } from '@/lib/supabase';
 
 interface AuthContextType {
   user: User | null;
@@ -10,7 +11,8 @@ interface AuthContextType {
   factory: Factory | null;
   subscriptionStatus: SubscriptionStatus | null;
   isLoading: boolean;
-  login: (credentials: LoginCredentials) => Promise<void>;
+  login: (credentials: LoginCredentials) => Promise<{ user: User; factory: Factory | null }>;
+  signInWithGoogle: () => Promise<{ error?: string }>;
   register: (payload: RegisterPayload) => Promise<{ user: User; factory: Factory }>;
   logout: () => Promise<void>;
   switchRole: (role: UserRole) => Promise<void>;
@@ -47,9 +49,25 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     loadSession();
 
+    // Listen to Supabase Auth state changes (including Google OAuth callback)
+    const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED')) {
+        const currentUser = await authService.getCurrentUser();
+        setUser(currentUser);
+        if (currentUser?.factoryId) {
+          const f = await factoryService.getFactory(currentUser.factoryId);
+          setFactory(f);
+        } else {
+          setFactory(null);
+        }
+      } else if (event === 'SIGNED_OUT') {
+        setUser(null);
+        setFactory(null);
+      }
+    });
+
     // Subscribe to DB updates (e.g. factory updates, role changes)
-    const unsubscribe = dbStore.subscribe(() => {
-      // Background sync if factory or user modified
+    const unsubscribeDb = dbStore.subscribe(() => {
       if (user?.factoryId) {
         factoryService.getFactory(user.factoryId).then(f => {
           if (f) setFactory(f);
@@ -57,7 +75,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
     });
 
-    return unsubscribe;
+    return () => {
+      authSubscription.unsubscribe();
+      unsubscribeDb();
+    };
   }, []);
 
   const login = async (credentials: LoginCredentials) => {
@@ -65,7 +86,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       const res = await authService.login(credentials);
       setUser(res.user);
-      setFactory(res.factory || null);
+      const factory = res.factory || null;
+      setFactory(factory);
+      return { user: res.user, factory };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const signInWithGoogle = async () => {
+    setIsLoading(true);
+    try {
+      return await authService.signInWithGoogle();
     } finally {
       setIsLoading(false);
     }
@@ -118,6 +150,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         subscriptionStatus: factory?.subscriptionStatus || null,
         isLoading,
         login,
+        signInWithGoogle,
         register,
         logout,
         switchRole,

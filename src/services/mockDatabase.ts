@@ -151,27 +151,27 @@ const SEED_DATA: DatabaseSchema = {
   users: [
     {
       id: 'usr_admin',
-      email: 'admin@brickflow.io',
-      fullName: 'Vikramaditya Rao (Super Admin)',
-      phone: '+91 99887 76655',
+      email: 'brickserpsoftware@gmail.com',
+      fullName: 'BrickOS Super Admin',
+      phone: '+91 85006 93113',
       role: 'super_admin',
       status: 'active',
       createdAt: '2025-01-01T00:00:00Z',
     },
     {
       id: 'usr_owner',
-      email: 'owner@shreerambricks.com',
+      email: 'info@shreerambricks.com',
       fullName: 'Rajesh Sharma (Owner)',
-      phone: '+91 98220 12345',
+      phone: '+91 85006 93113',
       role: 'factory_owner',
-      factoryId: 'fact_01',
+      factoryId: '00000000-0000-0000-0000-000000000002',
       status: 'active',
       createdAt: '2025-01-15T09:00:00Z',
     },
     {
       id: 'usr_super',
-      email: 'admin@patterns.cloud',
-      fullName: 'Super Admin (Patterns Cloud)',
+      email: 'brickserpsoftware@gmail.com',
+      fullName: 'BrickOS Super Admin',
       phone: '+91 85006 93113',
       role: 'super_admin',
       status: 'active',
@@ -1387,6 +1387,21 @@ class DatabaseStore {
 
   constructor() {
     this.db = this.loadFromStorage();
+    if (typeof window !== 'undefined') {
+      setTimeout(() => {
+        this.syncFromSupabase();
+      }, 50);
+    }
+  }
+
+  public async syncFromSupabase(): Promise<void> {
+    try {
+      const { supabaseSync } = await import('./supabaseSync');
+      await supabaseSync.syncAllFromDatabase();
+      this.notifyListeners();
+    } catch (e) {
+      console.warn('Initial Supabase sync:', e);
+    }
   }
 
   private loadFromStorage(): DatabaseSchema {

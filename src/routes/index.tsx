@@ -16,6 +16,7 @@ import { AdminLoginPage } from '@/modules/auth/AdminLoginPage';
 import { RegisterPage } from '@/modules/auth/RegisterPage';
 import { ForgotPasswordPage, ResetPasswordPage } from '@/modules/auth/ForgotPasswordPage';
 import { OnboardingWizardPage } from '@/modules/auth/OnboardingWizardPage';
+import { AuthCallbackPage } from '@/modules/auth/AuthCallbackPage';
 
 // Factory ERP Modules
 import { DashboardPage } from '@/modules/dashboard/DashboardPage';
@@ -53,6 +54,7 @@ export const AppRoutes: React.FC = () => {
 
       {/* 2. AUTHENTICATION ROUTES */}
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/auth/callback" element={<AuthCallbackPage />} />
       <Route path="/admin-login" element={<AdminLoginPage />} />
       <Route path="/admin/login" element={<AdminLoginPage />} />
       <Route path="/register" element={<RegisterPage />} />

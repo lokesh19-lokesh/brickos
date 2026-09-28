@@ -6,6 +6,8 @@ import { ToastProvider } from '@/context/ToastContext';
 import { ScrollToTop } from '@/components/common/ScrollToTop';
 import { AppRoutes } from '@/routes';
 
+import { supabaseSync } from '@/services/supabaseSync';
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -16,6 +18,12 @@ const queryClient = new QueryClient({
 });
 
 export const App: React.FC = () => {
+  React.useEffect(() => {
+    supabaseSync.syncAllFromDatabase().catch(err => {
+      console.warn('Initial live sync notice:', err);
+    });
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>

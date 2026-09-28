@@ -27,6 +27,11 @@ export const productService = {
 
     dbStore.set('products', [newProduct, ...products]);
 
+    // Push to Supabase Database
+    import('./supabaseSync').then(({ supabaseSync }) => {
+      supabaseSync.pushProductToDatabase(newProduct);
+    });
+
     // Record initial stock transaction if stock > 0
     if (newProduct.currentStock > 0) {
       const stockTxns = dbStore.get('stockTransactions');
@@ -62,6 +67,16 @@ export const productService = {
     products[index] = updated;
     dbStore.set('products', [...products]);
 
+    import('@/lib/supabase').then(({ supabase }) => {
+      (supabase as any).from('products').update({
+        name: updated.name,
+        selling_price: updated.sellingPrice,
+        cost_price: updated.costPrice,
+        minimum_stock: updated.minimumStock,
+        status: updated.status,
+      }).eq('id', updated.id).then();
+    });
+
     dbStore.addAuditLog(updated.factoryId, 'usr_current', 'User', 'factory_owner', 'Products', 'UPDATE', updated.id, updated.name, `Updated product attributes for ${updated.name}`);
 
     return updated;
@@ -73,6 +88,9 @@ export const productService = {
     const prod = products.find(p => p.id === id);
     if (prod) {
       dbStore.set('products', products.filter(p => p.id !== id));
+      import('@/lib/supabase').then(({ supabase }) => {
+        supabase.from('products').delete().eq('id', id).then();
+      });
       dbStore.addAuditLog(prod.factoryId, 'usr_current', 'User', 'factory_owner', 'Products', 'DELETE', prod.id, prod.name, `Deleted product ${prod.name}`);
     }
   },

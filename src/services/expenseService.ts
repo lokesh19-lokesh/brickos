@@ -40,6 +40,10 @@ export const expenseService = {
     dbStore.set('payments', [...payments]);
     dbStore.set('expenses', [newExpense, ...expenses]);
 
+    import('./supabaseSync').then(({ supabaseSync }) => {
+      supabaseSync.pushExpenseToDatabase(newExpense);
+    });
+
     dbStore.addAuditLog(
       factoryId,
       'usr_current',
@@ -59,6 +63,9 @@ export const expenseService = {
     await new Promise(res => setTimeout(res, 100));
     const expenses = dbStore.get('expenses');
     dbStore.set('expenses', expenses.filter(e => e.id !== id));
+    import('@/lib/supabase').then(({ supabase }) => {
+      supabase.from('expenses').delete().eq('id', id).then();
+    });
   }
 };
 

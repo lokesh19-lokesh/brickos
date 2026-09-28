@@ -32,6 +32,11 @@ export const customerService = {
     };
 
     dbStore.set('customers', [newCust, ...customers]);
+
+    import('./supabaseSync').then(({ supabaseSync }) => {
+      supabaseSync.pushCustomerToDatabase(newCust);
+    });
+
     dbStore.addAuditLog(factoryId, 'usr_current', 'Owner', 'factory_owner', 'Customers', 'CREATE', newCust.id, newCust.customerName, `Created customer ${newCust.customerName} (${newCust.companyName || 'Individual'}) with opening balance ₹${openingBal}`);
 
     return newCust;
@@ -46,6 +51,16 @@ export const customerService = {
     const updated = { ...customers[index], ...updates };
     customers[index] = updated;
     dbStore.set('customers', [...customers]);
+
+    import('@/lib/supabase').then(({ supabase }) => {
+      (supabase as any).from('customers').update({
+        name: updated.customerName,
+        phone: updated.phone,
+        credit_limit: updated.creditLimit,
+        status: updated.status,
+      }).eq('id', updated.id).then();
+    });
+
     return updated;
   },
 
@@ -86,6 +101,11 @@ export const vendorService = {
     };
 
     dbStore.set('vendors', [newVendor, ...vendors]);
+
+    import('./supabaseSync').then(({ supabaseSync }) => {
+      supabaseSync.pushVendorToDatabase(newVendor);
+    });
+
     dbStore.addAuditLog(factoryId, 'usr_current', 'Owner', 'factory_owner', 'Vendors', 'CREATE', newVendor.id, newVendor.vendorName, `Added vendor ${newVendor.vendorName} (${newVendor.company})`);
 
     return newVendor;
@@ -100,6 +120,15 @@ export const vendorService = {
     const updated = { ...vendors[index], ...updates };
     vendors[index] = updated;
     dbStore.set('vendors', [...vendors]);
+
+    import('@/lib/supabase').then(({ supabase }) => {
+      (supabase as any).from('vendors').update({
+        name: updated.vendorName,
+        phone: updated.phone,
+        status: updated.status,
+      }).eq('id', updated.id).then();
+    });
+
     return updated;
   },
 
