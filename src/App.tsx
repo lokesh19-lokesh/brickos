@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@/context/AuthContext';
 import { ToastProvider } from '@/context/ToastContext';
 import { ScrollToTop } from '@/components/common/ScrollToTop';
+import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { AppRoutes } from '@/routes';
 
 import { supabaseSync } from '@/services/supabaseSync';
@@ -25,16 +26,18 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <ScrollToTop />
-        <ToastProvider>
-          <AuthProvider>
-            <AppRoutes />
-          </AuthProvider>
-        </ToastProvider>
-      </BrowserRouter>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <ScrollToTop />
+          <ToastProvider>
+            <AuthProvider>
+              <AppRoutes />
+            </AuthProvider>
+          </ToastProvider>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 };
 

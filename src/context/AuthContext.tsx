@@ -164,10 +164,24 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   );
 };
 
+const fallbackAuthContext: AuthContextType = {
+  user: null,
+  role: null,
+  factory: null,
+  subscriptionStatus: null,
+  isLoading: true,
+  login: async () => ({ user: null as any, factory: null }),
+  signInWithGoogle: async () => ({}),
+  register: async () => ({ user: null as any, factory: null as any }),
+  logout: async () => {},
+  switchRole: async () => {},
+  refreshSession: async () => {},
+};
+
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    return fallbackAuthContext;
   }
   return context;
 };

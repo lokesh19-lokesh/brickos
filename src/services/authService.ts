@@ -439,8 +439,9 @@ export const authService = {
       }
     }
 
-    const factoryId = `00000000-0000-0000-0000-${Date.now().toString(16).padStart(12, '0')}`;
-    const factoryCode = payload.factory.code || `FAC-${Math.floor(100 + Math.random() * 900)}`;
+    let factoryId = `00000000-0000-0000-0000-${Date.now().toString(16).padStart(12, '0')}`;
+    let factoryCode = payload.factory.code || `FAC-${Math.floor(100 + Math.random() * 900)}`;
+    const isSyntheticAuthId = authUserId.startsWith('00000000-0000-0000-0001');
 
     // 2. Persist Factory and Profile into Supabase PostgreSQL database
     try {
@@ -448,7 +449,7 @@ export const authService = {
 
       // Attempt calling atomic stored function register_factory
       const { data: rpcData, error: rpcError } = await client.rpc('register_factory', {
-        p_auth_user_id: authUserId,
+        p_auth_user_id: isSyntheticAuthId ? null : authUserId,
         p_full_name: payload.user.fullName,
         p_email: normalizedEmail,
         p_phone: payload.user.phone,
@@ -462,11 +463,20 @@ export const authService = {
         p_gst_number: payload.factory.gstNumber || null,
       });
 
-      if (rpcError) {
+      if (!rpcError && rpcData) {
+        if (rpcData.factory_id) {
+          factoryId = rpcData.factory_id;
+        }
+        if (rpcData.factory_code) {
+          factoryCode = rpcData.factory_code;
+        }
+        import('./supabaseSync').then(({ supabaseSync }) => {
+          supabaseSync.ensureInitialFactoryData(factoryId);
+        });
+      } else if (rpcError) {
         console.warn('register_factory RPC notice, inserting directly:', rpcError.message);
 
         // Direct table fallback
-        const isSyntheticAuthId = authUserId.startsWith('00000000-0000-0000-0001');
         const { data: profileInsert } = await client.from('profiles').upsert({
           auth_user_id: isSyntheticAuthId ? null : authUserId,
           full_name: payload.user.fullName,
