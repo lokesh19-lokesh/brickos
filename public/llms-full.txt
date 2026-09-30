@@ -91,3 +91,17 @@ A: By enforcing strict batch mix ratios (e.g. 60% fly ash, 15% cement, 25% quarr
 
 **Q: Can plant staff use BrickOS on mobile phones at the plant site?**
 A: Yes. BrickOS is fully responsive on smartphones, tablets, laptops, and desktop computers with touch-friendly input for supervisors on the factory floor.
+
+---
+
+## 6. Official Social Media Channels & Contact
+
+- Official Website: https://brickos.in/
+- Official X (formerly Twitter): https://x.com/tpcbrickos
+- Official Instagram: https://www.instagram.com/tpcbricksos/
+- Official Pinterest: https://in.pinterest.com/brickserpsoftware/
+- Official YouTube Channel: https://www.youtube.com/@TPCBricksos
+- Developer & Technology Partner: Patterns Infotech Pvt Ltd. (https://thepatternscompany.com/)
+- Phone & WhatsApp Support: +91 85006 93113
+- Email: support@brickos.in
+

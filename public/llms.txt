@@ -36,3 +36,12 @@
 - Super Admin Portal: https://brickos.in/admin-login
 - Full LLM Knowledge Specification: https://brickos.in/llms-full.txt
 - XML Sitemap: https://brickos.in/sitemap.xml
+
+## Official Social Channels
+
+- X (Twitter): https://x.com/tpcbrickos
+- Instagram: https://www.instagram.com/tpcbricksos/
+- Pinterest: https://in.pinterest.com/brickserpsoftware/
+- YouTube: https://www.youtube.com/@TPCBricksos
+- Developed by Patterns Infotech: https://thepatternscompany.com/
+
