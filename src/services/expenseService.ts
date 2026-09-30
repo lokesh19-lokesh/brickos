@@ -1,22 +1,49 @@
 import { dbStore } from './mockDatabase';
 import { Expense, Payment } from '@/types';
-import { generateId } from '@/utils/formatters';
+import { generateId, generateUuid } from '@/utils/formatters';
 
 export const expenseService = {
   async getExpenses(factoryId: string): Promise<Expense[]> {
-    await new Promise(res => setTimeout(res, 50));
+    try {
+      const { supabase } = await import('@/lib/supabase');
+      const { data, error } = await (supabase as any)
+        .from('expenses')
+        .select('*')
+        .eq('factory_id', factoryId)
+        .order('created_at', { ascending: false });
+
+      if (!error && data && data.length > 0) {
+        const liveExpenses: Expense[] = data.map((e: any) => ({
+          id: e.id,
+          factoryId: e.factory_id,
+          date: e.expense_date,
+          category: e.category_name as any,
+          description: e.description,
+          amount: Number(e.amount) || 0,
+          paymentMode: e.payment_mode as any,
+          paidBy: e.paid_by || 'Supervisor',
+          recipientName: e.recipient_name,
+          notes: e.notes,
+          createdAt: e.created_at || new Date().toISOString(),
+        }));
+        const others = dbStore.get('expenses').filter(e => e.factoryId !== factoryId);
+        dbStore.set('expenses', [...liveExpenses, ...others]);
+        return liveExpenses;
+      }
+    } catch (e) {
+      console.warn('Expense live fetch notice:', e);
+    }
     const expenses = dbStore.get('expenses');
     return expenses.filter(e => e.factoryId === factoryId);
   },
 
   async createExpense(factoryId: string, payload: Omit<Expense, 'id' | 'factoryId' | 'createdAt'>): Promise<Expense> {
-    await new Promise(res => setTimeout(res, 100));
     const expenses = dbStore.get('expenses');
     const payments = dbStore.get('payments');
 
     const newExpense: Expense = {
       ...payload,
-      id: generateId('exp'),
+      id: generateUuid(),
       factoryId,
       createdAt: new Date().toISOString(),
     };

@@ -13,7 +13,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (credentials: LoginCredentials) => Promise<{ user: User; factory: Factory | null }>;
   signInWithGoogle: () => Promise<{ error?: string }>;
-  register: (payload: RegisterPayload) => Promise<{ user: User; factory: Factory }>;
+  register: (payload: RegisterPayload) => Promise<{ user: User; factory: Factory; needsEmailVerification?: boolean }>;
   logout: () => Promise<void>;
   switchRole: (role: UserRole) => Promise<void>;
   refreshSession: () => Promise<void>;
@@ -107,8 +107,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setIsLoading(true);
     try {
       const res = await authService.register(payload);
-      setUser(res.user);
-      setFactory(res.factory);
+      if (!res.needsEmailVerification) {
+        setUser(res.user);
+        setFactory(res.factory);
+      }
       return res;
     } finally {
       setIsLoading(false);

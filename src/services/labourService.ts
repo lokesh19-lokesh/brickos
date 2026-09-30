@@ -1,10 +1,39 @@
 import { dbStore } from './mockDatabase';
 import { Employee, AttendanceRecord, WageSlip, Payment } from '@/types';
-import { generateId } from '@/utils/formatters';
+import { generateId, generateUuid } from '@/utils/formatters';
 
 export const labourService = {
   async getEmployees(factoryId: string): Promise<Employee[]> {
-    await new Promise(res => setTimeout(res, 50));
+    try {
+      const { supabase } = await import('@/lib/supabase');
+      const { data, error } = await (supabase as any)
+        .from('employees')
+        .select('*')
+        .eq('factory_id', factoryId);
+
+      if (!error && data && data.length > 0) {
+        const liveEmployees: Employee[] = data.map((e: any) => ({
+          id: e.id,
+          factoryId: e.factory_id,
+          employeeCode: e.employee_code,
+          name: e.name,
+          phone: e.phone,
+          address: e.address || 'Labour Camp',
+          joiningDate: e.joining_date,
+          jobType: e.job_type as any,
+          wageType: e.wage_type,
+          dailyWage: Number(e.daily_wage) || 0,
+          pieceRatePerThousand: Number(e.piece_rate_per_thousand) || 0,
+          status: e.status || 'active',
+          createdAt: e.created_at,
+        }));
+        const others = dbStore.get('employees').filter(e => e.factoryId !== factoryId);
+        dbStore.set('employees', [...liveEmployees, ...others]);
+        return liveEmployees;
+      }
+    } catch (e) {
+      console.warn('Employees live fetch notice:', e);
+    }
     const employees = dbStore.get('employees');
     return employees.filter(e => e.factoryId === factoryId);
   },
@@ -15,16 +44,33 @@ export const labourService = {
   },
 
   async createEmployee(factoryId: string, payload: Omit<Employee, 'id' | 'factoryId' | 'createdAt'>): Promise<Employee> {
-    await new Promise(res => setTimeout(res, 100));
     const employees = dbStore.get('employees');
     const newEmp: Employee = {
       ...payload,
-      id: generateId('emp'),
+      id: generateUuid(),
       factoryId,
       createdAt: new Date().toISOString(),
     };
 
     dbStore.set('employees', [newEmp, ...employees]);
+
+    // Push to Supabase Database
+    import('@/lib/supabase').then(({ supabase }) => {
+      (supabase as any).from('employees').insert({
+        id: newEmp.id,
+        factory_id: factoryId,
+        employee_code: newEmp.employeeCode,
+        name: newEmp.name,
+        phone: newEmp.phone,
+        address: newEmp.address,
+        job_type: newEmp.jobType,
+        wage_type: newEmp.wageType,
+        daily_wage: newEmp.dailyWage,
+        piece_rate_per_thousand: newEmp.pieceRatePerThousand,
+        status: newEmp.status,
+      }).then();
+    });
+
     dbStore.addAuditLog(factoryId, 'usr_current', 'Owner', 'factory_owner', 'Labour', 'CREATE', newEmp.id, newEmp.name, `Added new worker ${newEmp.name} (${newEmp.jobType})`);
 
     return newEmp;

@@ -1,10 +1,45 @@
 import { dbStore } from './mockDatabase';
 import { StockTransaction, StockTransactionType, Product } from '@/types';
-import { generateId } from '@/utils/formatters';
+import { generateUuid } from '@/utils/formatters';
 
 export const stockService = {
   async getStockTransactions(factoryId: string): Promise<StockTransaction[]> {
-    await new Promise(res => setTimeout(res, 50));
+    try {
+      const { supabase } = await import('@/lib/supabase');
+      const { data, error } = await (supabase as any)
+        .from('finished_stock_transactions')
+        .select('*')
+        .eq('factory_id', factoryId)
+        .order('created_at', { ascending: false });
+
+      if (!error && data && data.length > 0) {
+        const products = dbStore.get('products');
+        const liveTxns: StockTransaction[] = data.map((t: any) => {
+          const prod = products.find(p => p.id === t.product_id);
+          const isStockIn = t.transaction_type === 'stock_in' || t.transaction_type === 'production' || t.transaction_type === 'return';
+          return {
+            id: t.id,
+            factoryId: t.factory_id,
+            date: t.transaction_date,
+            productId: t.product_id,
+            productName: prod?.name || 'Fly Ash Brick',
+            batchCode: t.batch_code,
+            transactionType: t.transaction_type,
+            quantityIn: isStockIn ? Number(t.quantity) || 0 : 0,
+            quantityOut: !isStockIn ? Number(t.quantity) || 0 : 0,
+            balance: Number(t.quantity) || 0,
+            notes: t.notes,
+            createdBy: t.created_by || 'Plant System',
+            createdAt: t.created_at,
+          };
+        });
+        const others = dbStore.get('stockTransactions').filter(t => t.factoryId !== factoryId);
+        dbStore.set('stockTransactions', [...liveTxns, ...others]);
+        return liveTxns;
+      }
+    } catch (e) {
+      console.warn('Stock transactions live fetch notice:', e);
+    }
     const txns = dbStore.get('stockTransactions');
     return txns.filter(t => t.factoryId === factoryId);
   },
@@ -17,7 +52,6 @@ export const stockService = {
     notes: string,
     createdBy = 'Plant Manager'
   ): Promise<StockTransaction> {
-    await new Promise(res => setTimeout(res, 100));
     const products = dbStore.get('products');
     const stockTxns = dbStore.get('stockTransactions');
 
@@ -49,7 +83,7 @@ export const stockService = {
     dbStore.set('products', [...products]);
 
     const newTxn: StockTransaction = {
-      id: generateId('stk'),
+      id: generateUuid(),
       factoryId,
       date: new Date().toISOString().split('T')[0],
       productId,
@@ -64,6 +98,20 @@ export const stockService = {
     };
 
     dbStore.set('stockTransactions', [newTxn, ...stockTxns]);
+
+    // Push to Supabase Database
+    import('@/lib/supabase').then(({ supabase }) => {
+      (supabase as any).from('finished_stock_transactions').insert({
+        id: newTxn.id,
+        factory_id: factoryId,
+        product_id: productId,
+        transaction_type: adjustmentType,
+        quantity: qtyIn > 0 ? qtyIn : qtyOut,
+        transaction_date: newTxn.date,
+        notes,
+      }).then();
+    });
+
     dbStore.addAuditLog(
       factoryId,
       'usr_current',

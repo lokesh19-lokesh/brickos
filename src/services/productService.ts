@@ -1,10 +1,39 @@
 import { dbStore } from './mockDatabase';
 import { Product } from '@/types';
-import { generateId } from '@/utils/formatters';
+import { generateId, generateUuid } from '@/utils/formatters';
 
 export const productService = {
   async getProducts(factoryId: string): Promise<Product[]> {
-    await new Promise(res => setTimeout(res, 50));
+    try {
+      const { supabase } = await import('@/lib/supabase');
+      const { data, error } = await (supabase as any)
+        .from('products')
+        .select('*')
+        .eq('factory_id', factoryId);
+
+      if (!error && data && data.length > 0) {
+        const liveProducts: Product[] = data.map((p: any) => ({
+          id: p.id,
+          factoryId: p.factory_id,
+          name: p.name,
+          code: p.code,
+          category: p.category,
+          unit: p.unit_name || 'Pcs',
+          hsnCode: p.hsn_code || '681599',
+          sellingPrice: Number(p.selling_price) || 0,
+          costPrice: Number(p.cost_price) || 0,
+          minimumStock: Number(p.minimum_stock) || 0,
+          currentStock: Number(p.current_stock) || 0,
+          status: p.status || 'active',
+          createdAt: p.created_at || new Date().toISOString(),
+        }));
+        const others = dbStore.get('products').filter(p => p.factoryId !== factoryId);
+        dbStore.set('products', [...liveProducts, ...others]);
+        return liveProducts;
+      }
+    } catch (e) {
+      console.warn('Product live fetch notice:', e);
+    }
     const products = dbStore.get('products');
     return products.filter(p => p.factoryId === factoryId);
   },
@@ -15,11 +44,10 @@ export const productService = {
   },
 
   async createProduct(factoryId: string, payload: Omit<Product, 'id' | 'factoryId' | 'createdAt' | 'currentStock'> & { initialStock?: number }): Promise<Product> {
-    await new Promise(res => setTimeout(res, 100));
     const products = dbStore.get('products');
     const newProduct: Product = {
       ...payload,
-      id: generateId('prod'),
+      id: generateUuid(),
       factoryId,
       currentStock: payload.initialStock || 0,
       createdAt: new Date().toISOString(),

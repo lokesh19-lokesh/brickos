@@ -1,10 +1,38 @@
 import { dbStore } from './mockDatabase';
 import { RawMaterial, RawMaterialPurchase, Vendor } from '@/types';
-import { generateId } from '@/utils/formatters';
+import { generateId, generateUuid } from '@/utils/formatters';
 
 export const rawMaterialService = {
   async getRawMaterials(factoryId: string): Promise<RawMaterial[]> {
-    await new Promise(res => setTimeout(res, 50));
+    try {
+      const { supabase } = await import('@/lib/supabase');
+      const { data, error } = await (supabase as any)
+        .from('raw_materials')
+        .select('*')
+        .eq('factory_id', factoryId);
+
+      if (!error && data && data.length > 0) {
+        const liveRM: RawMaterial[] = data.map((r: any) => ({
+          id: r.id,
+          factoryId: r.factory_id,
+          name: r.name,
+          code: r.code,
+          unit: r.unit_name as any,
+          minimumStock: Number(r.minimum_stock) || 0,
+          currentStock: Number(r.current_stock) || 0,
+          averageUnitCost: Number(r.average_unit_cost) || 0,
+          status: r.status || 'active',
+          totalPurchased: 0,
+          totalConsumed: 0,
+          createdAt: r.created_at || new Date().toISOString(),
+        }));
+        const others = dbStore.get('rawMaterials').filter(r => r.factoryId !== factoryId);
+        dbStore.set('rawMaterials', [...liveRM, ...others]);
+        return liveRM;
+      }
+    } catch (e) {
+      console.warn('Raw materials live fetch notice:', e);
+    }
     const rawMaterials = dbStore.get('rawMaterials');
     return rawMaterials.filter(r => r.factoryId === factoryId);
   },
@@ -15,11 +43,10 @@ export const rawMaterialService = {
   },
 
   async createRawMaterial(factoryId: string, payload: Omit<RawMaterial, 'id' | 'factoryId' | 'createdAt' | 'totalPurchased' | 'totalConsumed'>): Promise<RawMaterial> {
-    await new Promise(res => setTimeout(res, 100));
     const rawMaterials = dbStore.get('rawMaterials');
     const newRM: RawMaterial = {
       ...payload,
-      id: generateId('rm'),
+      id: generateUuid(),
       factoryId,
       totalPurchased: payload.currentStock || 0,
       totalConsumed: 0,
@@ -27,6 +54,21 @@ export const rawMaterialService = {
     };
 
     dbStore.set('rawMaterials', [newRM, ...rawMaterials]);
+
+    // Push to Supabase Database
+    import('@/lib/supabase').then(({ supabase }) => {
+      (supabase as any).from('raw_materials').insert({
+        id: newRM.id,
+        factory_id: factoryId,
+        name: newRM.name,
+        code: newRM.code,
+        unit_name: newRM.unit,
+        minimum_stock: newRM.minimumStock,
+        average_unit_cost: newRM.averageUnitCost,
+        status: newRM.status,
+      }).then();
+    });
+
     dbStore.addAuditLog(factoryId, 'usr_current', 'User', 'factory_owner', 'Raw Materials', 'CREATE', newRM.id, newRM.name, `Added new raw material ${newRM.name} (${newRM.code})`);
 
     return newRM;

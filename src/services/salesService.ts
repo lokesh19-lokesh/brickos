@@ -1,10 +1,45 @@
 import { dbStore } from './mockDatabase';
 import { SaleOrder, Invoice, StockTransaction, Payment, Customer } from '@/types';
-import { generateId } from '@/utils/formatters';
+import { generateId, generateUuid } from '@/utils/formatters';
 
 export const salesService = {
   async getSales(factoryId: string): Promise<SaleOrder[]> {
-    await new Promise(res => setTimeout(res, 50));
+    try {
+      const { supabase } = await import('@/lib/supabase');
+      const { data, error } = await (supabase as any)
+        .from('sales')
+        .select('*')
+        .eq('factory_id', factoryId)
+        .order('created_at', { ascending: false });
+
+      if (!error && data && data.length > 0) {
+        const liveSales: SaleOrder[] = data.map((s: any) => ({
+          id: s.id,
+          factoryId: s.factory_id,
+          customerId: s.customer_id,
+          customerName: s.delivery_details?.customer_name || 'Walk-in Customer',
+          customerPhone: s.delivery_details?.customer_phone || '',
+          invoiceNumber: s.invoice_number,
+          saleDate: s.sale_date,
+          subtotal: Number(s.subtotal) || 0,
+          discountTotal: Number(s.discount) || 0,
+          taxTotal: Number(s.tax) || 0,
+          grandTotal: Number(s.grand_total) || 0,
+          paidAmount: Number(s.paid_amount) || 0,
+          pendingAmount: Number(s.pending_amount) || 0,
+          paymentStatus: s.payment_status || 'paid',
+          deliveryDetails: s.delivery_details,
+          notes: s.notes,
+          items: [],
+          createdAt: s.created_at || new Date().toISOString(),
+        }));
+        const others = dbStore.get('saleOrders').filter(s => s.factoryId !== factoryId);
+        dbStore.set('saleOrders', [...liveSales, ...others]);
+        return liveSales;
+      }
+    } catch (e) {
+      console.warn('Sales live fetch notice:', e);
+    }
     const sales = dbStore.get('saleOrders');
     return sales.filter(s => s.factoryId === factoryId);
   },
@@ -22,7 +57,6 @@ export const salesService = {
       invoiceDueDate?: string;
     }
   ): Promise<{ saleOrder: SaleOrder; invoice: Invoice }> {
-    await new Promise(res => setTimeout(res, 200));
     const sales = dbStore.get('saleOrders');
     const invoices = dbStore.get('invoices');
     const products = dbStore.get('products');
@@ -36,7 +70,7 @@ export const salesService = {
 
     const newSale: SaleOrder = {
       ...payload,
-      id: generateId('so'),
+      id: generateUuid(),
       factoryId,
       paidAmount,
       pendingAmount,
@@ -97,7 +131,7 @@ export const salesService = {
     const igst = isInterState ? payload.taxTotal : 0;
 
     const newInvoice: Invoice = {
-      id: generateId('inv'),
+      id: generateUuid(),
       factoryId,
       invoiceNumber: payload.invoiceNumber,
       saleOrderId: newSale.id,

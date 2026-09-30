@@ -546,4 +546,242 @@ export const supabaseSync = {
       console.error('Supabase sale push error:', err);
     }
   },
+
+  /**
+   * Syncs all relational records for a specific factory directly from Supabase PostgreSQL
+   */
+  async syncFactoryData(factoryId: string): Promise<boolean> {
+    if (!factoryId) return false;
+    try {
+      const client = supabase as any;
+      const [
+        { data: dbProducts },
+        { data: dbRawMaterials },
+        { data: dbBatches },
+        { data: dbCustomers },
+        { data: dbVendors },
+        { data: dbEmployees },
+        { data: dbSales },
+        { data: dbInvoices },
+        { data: dbExpenses },
+      ] = await Promise.all([
+        client.from('products').select('*').eq('factory_id', factoryId),
+        client.from('raw_materials').select('*').eq('factory_id', factoryId),
+        client.from('production_batches').select('*').eq('factory_id', factoryId).order('created_at', { ascending: false }),
+        client.from('customers').select('*').eq('factory_id', factoryId),
+        client.from('vendors').select('*').eq('factory_id', factoryId),
+        client.from('employees').select('*').eq('factory_id', factoryId),
+        client.from('sales').select('*').eq('factory_id', factoryId).order('created_at', { ascending: false }),
+        client.from('invoices').select('*').eq('factory_id', factoryId).order('created_at', { ascending: false }),
+        client.from('expenses').select('*').eq('factory_id', factoryId).order('created_at', { ascending: false }),
+      ]);
+
+      // Seed initial catalog if database is empty for this factory
+      if ((!dbProducts || dbProducts.length === 0) && factoryId.length === 36) {
+        await this.ensureInitialFactoryData(factoryId);
+        return this.syncFactoryData(factoryId);
+      }
+
+      if (dbProducts && dbProducts.length > 0) {
+        const mappedProducts: Product[] = dbProducts.map((p: any) => ({
+          id: p.id,
+          factoryId: p.factory_id,
+          name: p.name,
+          code: p.code,
+          category: p.category,
+          unit: p.unit_name || 'Pcs',
+          hsnCode: p.hsn_code || '681599',
+          sellingPrice: Number(p.selling_price) || 0,
+          costPrice: Number(p.cost_price) || 0,
+          minimumStock: Number(p.minimum_stock) || 0,
+          currentStock: Number(p.current_stock) || 0,
+          status: p.status || 'active',
+          createdAt: p.created_at || new Date().toISOString(),
+        }));
+        const others = dbStore.get('products').filter(p => p.factoryId !== factoryId);
+        dbStore.set('products', [...mappedProducts, ...others]);
+      }
+
+      if (dbRawMaterials && dbRawMaterials.length > 0) {
+        const mappedRM: RawMaterial[] = dbRawMaterials.map((r: any) => ({
+          id: r.id,
+          factoryId: r.factory_id,
+          name: r.name,
+          code: r.code,
+          unit: r.unit_name as any,
+          minimumStock: Number(r.minimum_stock) || 0,
+          currentStock: Number(r.current_stock) || 0,
+          averageUnitCost: Number(r.average_unit_cost) || 0,
+          status: r.status || 'active',
+          totalPurchased: 0,
+          totalConsumed: 0,
+          createdAt: r.created_at || new Date().toISOString(),
+        }));
+        const others = dbStore.get('rawMaterials').filter(r => r.factoryId !== factoryId);
+        dbStore.set('rawMaterials', [...mappedRM, ...others]);
+      }
+
+      if (dbCustomers && dbCustomers.length > 0) {
+        const mappedCust: Customer[] = dbCustomers.map((c: any) => ({
+          id: c.id,
+          factoryId: c.factory_id,
+          customerName: c.name,
+          companyName: c.company_name,
+          phone: c.phone,
+          address: c.address || 'Project Site',
+          city: c.city || 'Pune',
+          state: c.state || 'Maharashtra',
+          creditLimit: Number(c.credit_limit) || 0,
+          openingBalance: Number(c.opening_balance) || 0,
+          currentBalance: Number(c.opening_balance) || 0,
+          totalSales: 0,
+          totalPaid: 0,
+          totalPending: Number(c.opening_balance) || 0,
+          status: c.status || 'active',
+          createdAt: c.created_at || new Date().toISOString(),
+        }));
+        const others = dbStore.get('customers').filter(c => c.factoryId !== factoryId);
+        dbStore.set('customers', [...mappedCust, ...others]);
+      }
+
+      if (dbVendors && dbVendors.length > 0) {
+        const mappedVendors: Vendor[] = dbVendors.map((v: any) => ({
+          id: v.id,
+          factoryId: v.factory_id,
+          vendorName: v.name,
+          company: v.company_name,
+          phone: v.phone,
+          whatsapp: v.whatsapp,
+          email: v.email,
+          address: v.address || 'Industrial Area',
+          city: v.city || 'Pune',
+          state: v.state || 'Maharashtra',
+          gstNumber: v.gst_number,
+          materialsSupplied: Array.isArray(v.materials_supplied) ? v.materials_supplied : ['Cement', 'Fly Ash'],
+          openingBalance: Number(v.opening_balance) || 0,
+          currentBalance: Number(v.opening_balance) || 0,
+          totalPurchases: Number(v.opening_balance) || 0,
+          totalPaid: 0,
+          totalPending: Number(v.opening_balance) || 0,
+          status: v.status || 'active',
+          createdAt: v.created_at,
+        }));
+        const others = dbStore.get('vendors').filter(v => v.factoryId !== factoryId);
+        dbStore.set('vendors', [...mappedVendors, ...others]);
+      }
+
+      if (dbEmployees && dbEmployees.length > 0) {
+        const mappedEmp: Employee[] = dbEmployees.map((e: any) => ({
+          id: e.id,
+          factoryId: e.factory_id,
+          employeeCode: e.employee_code,
+          name: e.name,
+          phone: e.phone,
+          address: e.address || 'Labour Camp',
+          joiningDate: e.joining_date,
+          jobType: e.job_type as any,
+          wageType: e.wage_type,
+          dailyWage: Number(e.daily_wage) || 0,
+          pieceRatePerThousand: Number(e.piece_rate_per_thousand) || 0,
+          status: e.status || 'active',
+          createdAt: e.created_at,
+        }));
+        const others = dbStore.get('employees').filter(e => e.factoryId !== factoryId);
+        dbStore.set('employees', [...mappedEmp, ...others]);
+      }
+
+      return true;
+    } catch (err) {
+      console.warn('Live factory data sync notice:', err);
+      return false;
+    }
+  },
+
+  /**
+   * Ensures new factories are initialized with standard starter products & materials in Supabase
+   */
+  async ensureInitialFactoryData(factoryId: string): Promise<void> {
+    if (!factoryId || factoryId.length !== 36) return;
+    try {
+      const client = supabase as any;
+      const { data: existingProducts } = await client
+        .from('products')
+        .select('id')
+        .eq('factory_id', factoryId)
+        .limit(1);
+
+      if (!existingProducts || existingProducts.length === 0) {
+        await client.from('products').insert([
+          {
+            factory_id: factoryId,
+            name: '4 Inch Fly Ash Brick',
+            code: 'FAB-4IN',
+            category: 'Fly Ash Brick',
+            unit_name: 'Pcs',
+            hsn_code: '681599',
+            selling_price: 4.50,
+            cost_price: 3.20,
+            minimum_stock: 5000,
+            status: 'active'
+          },
+          {
+            factory_id: factoryId,
+            name: '6 Inch Fly Ash Brick',
+            code: 'FAB-6IN',
+            category: 'Fly Ash Brick',
+            unit_name: 'Pcs',
+            hsn_code: '681599',
+            selling_price: 6.80,
+            cost_price: 4.90,
+            minimum_stock: 3000,
+            status: 'active'
+          },
+          {
+            factory_id: factoryId,
+            name: '8 Inch Hollow Concrete Block',
+            code: 'HCB-8IN',
+            category: 'Concrete Block',
+            unit_name: 'Pcs',
+            hsn_code: '681599',
+            selling_price: 18.00,
+            cost_price: 13.50,
+            minimum_stock: 2000,
+            status: 'active'
+          }
+        ]);
+
+        await client.from('raw_materials').insert([
+          {
+            factory_id: factoryId,
+            name: 'Fly Ash (Grade 1)',
+            code: 'RM-FA',
+            unit_name: 'Ton',
+            minimum_stock: 25,
+            average_unit_cost: 650,
+            status: 'active'
+          },
+          {
+            factory_id: factoryId,
+            name: 'OPC 53 Grade Cement',
+            code: 'RM-CEM',
+            unit_name: 'Bags',
+            minimum_stock: 100,
+            average_unit_cost: 340,
+            status: 'active'
+          },
+          {
+            factory_id: factoryId,
+            name: 'Crushed Stone Dust',
+            code: 'RM-SD',
+            unit_name: 'Brass',
+            minimum_stock: 20,
+            average_unit_cost: 2200,
+            status: 'active'
+          }
+        ]);
+      }
+    } catch (e) {
+      console.warn('Initial factory seed notice:', e);
+    }
+  }
 };

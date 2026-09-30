@@ -16,7 +16,30 @@ export const AuthCallbackPage: React.FC = () => {
 
     const handleCallback = async () => {
       try {
-        // Allow Supabase client to exchange hash or query code for session
+        // 1. Check for explicit error parameters in search query or URL hash
+        const searchParams = new URLSearchParams(window.location.search);
+        let errorMsg = searchParams.get('error_description') || searchParams.get('error');
+
+        if (!errorMsg && window.location.hash) {
+          const rawHash = window.location.hash.startsWith('#') ? window.location.hash.slice(1) : window.location.hash;
+          const hashParams = new URLSearchParams(rawHash);
+          errorMsg = hashParams.get('error_description') || hashParams.get('error');
+        }
+
+        if (errorMsg) {
+          throw new Error(decodeURIComponent(errorMsg));
+        }
+
+        // 2. Exchange authorization code for session if present (PKCE flow)
+        const code = searchParams.get('code');
+        if (code) {
+          const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+          if (exchangeError) {
+            console.warn('exchangeCodeForSession notice:', exchangeError);
+          }
+        }
+
+        // 3. Check for active session
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
 
         if (sessionError) {

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Shield, KeyRound, Eye, EyeOff, ArrowRight, ArrowLeft, Home, Sparkles } from 'lucide-react';
+import { Shield, KeyRound, Eye, EyeOff, ArrowRight, ArrowLeft, Sparkles, Terminal, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { Alert } from '@/components/ui/PageHeader';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import { SUPER_ADMIN_ACCESS_KEY } from '@/components/common/SuperAdminAccessModal';
@@ -13,7 +12,7 @@ export const AdminLoginPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const { login, switchRole } = useAuth();
+  const { login } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -24,7 +23,7 @@ export const AdminLoginPage: React.FC = () => {
     const trimmed = accessKey.trim();
 
     if (!trimmed) {
-      setError('Please enter the Super Admin access key.');
+      setError('Please enter the Super Admin master key.');
       return;
     }
 
@@ -34,14 +33,14 @@ export const AdminLoginPage: React.FC = () => {
       trimmed.toLowerCase() === 'brickserpsoftware@gmail.com';
 
     if (!isValidKey) {
-      setError('Invalid access key or credentials. Access to Super Admin platform is restricted.');
+      setError('Invalid master key. Access to Super Admin Control Plane is strictly restricted.');
       return;
     }
 
     try {
       setLoading(true);
       await login({ email: 'brickserpsoftware@gmail.com', password: 'Admin@123456' });
-      toast.success('Signed into Super Admin Control Plane');
+      toast.success('Authenticated to Super Admin Control Plane');
       navigate('/admin/dashboard');
     } catch (err: any) {
       setError(err.message || 'Failed to authenticate Super Admin.');
@@ -51,53 +50,61 @@ export const AdminLoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-100 via-slate-50 to-white px-4 py-12">
-      <div className="w-full max-w-md space-y-6">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-center relative overflow-hidden selection:bg-purple-500 selection:text-white">
+      {/* Ambient Lighting & Micro-Grid */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_70%,transparent_100%)] opacity-35 pointer-events-none" />
+      <div className="absolute -top-32 -left-32 w-96 h-96 bg-purple-500/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-[#E53935]/10 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="w-full max-w-md mx-auto px-4 py-12 relative z-10 space-y-6">
+        
         {/* Navigation Back Link */}
         <div className="flex items-center justify-between">
           <Link 
-            to="/" 
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-[#E53935] transition-colors bg-white/80 hover:bg-white px-3 py-1.5 rounded-xl border border-slate-200/80 shadow-2xs cursor-pointer"
+            to="/login" 
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white transition-colors bg-slate-900/80 hover:bg-slate-800/80 px-3.5 py-1.5 rounded-xl border border-slate-800 backdrop-blur-md cursor-pointer"
           >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Back to Home</span>
+            <ArrowLeft className="w-3.5 h-3.5 text-purple-400" />
+            <span>Factory Owner Sign In</span>
           </Link>
-          <span className="text-[11px] font-semibold text-purple-600 bg-purple-50 px-2 py-0.5 rounded border border-purple-200">
-            Super Admin Portal
+          <span className="text-[11px] font-bold text-purple-400 bg-purple-950/60 px-2.5 py-1 rounded-full border border-purple-800/60 flex items-center gap-1.5">
+            <Terminal className="w-3 h-3" />
+            <span>Root Control Plane</span>
           </span>
         </div>
 
         {/* Brand Header */}
-        <div className="text-center space-y-2">
-          <Link to="/" className="inline-flex flex-col items-center gap-2 group">
+        <div className="text-center space-y-3">
+          <Link to="/" className="inline-block group">
             <img 
               src="/logo.png" 
-              alt="BrickFlow ERP" 
-              className="h-14 w-auto object-contain drop-shadow-xs group-hover:scale-105 transition-transform" 
+              alt="Patterns BrickOS" 
+              className="h-14 w-auto mx-auto object-contain drop-shadow-md group-hover:scale-105 transition-transform" 
             />
-            <span className="bg-[#FFEBEE] text-[#D32F2F] text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded border border-red-200/60">
-              SUPER ADMIN CONTROL PLANE
-            </span>
           </Link>
-          <h2 className="text-xl font-bold text-[#1E293B] pt-2">Super Admin Verification</h2>
-          <p className="text-xs text-slate-500">Platform subscription orchestration & tenant administration</p>
+          <div className="space-y-1">
+            <h1 className="text-2xl font-black text-white tracking-tight">Super Admin Portal</h1>
+            <p className="text-xs text-slate-400">Global tenant management, subscription billing & audit console</p>
+          </div>
         </div>
 
         {/* Master Key Card */}
-        <div className="bg-white border border-slate-200 p-8 rounded-3xl shadow-sm space-y-5">
+        <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-7 sm:p-8 shadow-2xl backdrop-blur-2xl space-y-5 text-left">
           {error && (
-            <Alert type="error" title="Access Denied">
-              {error}
-            </Alert>
+            <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/25 text-red-400 text-xs flex items-start gap-2.5 animate-in fade-in">
+              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-400" />
+              <span>{error}</span>
+            </div>
           )}
 
           <form onSubmit={handleAccessKeySubmit} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
+              <label className="text-xs font-bold text-slate-300 flex items-center justify-between">
                 <span className="flex items-center gap-1.5">
-                  <KeyRound className="w-3.5 h-3.5 text-[#E53935]" />
-                  <span>Super Admin Access Key <strong className="text-red-500">*</strong></span>
+                  <KeyRound className="w-3.5 h-3.5 text-purple-400" />
+                  <span>Master Access Key <strong className="text-red-500">*</strong></span>
                 </span>
+                <span className="text-[10px] text-slate-500 font-mono">SHA-256</span>
               </label>
               <div className="relative">
                 <input
@@ -107,15 +114,15 @@ export const AdminLoginPage: React.FC = () => {
                     setAccessKey(e.target.value);
                     if (error) setError(null);
                   }}
-                  placeholder="Enter access key..."
+                  placeholder="Enter authorized root master key..."
                   autoFocus
                   required
-                  className="w-full px-4 py-2.5 pr-10 text-xs sm:text-sm bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-200 focus:border-[#E53935] rounded-xl outline-hidden font-mono transition-all"
+                  className="w-full px-4 py-2.5 pr-10 text-xs sm:text-sm bg-slate-950/80 text-white placeholder-slate-500 border border-slate-800 focus:border-purple-500 rounded-xl outline-hidden font-mono transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowKey(!showKey)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 cursor-pointer"
                 >
                   {showKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -128,17 +135,23 @@ export const AdminLoginPage: React.FC = () => {
               type="submit"
               isLoading={loading}
               rightIcon={<ArrowRight className="w-4 h-4" />}
-              className="w-full font-bold shadow-sm cursor-pointer"
+              className="w-full font-bold shadow-lg shadow-purple-500/20 cursor-pointer bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 border-none pt-3 pb-3 text-xs sm:text-sm"
             >
-              Authenticate & Enter Control Plane
+              Authenticate & Launch Control Plane
             </Button>
           </form>
+
+          <div className="pt-2 border-t border-slate-800/80 text-center">
+            <Link to="/login" className="text-xs font-semibold text-slate-400 hover:text-white transition-colors">
+              ← Return to Standard Factory Sign In
+            </Link>
+          </div>
         </div>
 
-        <div className="text-center text-xs text-slate-400">
-          <Link to="/login" className="hover:text-slate-600 transition-colors">
-            ← Return to Factory Owner Login
-          </Link>
+        {/* Security Badge */}
+        <div className="text-center text-[11px] text-slate-500 flex items-center justify-center gap-1.5">
+          <Shield className="w-3.5 h-3.5 text-purple-400" />
+          <span>Restricted to Authorized System Administrators Only</span>
         </div>
       </div>
     </div>

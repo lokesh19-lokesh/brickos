@@ -1,10 +1,48 @@
 import { dbStore } from './mockDatabase';
 import { ProductionBatch, StockTransaction } from '@/types';
-import { generateId } from '@/utils/formatters';
+import { generateId, generateUuid } from '@/utils/formatters';
 
 export const productionService = {
   async getBatches(factoryId: string): Promise<ProductionBatch[]> {
-    await new Promise(res => setTimeout(res, 50));
+    try {
+      const { supabase } = await import('@/lib/supabase');
+      const { data, error } = await (supabase as any)
+        .from('production_batches')
+        .select('*')
+        .eq('factory_id', factoryId)
+        .order('created_at', { ascending: false });
+
+      if (!error && data && data.length > 0) {
+        const liveBatches: ProductionBatch[] = data.map((b: any) => ({
+          id: b.id,
+          factoryId: b.factory_id,
+          batchCode: b.batch_code,
+          productionDate: b.production_date,
+          productId: b.product_id,
+          productName: 'Fly Ash Brick',
+          targetQuantity: Number(b.target_quantity) || 0,
+          outputQuantity: Number(b.output_quantity) || 0,
+          damagedQuantity: Number(b.damaged_quantity) || 0,
+          unit: b.unit_name || 'Pcs',
+          machineLine: b.machine_line || 'Automatic Line 1',
+          kilnChamber: b.kiln_chamber || 'Chamber 1',
+          supervisorName: b.supervisor_name || 'Plant Supervisor',
+          mixProportion: b.mix_proportion || 'Standard Mix (60-20-20)',
+          workersCount: Number(b.worker_count) || 8,
+          status: b.status || 'completed',
+          qualityGrade: b.quality_grade || 'A Grade',
+          remarks: b.remarks || '',
+          materialsUsed: [],
+          workersInvolved: [],
+          createdAt: b.created_at || new Date().toISOString(),
+        }));
+        const others = dbStore.get('productionBatches').filter(b => b.factoryId !== factoryId);
+        dbStore.set('productionBatches', [...liveBatches, ...others]);
+        return liveBatches;
+      }
+    } catch (e) {
+      console.warn('Production batches live fetch notice:', e);
+    }
     const batches = dbStore.get('productionBatches');
     return batches.filter(b => b.factoryId === factoryId);
   },
@@ -15,7 +53,6 @@ export const productionService = {
   },
 
   async createBatch(factoryId: string, payload: Omit<ProductionBatch, 'id' | 'factoryId' | 'createdAt'>): Promise<ProductionBatch> {
-    await new Promise(res => setTimeout(res, 150));
     const batches = dbStore.get('productionBatches');
     const products = dbStore.get('products');
     const rawMaterials = dbStore.get('rawMaterials');
@@ -23,7 +60,7 @@ export const productionService = {
 
     const newBatch: ProductionBatch = {
       ...payload,
-      id: generateId('batch'),
+      id: generateUuid(),
       factoryId,
       createdAt: new Date().toISOString(),
     };

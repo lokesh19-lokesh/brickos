@@ -16,11 +16,16 @@ export const ScrollToTop: React.FC = () => {
     }
 
     // If there is an anchor hash (e.g. #why-brickflow), scroll smoothly to that target
-    if (hash) {
-      const element = document.querySelector(hash);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-        return;
+    // Avoid querying invalid selectors such as empty '#' or OAuth hash fragments ('#access_token=...', '#error=...')
+    if (hash && hash.length > 1 && !hash.includes('=') && !hash.includes('&')) {
+      try {
+        const element = document.querySelector(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+          return;
+        }
+      } catch {
+        // Silently catch invalid CSS selector exceptions
       }
     }
 
