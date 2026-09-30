@@ -78,7 +78,7 @@ export const DashboardPage: React.FC = () => {
             </span>
           </div>
           <p className="text-xs text-slate-500 mt-1">
-            Plant: <strong className="text-slate-800">{factory?.name || 'Shree Ram Brick Industries'}</strong> • Code: {factory?.code || 'SRB-01'}
+            Plant: <strong className="text-slate-800">{factory?.name || 'Your Factory'}</strong>{factory?.code ? ` • Code: ${factory.code}` : ''}
           </p>
         </div>
 

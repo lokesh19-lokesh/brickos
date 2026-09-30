@@ -122,8 +122,11 @@ export const authService = {
 
           if (!factoryId) {
             const factories = dbStore.get('factories');
+            // Only match by email — never silently assign demo factory to a real user
             const userFac = factories.find(f => f.email?.toLowerCase() === email?.toLowerCase() || f.id === profile?.id);
-            factoryId = userFac?.id || factories[0]?.id || '00000000-0000-0000-0000-000000000002';
+            // For the demo account, allow fallback; for real users, leave undefined to avoid showing demo data
+            const isDemoEmail = email === 'info@shreerambricks.com';
+            factoryId = userFac?.id || (isDemoEmail ? (factories[0]?.id || '00000000-0000-0000-0000-000000000002') : undefined);
           }
 
           // Trigger live factory data sync in the background
@@ -333,8 +336,11 @@ export const authService = {
         }
 
         if (!factory) {
+          // Only match by email — never silently assign demo factory to a real non-demo user
+          const isDemoEmail = email === 'info@shreerambricks.com';
           const factories = dbStore.get('factories');
-          factory = factories.find(f => f.email?.toLowerCase() === email || f.id === foundFactoryId) || factories[0];
+          factory = factories.find(f => f.email?.toLowerCase() === email || f.id === foundFactoryId)
+            || (isDemoEmail ? factories[0] : undefined);
         }
 
         if (factory?.id) {
@@ -598,7 +604,9 @@ export const authService = {
   async forgotPassword(email: string): Promise<boolean> {
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase(), {
-        redirectTo: `${window.location.origin}/reset-password`,
+        // Redirect to the auth callback handler which will detect type=recovery
+        // and route the user to /reset-password with the active recovery session
+        redirectTo: `${window.location.origin}/auth/callback`,
       });
       if (error) {
         throw error;
@@ -609,6 +617,7 @@ export const authService = {
     }
     return true;
   },
+
 
   async resetPassword(password: string): Promise<boolean> {
     try {

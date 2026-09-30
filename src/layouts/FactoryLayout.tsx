@@ -32,7 +32,10 @@ export const FactoryLayout: React.FC = () => {
 
   const mainScrollRef = useRef<HTMLElement>(null);
 
-  const { user, factory, role, logout, switchRole } = useAuth();
+  const { user, factory, role, subscriptionStatus, logout, switchRole } = useAuth();
+
+  // Show demo strip ONLY if super_admin is impersonating or factory is explicitly a demo
+  const isDemoMode = role === 'super_admin' || !!factory?.isDemo;
   const { toast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
@@ -125,70 +128,72 @@ export const FactoryLayout: React.FC = () => {
 
   return (
     <div className="h-screen bg-slate-50 flex flex-col antialiased overflow-hidden">
-      {/* Top Demo Notification Strip */}
-      <div className="bg-[#1E293B] text-slate-200 text-xs px-4 py-1.5 flex items-center justify-between border-b border-slate-800 shrink-0 z-30">
-        <div className="flex items-center gap-2">
-          <span className="bg-[#E53935] text-white font-bold text-[10px] px-1.5 py-0.5 rounded uppercase tracking-wider">Demo Mode</span>
-          <span className="hidden sm:inline">Active Factory:</span>
-          <strong className="text-white">{factory?.name || 'Shree Ram Brick Industries'}</strong>
-          <span className="text-slate-500 hidden md:inline">({factory?.code || 'SRB-01'})</span>
-        </div>
-        <div className="flex items-center gap-3">
-          {/* Quick Role Switcher */}
-          <div className="relative">
-            <button
-              onClick={() => setDemoSwitchOpen(!demoSwitchOpen)}
-              className="flex items-center gap-1.5 text-xs text-amber-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-2.5 py-0.5 rounded-md border border-slate-700 transition-colors cursor-pointer"
-            >
-              <Sparkles className="w-3 h-3 text-[#E53935]" />
-              <span>Switch Persona: <strong className="capitalize">{role?.replace('_', ' ')}</strong></span>
-              <ChevronDown className="w-3 h-3" />
-            </button>
-
-            {demoSwitchOpen && (
-              <div className="absolute right-0 mt-1 w-56 bg-white text-slate-900 rounded-xl shadow-xl border border-slate-200 p-2 z-50 animate-in fade-in">
-                <p className="text-[10px] font-bold text-slate-400 px-2 py-1 uppercase tracking-wider">Simulate Role</p>
-                <button
-                  onClick={async () => {
-                    await switchRole('factory_owner');
-                    setDemoSwitchOpen(false);
-                    toast.info('Switched to Factory Owner persona');
-                  }}
-                  className="w-full text-left p-2 rounded-lg hover:bg-red-50 text-xs font-semibold flex items-center justify-between text-slate-900"
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#E53935]" />
-                    <span>Factory Owner</span>
-                  </div>
-                  {role === 'factory_owner' && <CheckCircle2 className="w-3.5 h-3.5 text-[#E53935]" />}
-                </button>
-                <div className="border-t border-slate-100 my-1" />
-                <button
-                  onClick={() => {
-                    setDemoSwitchOpen(false);
-                    setAdminModalOpen(true);
-                  }}
-                  className="w-full text-left p-2 rounded-lg hover:bg-purple-50 text-xs font-semibold text-purple-700 flex items-center justify-between cursor-pointer"
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-purple-600" />
-                    <span>Super Admin Portal</span>
-                  </div>
-                  <ExternalLink className="w-3 h-3" />
-                </button>
-              </div>
-            )}
+      {/* Top Strip — DEMO MODE for super_admin / demo factories only; real users get a clean status bar */}
+      {isDemoMode ? (
+        <div className="bg-[#1E293B] text-slate-200 text-xs px-4 py-1.5 flex items-center justify-between border-b border-slate-800 shrink-0 z-30">
+          <div className="flex items-center gap-2">
+            <span className="bg-[#E53935] text-white font-bold text-[10px] px-1.5 py-0.5 rounded uppercase tracking-wider">Demo Mode</span>
+            <span className="hidden sm:inline">Active Factory:</span>
+            <strong className="text-white">{factory?.name || 'Shree Ram Brick Industries'}</strong>
+            <span className="text-slate-500 hidden md:inline">({factory?.code || 'SRB-01'})</span>
           </div>
+          <div className="flex items-center gap-3">
+            {/* Quick Role Switcher */}
+            <div className="relative">
+              <button
+                onClick={() => setDemoSwitchOpen(!demoSwitchOpen)}
+                className="flex items-center gap-1.5 text-xs text-amber-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-2.5 py-0.5 rounded-md border border-slate-700 transition-colors cursor-pointer"
+              >
+                <Sparkles className="w-3 h-3 text-[#E53935]" />
+                <span>Switch Persona: <strong className="capitalize">{role?.replace('_', ' ')}</strong></span>
+                <ChevronDown className="w-3 h-3" />
+              </button>
 
-          <Link 
-            to="/" 
-            className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-md border border-slate-700 transition-colors shadow-2xs"
-          >
-            <Home className="w-3.5 h-3.5 text-slate-400" />
-            <span>Back to Home</span>
-          </Link>
+              {demoSwitchOpen && (
+                <div className="absolute right-0 mt-1 w-56 bg-white text-slate-900 rounded-xl shadow-xl border border-slate-200 p-2 z-50 animate-in fade-in">
+                  <p className="text-[10px] font-bold text-slate-400 px-2 py-1 uppercase tracking-wider">Simulate Role</p>
+                  <button
+                    onClick={async () => {
+                      await switchRole('factory_owner');
+                      setDemoSwitchOpen(false);
+                      toast.info('Switched to Factory Owner persona');
+                    }}
+                    className="w-full text-left p-2 rounded-lg hover:bg-red-50 text-xs font-semibold flex items-center justify-between text-slate-900"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-[#E53935]" />
+                      <span>Factory Owner</span>
+                    </div>
+                    {role === 'factory_owner' && <CheckCircle2 className="w-3.5 h-3.5 text-[#E53935]" />}
+                  </button>
+                  <div className="border-t border-slate-100 my-1" />
+                  <button
+                    onClick={() => {
+                      setDemoSwitchOpen(false);
+                      setAdminModalOpen(true);
+                    }}
+                    className="w-full text-left p-2 rounded-lg hover:bg-purple-50 text-xs font-semibold text-purple-700 flex items-center justify-between cursor-pointer"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-purple-600" />
+                      <span>Super Admin Portal</span>
+                    </div>
+                    <ExternalLink className="w-3 h-3" />
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <Link 
+              to="/" 
+              className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-md border border-slate-700 transition-colors shadow-2xs"
+            >
+              <Home className="w-3.5 h-3.5 text-slate-400" />
+              <span>Back to Home</span>
+            </Link>
+          </div>
         </div>
-      </div>
+      ) : null}
 
       <div className="flex-1 flex overflow-hidden">
         {/* Desktop Sidebar */}
@@ -243,16 +248,33 @@ export const FactoryLayout: React.FC = () => {
             ))}
           </div>
 
-          {/* Subscription Status Card in Sidebar */}
+          {/* Subscription Status Card in Sidebar — uses real data from factory context */}
           {!sidebarCollapsed && (
             <div className="p-3 border-t border-slate-100 bg-slate-50/70">
               <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-2xs">
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Plan Status</span>
-                  <Badge variant="success" size="sm">Active Pro</Badge>
+                  <Badge 
+                    variant={
+                      subscriptionStatus === 'active' ? 'success' 
+                      : subscriptionStatus === 'trial' ? 'warning' 
+                      : 'danger'
+                    } 
+                    size="sm"
+                  >
+                    {subscriptionStatus === 'active' ? 'Active' 
+                      : subscriptionStatus === 'trial' ? 'Trial' 
+                      : subscriptionStatus || 'Inactive'}
+                  </Badge>
                 </div>
-                <div className="text-xs font-bold text-[#1E293B]">Standard Pro Edition</div>
-                <p className="text-[10px] text-slate-400 mt-0.5">Valid until 31 Dec 2027</p>
+                <div className="text-xs font-bold text-[#1E293B] capitalize">
+                  {factory?.subscriptionPlan ? `${factory.subscriptionPlan} Plan` : 'BrickOS ERP'}
+                </div>
+                {factory?.subscriptionExpiresAt ? (
+                  <p className="text-[10px] text-slate-400 mt-0.5">Valid until {new Date(factory.subscriptionExpiresAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</p>
+                ) : (
+                  <p className="text-[10px] text-slate-400 mt-0.5">{factory?.city ? `${factory.city}, ${factory.state}` : 'Cloud ERP Platform'}</p>
+                )}
               </div>
             </div>
           )}

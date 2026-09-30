@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button';
 
 export const AuthCallbackPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
+  const [isRecovery, setIsRecovery] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -16,59 +17,91 @@ export const AuthCallbackPage: React.FC = () => {
 
     const handleCallback = async () => {
       try {
-        // 1. Check for explicit error parameters in search query or URL hash
+        // 1. Parse URL: check both query params and hash fragment
         const searchParams = new URLSearchParams(window.location.search);
-        let errorMsg = searchParams.get('error_description') || searchParams.get('error');
+        const rawHash = window.location.hash.startsWith('#')
+          ? window.location.hash.slice(1)
+          : window.location.hash;
+        const hashParams = new URLSearchParams(rawHash);
 
-        if (!errorMsg && window.location.hash) {
-          const rawHash = window.location.hash.startsWith('#') ? window.location.hash.slice(1) : window.location.hash;
-          const hashParams = new URLSearchParams(rawHash);
-          errorMsg = hashParams.get('error_description') || hashParams.get('error');
-        }
+        // 2. Check for explicit errors first
+        const errorMsg =
+          searchParams.get('error_description') ||
+          searchParams.get('error') ||
+          hashParams.get('error_description') ||
+          hashParams.get('error');
 
         if (errorMsg) {
           throw new Error(decodeURIComponent(errorMsg));
         }
 
-        // 2. Exchange authorization code for session if present (PKCE flow)
+        // 3. Detect PASSWORD_RECOVERY type (Supabase sends `type=recovery` in hash or query)
+        const callbackType =
+          searchParams.get('type') ||
+          hashParams.get('type') ||
+          '';
+
+        const isPasswordRecovery = callbackType === 'recovery';
+
+        // 4. Exchange PKCE code for session if present
         const code = searchParams.get('code');
         if (code) {
           const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
           if (exchangeError) {
-            console.warn('exchangeCodeForSession notice:', exchangeError);
+            console.warn('Code exchange notice:', exchangeError.message);
           }
         }
 
-        // 3. Check for active session
+        // 5. Listen for Supabase auth state changes (handles hash-based tokens)
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+          if (!isMounted) return;
+
+          // PASSWORD_RECOVERY event means this is a reset password link click
+          if (event === 'PASSWORD_RECOVERY' || isPasswordRecovery) {
+            subscription.unsubscribe();
+            if (isMounted) {
+              setIsRecovery(true);
+              toast.info('Recovery link verified. Please set your new password.');
+              navigate('/reset-password', { replace: true });
+            }
+            return;
+          }
+
+          if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.user) {
+            subscription.unsubscribe();
+            await proceedWithUser();
+          }
+        });
+
+        // 6. Also check if there's already an active session
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        if (sessionError) throw sessionError;
 
-        if (sessionError) {
-          throw sessionError;
-        }
-
-        if (!session?.user) {
-          // If session is not immediately ready, wait for onAuthStateChange
-          const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, newSession) => {
-            if (newSession?.user && isMounted) {
-              subscription.unsubscribe();
-              await proceedWithUser();
-            }
-          });
-
-          // Timeout fallback after 6 seconds
-          setTimeout(() => {
-            if (isMounted && !error) {
-              setError('Authentication timed out. Please try signing in again.');
-            }
-          }, 6000);
+        if (session?.user && isMounted) {
+          // If this came from a recovery link, redirect to reset password
+          if (isPasswordRecovery) {
+            setIsRecovery(true);
+            toast.info('Recovery link verified. Please set your new password.');
+            subscription.unsubscribe();
+            navigate('/reset-password', { replace: true });
+            return;
+          }
+          subscription.unsubscribe();
+          await proceedWithUser();
           return;
         }
 
-        await proceedWithUser();
+        // 7. Timeout fallback after 8 seconds
+        setTimeout(() => {
+          if (isMounted && !error) {
+            setError('Authentication timed out. Please try signing in again.');
+          }
+        }, 8000);
+
       } catch (err: any) {
-        console.error('OAuth Callback Error:', err);
+        console.error('Auth Callback Error:', err);
         if (isMounted) {
-          setError(err.message || 'Google authentication failed.');
+          setError(err.message || 'Authentication failed. Please try again.');
         }
       }
     };
@@ -79,7 +112,9 @@ export const AuthCallbackPage: React.FC = () => {
         if (!isMounted) return;
 
         if (user) {
-          const isSuperAdmin = user.role === 'super_admin' || user.email?.toLowerCase() === 'brickserpsoftware@gmail.com';
+          const isSuperAdmin =
+            user.role === 'super_admin' ||
+            user.email?.toLowerCase() === 'brickserpsoftware@gmail.com';
           if (isSuperAdmin) {
             toast.success('Welcome back, Super Admin!');
             navigate('/admin/dashboard', { replace: true });
@@ -88,7 +123,7 @@ export const AuthCallbackPage: React.FC = () => {
             navigate('/dashboard', { replace: true });
           }
         } else {
-          navigate('/dashboard', { replace: true });
+          navigate('/login', { replace: true });
         }
       } catch (e: any) {
         if (isMounted) {
@@ -137,10 +172,14 @@ export const AuthCallbackPage: React.FC = () => {
         <div className="space-y-2">
           <div className="flex items-center justify-center gap-2 text-slate-800 font-bold text-lg">
             <Loader2 className="w-5 h-5 animate-spin text-[#E53935]" />
-            <span>Connecting with Google</span>
+            <span>
+              {isRecovery ? 'Verifying Recovery Link...' : 'Connecting your account...'}
+            </span>
           </div>
           <p className="text-xs text-slate-500">
-            Synchronizing your enterprise factory profile and setting up workspace...
+            {isRecovery
+              ? 'Validating your password reset token...'
+              : 'Synchronizing your enterprise factory profile...'}
           </p>
         </div>
         <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">

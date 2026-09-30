@@ -30,7 +30,7 @@ export const ProtectedRoute: React.FC<GuardProps> = ({ children }) => {
 };
 
 export const FactoryRoute: React.FC<GuardProps> = ({ children }) => {
-  const { user, role, isLoading } = useAuth();
+  const { user, role, factory, isLoading } = useAuth();
 
   if (isLoading) {
     return (
@@ -46,6 +46,11 @@ export const FactoryRoute: React.FC<GuardProps> = ({ children }) => {
 
   if (role === 'super_admin') {
     return <Navigate to="/admin/dashboard" replace />;
+  }
+
+  // If user is logged in but has no factory linked, send to onboarding
+  if (!user.factoryId && !factory) {
+    return <Navigate to="/onboarding" replace />;
   }
 
   return children ? <>{children}</> : <Outlet />;

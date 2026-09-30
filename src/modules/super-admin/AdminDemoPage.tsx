@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Sparkles, RotateCcw, Users, Database, Download, 
-  Upload, CheckCircle2, Factory, ShoppingCart, Layers, Shield, Home 
+  Upload, CheckCircle2, Factory, ShoppingCart, Layers, Shield, ArrowLeft
 } from 'lucide-react';
 import { dbStore } from '@/services/mockDatabase';
 import { useAuth } from '@/context/AuthContext';
@@ -175,11 +175,11 @@ export const AdminDemoPage: React.FC = () => {
           <Button
             variant="outline"
             size="md"
-            leftIcon={<Home className="w-4 h-4" />}
-            onClick={() => navigate('/')}
+            leftIcon={<ArrowLeft className="w-4 h-4" />}
+            onClick={() => navigate('/admin/dashboard')}
             className="cursor-pointer"
           >
-            Back to Home
+            Back to Admin
           </Button>
         }
       />
