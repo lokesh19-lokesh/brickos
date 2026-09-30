@@ -20,7 +20,7 @@ import { Badge } from '@/components/ui/Card';
 export const ReportsPage: React.FC = () => {
   const { factory } = useAuth();
   const { toast } = useToast();
-  const factoryId = factory?.id || 'fact_01';
+  const factoryId = factory?.id || '00000000-0000-0000-0000-000000000002';
 
   const [activeReportTab, setActiveReportTab] = useState<'pnl' | 'production' | 'stock' | 'sales' | 'labour' | 'receivables'>('pnl');
   const [dateRange, setDateRange] = useState('Aug - Sep 2026');

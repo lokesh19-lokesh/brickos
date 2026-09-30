@@ -8,7 +8,8 @@ import { dbStore } from '@/services/mockDatabase';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import { Factory } from '@/types';
-import { formatDate } from '@/utils/formatters';
+import { formatDate, generateUuid } from '@/utils/formatters';
+import { supabase } from '@/lib/supabase';
 import { DataTable, Column } from '@/components/ui/DataTable';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
@@ -17,7 +18,7 @@ import { StatusBadge, Badge } from '@/components/ui/Card';
 import { PageHeader } from '@/components/ui/PageHeader';
 
 export const AdminFactoriesPage: React.FC = () => {
-  const { switchRole } = useAuth();
+  const { switchRole, refreshSession } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -56,16 +57,27 @@ export const AdminFactoriesPage: React.FC = () => {
   }, []);
 
   const handleImpersonate = async (f: Factory) => {
-    await switchRole('factory_owner');
-    toast.success(`Impersonating factory: ${f.name}`);
+    const ownerUser = {
+      id: f.id,
+      email: f.email,
+      fullName: f.ownerName || f.name,
+      phone: f.phone || '',
+      role: 'factory_owner' as const,
+      factoryId: f.id,
+      status: 'active' as const,
+      createdAt: f.createdAt || new Date().toISOString(),
+    };
+    localStorage.setItem('brickflow_auth_session', JSON.stringify(ownerUser));
+    await refreshSession();
+    toast.success(`Switched active workspace to: ${f.name}`);
     navigate('/dashboard');
   };
 
-  const handleCreateFactory = (e: React.FormEvent) => {
+  const handleCreateFactory = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const newFact: Factory = {
-        id: `fact_${Date.now()}`,
+        id: generateUuid(),
         name: formData.name,
         code: formData.code,
         ownerName: formData.ownerName,
@@ -76,17 +88,35 @@ export const AdminFactoriesPage: React.FC = () => {
         state: formData.state,
         pincode: formData.pincode,
         gstNumber: formData.gstNumber,
-        subscriptionPlan: formData.subscriptionPlan,
-        subscriptionStatus: formData.subscriptionStatus,
-        subscriptionExpiresAt: '2027-12-31T23:59:59Z',
-        maxUsers: 15,
-        status: formData.status,
+        factoryType: 'Fly Ash Brick',
+        employeesCount: '10-25 Workers',
+        dailyCapacity: '25,000 Bricks / Day',
+        mainProducts: ['Fly Ash Brick'],
+        planId: 'plan_standard',
+        subscriptionStatus: formData.subscriptionStatus as any,
+        status: formData.status as any,
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
       };
 
       const cur = dbStore.get('factories');
       dbStore.set('factories', [newFact, ...cur]);
+
+      // Push to Supabase Cloud
+      const client = supabase as any;
+      await client.from('factories').insert({
+        id: newFact.id,
+        name: newFact.name,
+        code: newFact.code,
+        phone: newFact.phone,
+        email: newFact.email,
+        address: newFact.address,
+        city: newFact.city,
+        state: newFact.state,
+        pincode: newFact.pincode,
+        gst_number: newFact.gstNumber,
+        status: newFact.status,
+      });
+
       toast.success(`Created tenant instance for ${formData.name}`);
       setIsModalOpen(false);
     } catch (err: any) {

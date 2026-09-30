@@ -23,7 +23,7 @@ export const SalesPage: React.FC = () => {
   const { factory } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const factoryId = factory?.id || 'fact_01';
+  const factoryId = factory?.id || '00000000-0000-0000-0000-000000000002';
 
   const [sales, setSales] = useState<SaleOrder[]>([]);
   const [products, setProducts] = useState<Product[]>([]);

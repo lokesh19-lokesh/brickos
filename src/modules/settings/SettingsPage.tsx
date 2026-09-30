@@ -17,36 +17,61 @@ import { PageHeader } from '@/components/ui/PageHeader';
 export const SettingsPage: React.FC = () => {
   const { factory, user } = useAuth();
   const { toast } = useToast();
-  const factoryId = factory?.id || 'fact_01';
+  const factoryId = factory?.id || '';
 
   const [activeTab, setActiveTab] = useState<'profile' | 'bank' | 'machines' | 'audit'>('profile');
   const [loading, setLoading] = useState(false);
 
-  // Form State
+  // Form State initialized dynamically from live active factory
   const [profileForm, setProfileForm] = useState({
-    name: factory?.name || 'Shree Ram Brick Industries',
-    code: factory?.code || 'SRB-01',
-    ownerName: factory?.ownerName || 'Rajesh Sharma',
-    phone: factory?.phone || '+91 85006 93113',
-    email: factory?.email || 'info@shreerambricks.com',
-    address: factory?.address || 'Plot 45-B, Industrial Estate, Hadapsar',
-    city: factory?.city || 'Pune',
-    state: factory?.state || 'Maharashtra',
-    pincode: factory?.pincode || '411028',
-    gstNumber: factory?.gstNumber || '27AABCS1429B1Z8',
+    name: factory?.name || '',
+    code: factory?.code || '',
+    ownerName: factory?.ownerName || '',
+    phone: factory?.phone || '',
+    email: factory?.email || '',
+    address: factory?.address || '',
+    city: factory?.city || '',
+    state: factory?.state || '',
+    pincode: factory?.pincode || '',
+    gstNumber: factory?.gstNumber || '',
   });
 
   const [bankForm, setBankForm] = useState({
-    bankName: factory?.bankDetails?.bankName || 'HDFC Bank Ltd',
-    accountNumber: factory?.bankDetails?.accountNumber || '50200088991122',
-    ifscCode: factory?.bankDetails?.ifscCode || 'HDFC0001234',
-    branch: factory?.bankDetails?.branch || 'Hadapsar Branch, Pune',
-    upiId: factory?.bankDetails?.upiId || 'shreerambricks@okhdfcbank',
+    bankName: factory?.bankDetails?.bankName || '',
+    accountNumber: factory?.bankDetails?.accountNumber || '',
+    ifscCode: factory?.bankDetails?.ifscCode || '',
+    branch: factory?.bankDetails?.branch || '',
+    upiId: factory?.bankDetails?.upiId || '',
   });
 
   const [auditLogs, setAuditLogs] = useState<AuditLogItem[]>([]);
 
   useEffect(() => {
+    if (factory) {
+      setProfileForm({
+        name: factory.name || '',
+        code: factory.code || '',
+        ownerName: factory.ownerName || '',
+        phone: factory.phone || '',
+        email: factory.email || '',
+        address: factory.address || '',
+        city: factory.city || '',
+        state: factory.state || '',
+        pincode: factory.pincode || '',
+        gstNumber: factory.gstNumber || '',
+      });
+      setBankForm({
+        bankName: factory.bankDetails?.bankName || '',
+        accountNumber: factory.bankDetails?.accountNumber || '',
+        ifscCode: factory.bankDetails?.ifscCode || '',
+        branch: factory.bankDetails?.branch || '',
+        upiId: factory.bankDetails?.upiId || '',
+      });
+    }
+  }, [factory]);
+
+  useEffect(() => {
+    if (!factoryId) return;
     const logs = dbStore.get('auditLogs').filter(a => a.factoryId === factoryId);
     setAuditLogs(logs);
 

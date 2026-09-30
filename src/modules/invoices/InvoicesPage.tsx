@@ -20,7 +20,7 @@ import { Input, CurrencyInput, Select } from '@/components/ui/Input';
 export const InvoicesPage: React.FC = () => {
   const { factory } = useAuth();
   const { toast } = useToast();
-  const factoryId = factory?.id || 'fact_01';
+  const factoryId = factory?.id || '00000000-0000-0000-0000-000000000002';
 
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [loading, setLoading] = useState(true);

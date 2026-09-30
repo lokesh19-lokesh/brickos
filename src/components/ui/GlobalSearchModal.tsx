@@ -27,7 +27,7 @@ export function GlobalSearchModal({ isOpen, onClose }: { isOpen: boolean; onClos
   const results = useMemo(() => {
     if (!query.trim()) return [];
     const q = query.toLowerCase();
-    const factoryId = factory?.id || 'fact_01';
+    const factoryId = factory?.id || '00000000-0000-0000-0000-000000000002';
 
     const items: {
       type: string;

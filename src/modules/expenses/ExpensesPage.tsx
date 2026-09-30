@@ -19,7 +19,7 @@ import { PageHeader } from '@/components/ui/PageHeader';
 export const ExpensesPage: React.FC = () => {
   const { factory, user } = useAuth();
   const { toast } = useToast();
-  const factoryId = factory?.id || 'fact_01';
+  const factoryId = factory?.id || '00000000-0000-0000-0000-000000000002';
 
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState(true);
@@ -62,14 +62,14 @@ export const ExpensesPage: React.FC = () => {
   const handleOpenAdd = () => {
     setFormData({
       date: new Date().toISOString().split('T')[0],
-      category: 'Diesel',
-      description: 'Diesel 100L for Genset',
-      amount: 9500,
+      category: 'Maintenance',
+      description: '',
+      amount: 0,
       paymentMode: 'upi',
-      paidBy: user?.fullName || 'Rajesh Sharma',
-      recipientName: 'IOCL Petrol Pump',
-      reference: `UPI-Ref-${Math.floor(10000 + Math.random() * 90000)}`,
-      notes: 'Generator fuel tank top-up',
+      paidBy: user?.fullName || 'Plant Supervisor',
+      recipientName: '',
+      reference: '',
+      notes: '',
     });
     setIsModalOpen(true);
   };

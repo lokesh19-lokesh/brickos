@@ -140,8 +140,8 @@ export const authService = {
           email: email || 'brickserpsoftware@gmail.com',
           fullName: isSuperAdminEmail 
             ? 'BrickOS Super Admin' 
-            : (profile?.full_name || session.user.user_metadata?.full_name || 'Rajesh Sharma'),
-          phone: profile?.phone || session.user.phone || '+91 85006 93113',
+            : (profile?.full_name || session.user.user_metadata?.full_name || email?.split('@')[0] || 'Factory Owner'),
+          phone: profile?.phone || session.user.phone || '',
           role,
           factoryId,
           status: profile?.status || 'active',
@@ -352,8 +352,8 @@ export const authService = {
     const user: User = {
       id: supabaseUser?.id || profileData?.id || localUser?.id || (isSuperAdmin ? 'usr_super_admin' : 'usr_owner'),
       email,
-      fullName: isSuperAdmin ? 'BrickOS Super Admin' : (profileData?.full_name || localUser?.fullName || 'Rajesh Sharma (Owner)'),
-      phone: profileData?.phone || localUser?.phone || '+91 85006 93113',
+      fullName: isSuperAdmin ? 'BrickOS Super Admin' : (profileData?.full_name || localUser?.fullName || email.split('@')[0] || 'Plant Owner'),
+      phone: profileData?.phone || localUser?.phone || '',
       role,
       factoryId: factory?.id,
       status: 'active',
@@ -366,26 +366,32 @@ export const authService = {
 
   async quickSwitchRole(role: UserRole): Promise<User> {
     let user: User;
+    const users = dbStore.get('users');
+    const factories = dbStore.get('factories');
+
     if (role === 'super_admin') {
-      user = {
+      const superAdminUser = users.find(u => u.role === 'super_admin');
+      user = superAdminUser || {
         id: 'usr_super_admin',
         email: 'brickserpsoftware@gmail.com',
         fullName: 'BrickOS Super Admin',
         phone: '+91 85006 93113',
         role: 'super_admin',
         status: 'active',
-        createdAt: '2025-01-01T00:00:00Z',
+        createdAt: new Date().toISOString(),
       };
     } else {
-      user = {
-        id: 'usr_owner',
-        email: 'info@shreerambricks.com',
-        fullName: 'Rajesh Sharma (Owner)',
-        phone: '+91 85006 93113',
+      const ownerUser = users.find(u => u.role === 'factory_owner');
+      const activeFac = factories.find(f => f.id === ownerUser?.factoryId) || factories[0];
+      user = ownerUser || {
+        id: activeFac?.id || 'usr_owner',
+        email: activeFac?.email || 'owner@factory.com',
+        fullName: activeFac?.ownerName || 'Factory Owner',
+        phone: activeFac?.phone || '',
         role: 'factory_owner',
-        factoryId: '00000000-0000-0000-0000-000000000002',
+        factoryId: activeFac?.id,
         status: 'active',
-        createdAt: '2025-01-15T09:00:00Z',
+        createdAt: new Date().toISOString(),
       };
     }
 

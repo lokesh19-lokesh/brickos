@@ -39,12 +39,18 @@ export const AdminDemoPage: React.FC = () => {
   const handleGenerateBatches = async () => {
     try {
       setGenerating(true);
-      const prods = dbStore.get('products');
-      const curBatches = dbStore.get('productionBatches');
+      const factories = dbStore.get('factories');
+      const targetFacId = factories[0]?.id || '00000000-0000-0000-0000-000000000002';
+      const prods = dbStore.get('products').filter(p => p.factoryId === targetFacId);
+      const rms = dbStore.get('rawMaterials').filter(r => r.factoryId === targetFacId);
       const defaultProd = prods[0];
 
+      if (!defaultProd) {
+        throw new Error('No products found for this factory. Please create a product first.');
+      }
+
       for (let i = 1; i <= 5; i++) {
-        await productionService.createBatch('fact_01', {
+        await productionService.createBatch(targetFacId, {
           batchCode: `BAT-DEMO-${Math.floor(1000 + Math.random() * 9000)}`,
           productionDate: new Date(Date.now() - i * 86400000).toISOString().split('T')[0],
           productId: defaultProd.id,
@@ -55,18 +61,20 @@ export const AdminDemoPage: React.FC = () => {
           unit: defaultProd.unit,
           machineLine: 'Automatic Hydraulic Line 1',
           kilnChamber: 'Yard Curing Area #2',
-          supervisorName: 'Dinesh Patil',
+          supervisorName: 'Plant Supervisor',
           mixProportion: '1 Part Cement : 5 Parts Fly Ash : 3 Parts Stone Dust',
-          workersCount: 14,
+          workersCount: 10,
           startTime: '08:00 AM',
           endTime: '05:30 PM',
           status: 'completed',
           qualityGrade: 'A Grade',
           remarks: 'Auto-generated demo batch',
-          materialsUsed: [
-            { materialId: 'rm_01', materialName: 'Grade 53 OPC Cement', quantity: 42, unit: 'Bags' },
-            { materialId: 'rm_02', materialName: 'Thermal Fly Ash', quantity: 9.5, unit: 'Ton' },
-          ],
+          materialsUsed: rms.slice(0, 2).map(rm => ({
+            materialId: rm.id,
+            materialName: rm.name,
+            quantity: 20,
+            unit: rm.unit,
+          })),
         });
       }
 
@@ -81,19 +89,25 @@ export const AdminDemoPage: React.FC = () => {
   const handleGenerateSales = async () => {
     try {
       setGenerating(true);
-      const prods = dbStore.get('products');
-      const custs = dbStore.get('customers');
+      const factories = dbStore.get('factories');
+      const targetFacId = factories[0]?.id || '00000000-0000-0000-0000-000000000002';
+      const prods = dbStore.get('products').filter(p => p.factoryId === targetFacId);
+      const custs = dbStore.get('customers').filter(c => c.factoryId === targetFacId);
       const defaultProd = prods[0];
       const defaultCust = custs[0];
 
+      if (!defaultProd || !defaultCust) {
+        throw new Error('Please ensure at least one product and customer exist.');
+      }
+
       for (let i = 1; i <= 5; i++) {
         const qty = 5000;
-        const rate = 4.8;
+        const rate = defaultProd.sellingPrice || 4.8;
         const amount = qty * rate;
         const tax = (amount * 12) / 100;
         const grand = amount + tax;
 
-        await salesService.createSale('fact_01', {
+        await salesService.createSale(targetFacId, {
           invoiceNumber: `INV-DEMO-${Math.floor(1000 + Math.random() * 9000)}`,
           saleDate: new Date(Date.now() - i * 86400000).toISOString().split('T')[0],
           customerId: defaultCust.id,
@@ -273,7 +287,7 @@ export const AdminDemoPage: React.FC = () => {
               <span>Database Backup & Snapshot</span>
             </div>
             <p className="text-xs text-slate-500">
-              Download complete localStorage database state as a portable JSON file.
+              Download live cloud database state snapshot as a portable JSON file.
             </p>
           </div>
 

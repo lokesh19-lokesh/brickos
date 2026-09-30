@@ -24,7 +24,7 @@ export const DashboardPage: React.FC = () => {
   const { factory, user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const factoryId = factory?.id || 'fact_01';
+  const factoryId = factory?.id || user?.factoryId || '00000000-0000-0000-0000-000000000002';
 
   const [dateFilter, setDateFilter] = useState<'today' | 'yesterday' | 'week' | 'month' | 'last_month'>('today');
   const [kpis, setKpis] = useState<any>(null);

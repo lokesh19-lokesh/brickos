@@ -13,29 +13,33 @@ export const productionService = {
         .order('created_at', { ascending: false });
 
       if (!error && data && data.length > 0) {
-        const liveBatches: ProductionBatch[] = data.map((b: any) => ({
-          id: b.id,
-          factoryId: b.factory_id,
-          batchCode: b.batch_code,
-          productionDate: b.production_date,
-          productId: b.product_id,
-          productName: 'Fly Ash Brick',
-          targetQuantity: Number(b.target_quantity) || 0,
-          outputQuantity: Number(b.output_quantity) || 0,
-          damagedQuantity: Number(b.damaged_quantity) || 0,
-          unit: b.unit_name || 'Pcs',
-          machineLine: b.machine_line || 'Automatic Line 1',
-          kilnChamber: b.kiln_chamber || 'Chamber 1',
-          supervisorName: b.supervisor_name || 'Plant Supervisor',
-          mixProportion: b.mix_proportion || 'Standard Mix (60-20-20)',
-          workersCount: Number(b.worker_count) || 8,
-          status: b.status || 'completed',
-          qualityGrade: b.quality_grade || 'A Grade',
-          remarks: b.remarks || '',
-          materialsUsed: [],
-          workersInvolved: [],
-          createdAt: b.created_at || new Date().toISOString(),
-        }));
+        const products = dbStore.get('products');
+        const liveBatches: ProductionBatch[] = data.map((b: any) => {
+          const prod = products.find(p => p.id === b.product_id);
+          return {
+            id: b.id,
+            factoryId: b.factory_id,
+            batchCode: b.batch_code,
+            productionDate: b.production_date,
+            productId: b.product_id,
+            productName: prod?.name || 'Manufactured Item',
+            targetQuantity: Number(b.target_quantity) || 0,
+            outputQuantity: Number(b.output_quantity) || 0,
+            damagedQuantity: Number(b.damaged_quantity) || 0,
+            unit: b.unit_name || prod?.unit || 'Pcs',
+            machineLine: b.machine_line || 'Automatic Line 1',
+            kilnChamber: b.kiln_chamber || undefined,
+            supervisorName: b.supervisor_name || 'Plant Supervisor',
+            mixProportion: b.mix_proportion || '',
+            workersCount: Number(b.worker_count) || 5,
+            status: b.status || 'completed',
+            qualityGrade: b.quality_grade || 'A Grade',
+            remarks: b.remarks || '',
+            materialsUsed: Array.isArray(b.consumptions) ? b.consumptions : [],
+            workersInvolved: [],
+            createdAt: b.created_at || new Date().toISOString(),
+          };
+        });
         const others = dbStore.get('productionBatches').filter(b => b.factoryId !== factoryId);
         dbStore.set('productionBatches', [...liveBatches, ...others]);
         return liveBatches;

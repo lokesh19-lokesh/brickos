@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/Button';
 import { Input, Select, CurrencyInput, QuantityInput } from '@/components/ui/Input';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
+import { factoryService } from '@/services/factoryService';
 import { productService } from '@/services/productService';
 import { rawMaterialService } from '@/services/rawMaterialService';
 import { labourService } from '@/services/labourService';
@@ -19,18 +20,32 @@ export const OnboardingWizardPage: React.FC = () => {
   const { factory } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const factoryId = factory?.id || 'fact_01';
+  const factoryId = factory?.id || '';
 
   // Step 1: Factory Profile details
   const [factoryProfile, setFactoryProfile] = useState({
-    name: factory?.name || 'Shree Ram Brick Industries',
-    code: factory?.code || 'SRB-01',
-    address: factory?.address || 'Plot 45-B, Industrial Estate, Hadapsar',
-    city: factory?.city || 'Pune',
-    state: factory?.state || 'Maharashtra',
-    pincode: factory?.pincode || '411028',
-    gstNumber: factory?.gstNumber || '27AABCS1429B1Z8',
+    name: factory?.name || '',
+    code: factory?.code || '',
+    address: factory?.address || '',
+    city: factory?.city || '',
+    state: factory?.state || '',
+    pincode: factory?.pincode || '',
+    gstNumber: factory?.gstNumber || '',
   });
+
+  React.useEffect(() => {
+    if (factory) {
+      setFactoryProfile({
+        name: factory.name || '',
+        code: factory.code || '',
+        address: factory.address || '',
+        city: factory.city || '',
+        state: factory.state || '',
+        pincode: factory.pincode || '',
+        gstNumber: factory.gstNumber || '',
+      });
+    }
+  }, [factory]);
 
   // Step 2: Products list
   const [productsList, setProductsList] = useState([
@@ -95,8 +110,38 @@ export const OnboardingWizardPage: React.FC = () => {
     }
   };
 
-  const handleFinish = () => {
-    toast.success('Factory setup completed! Welcome to BrickFlow ERP.');
+  const handleFinish = async () => {
+    try {
+      if (factoryId && factoryId.length === 36) {
+        await factoryService.updateFactory(factoryId, {
+          name: factoryProfile.name,
+          address: factoryProfile.address,
+          city: factoryProfile.city,
+          state: factoryProfile.state,
+          pincode: factoryProfile.pincode,
+          gstNumber: factoryProfile.gstNumber,
+        });
+
+        for (const p of productsList) {
+          await productService.createProduct(factoryId, p as any);
+        }
+        for (const rm of rawMaterialsList) {
+          await rawMaterialService.createRawMaterial(factoryId, rm as any);
+        }
+        for (const emp of employeesList) {
+          await labourService.createEmployee(factoryId, emp as any);
+        }
+        for (const v of vendorsList) {
+          await vendorService.createVendor(factoryId, v as any);
+        }
+        for (const c of customersList) {
+          await customerService.createCustomer(factoryId, c as any);
+        }
+      }
+    } catch (e) {
+      console.warn('Onboarding sync notice:', e);
+    }
+    toast.success('Factory setup completed! Welcome to BrickOS.');
     navigate('/dashboard');
   };
 

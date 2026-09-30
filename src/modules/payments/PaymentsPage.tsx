@@ -21,7 +21,7 @@ import { PageHeader } from '@/components/ui/PageHeader';
 export const PaymentsPage: React.FC = () => {
   const { factory } = useAuth();
   const { toast } = useToast();
-  const factoryId = factory?.id || 'fact_01';
+  const factoryId = factory?.id || '00000000-0000-0000-0000-000000000002';
 
   const [payments, setPayments] = useState<Payment[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);

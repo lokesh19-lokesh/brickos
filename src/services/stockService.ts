@@ -22,7 +22,7 @@ export const stockService = {
             factoryId: t.factory_id,
             date: t.transaction_date,
             productId: t.product_id,
-            productName: prod?.name || 'Fly Ash Brick',
+            productName: prod?.name || 'Manufactured Item',
             batchCode: t.batch_code,
             transactionType: t.transaction_type,
             quantityIn: isStockIn ? Number(t.quantity) || 0 : 0,

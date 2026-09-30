@@ -45,7 +45,7 @@ export const FactoryLayout: React.FC = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    const factoryId = factory?.id || 'fact_01';
+    const factoryId = factory?.id || '00000000-0000-0000-0000-000000000002';
     notificationService.getNotifications(factoryId).then(setNotifications);
 
     const unsubscribe = dbStore.subscribe(() => {

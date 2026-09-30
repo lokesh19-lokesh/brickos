@@ -13,26 +13,30 @@ export const salesService = {
         .order('created_at', { ascending: false });
 
       if (!error && data && data.length > 0) {
-        const liveSales: SaleOrder[] = data.map((s: any) => ({
-          id: s.id,
-          factoryId: s.factory_id,
-          customerId: s.customer_id,
-          customerName: s.delivery_details?.customer_name || 'Walk-in Customer',
-          customerPhone: s.delivery_details?.customer_phone || '',
-          invoiceNumber: s.invoice_number,
-          saleDate: s.sale_date,
-          subtotal: Number(s.subtotal) || 0,
-          discountTotal: Number(s.discount) || 0,
-          taxTotal: Number(s.tax) || 0,
-          grandTotal: Number(s.grand_total) || 0,
-          paidAmount: Number(s.paid_amount) || 0,
-          pendingAmount: Number(s.pending_amount) || 0,
-          paymentStatus: s.payment_status || 'paid',
-          deliveryDetails: s.delivery_details,
-          notes: s.notes,
-          items: [],
-          createdAt: s.created_at || new Date().toISOString(),
-        }));
+        const customers = dbStore.get('customers');
+        const liveSales: SaleOrder[] = data.map((s: any) => {
+          const cust = customers.find(c => c.id === s.customer_id);
+          return {
+            id: s.id,
+            factoryId: s.factory_id,
+            customerId: s.customer_id,
+            customerName: cust?.customerName || cust?.companyName || s.delivery_details?.customer_name || 'Direct Customer',
+            customerPhone: cust?.phone || s.delivery_details?.customer_phone || '',
+            invoiceNumber: s.invoice_number,
+            saleDate: s.sale_date,
+            subtotal: Number(s.subtotal) || 0,
+            discountTotal: Number(s.discount) || 0,
+            taxTotal: Number(s.tax) || 0,
+            grandTotal: Number(s.grand_total) || 0,
+            paidAmount: Number(s.paid_amount) || 0,
+            pendingAmount: Number(s.pending_amount) || 0,
+            paymentStatus: s.payment_status || 'paid',
+            deliveryDetails: s.delivery_details,
+            notes: s.notes,
+            items: Array.isArray(s.items) ? s.items : [],
+            createdAt: s.created_at || new Date().toISOString(),
+          };
+        });
         const others = dbStore.get('saleOrders').filter(s => s.factoryId !== factoryId);
         dbStore.set('saleOrders', [...liveSales, ...others]);
         return liveSales;

@@ -15,7 +15,7 @@ export const reportService = {
     const attendance = dbStore.get('attendance').filter(a => a.factoryId === factoryId);
     const wageSlips = dbStore.get('wageSlips').filter(w => w.factoryId === factoryId);
 
-    const todayStr = '2026-09-02'; // Current application date
+    const todayStr = new Date().toISOString().split('T')[0];
 
     // 1. Production KPIs
     const todayBatches = batches.filter(b => b.productionDate === todayStr);
@@ -47,35 +47,55 @@ export const reportService = {
     const presentWorkers = todayAttendance.filter(a => a.status === 'present' || a.status === 'half_day').length;
     const totalWorkers = dbStore.get('employees').filter(e => e.factoryId === factoryId && e.status === 'active').length;
 
-    // 7. Production Trend Chart Data (Last 7 Days)
-    const productionTrend = [
-      { date: '27 Aug', flyAsh: 18000, redBrick: 12000, pavers: 4500, target: 30000 },
-      { date: '28 Aug', flyAsh: 22000, redBrick: 14000, pavers: 5000, target: 30000 },
-      { date: '29 Aug', flyAsh: 26000, redBrick: 15000, pavers: 6200, target: 30000 },
-      { date: '30 Aug', flyAsh: 28500, redBrick: 18000, pavers: 5800, target: 30000 },
-      { date: '31 Aug', flyAsh: 24000, redBrick: 16000, pavers: 4900, target: 30000 },
-      { date: '01 Sep', flyAsh: 29500, redBrick: 20000, pavers: 6500, target: 30000 },
-      { date: '02 Sep', flyAsh: 31450, redBrick: 19500, pavers: 4900, target: 30000 },
-    ];
+    // 7. Dynamic Production Trend (Last 7 Days)
+    const last7Days = Array.from({ length: 7 }, (_, i) => {
+      const d = new Date();
+      d.setDate(d.getDate() - (6 - i));
+      return d.toISOString().split('T')[0];
+    });
 
-    // 8. Sales Trend Chart Data (Monthly)
-    const salesTrend = [
-      { month: 'Apr', sales: 420000, target: 500000, expenses: 280000 },
-      { month: 'May', sales: 580000, target: 550000, expenses: 340000 },
-      { month: 'Jun', sales: 650000, target: 600000, expenses: 390000 },
-      { month: 'Jul', sales: 720000, target: 700000, expenses: 430000 },
-      { month: 'Aug', sales: 890000, target: 800000, expenses: 510000 },
-      { month: 'Sep (MTD)', sales: monthlySales, target: 900000, expenses: monthlyExpenses },
-    ];
+    const productionTrend = last7Days.map(dStr => {
+      const dayBatches = batches.filter(b => b.productionDate === dStr);
+      const totalDayOutput = dayBatches.reduce((acc, b) => acc + b.outputQuantity, 0);
+      const dObj = new Date(dStr);
+      const label = dObj.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' });
+      return {
+        date: label,
+        flyAsh: totalDayOutput,
+        redBrick: 0,
+        pavers: 0,
+        target: 25000,
+      };
+    });
 
-    // 9. Raw Material Consumption Distribution
-    const rawMaterialBreakdown = [
-      { name: 'Fly Ash', value: 38, cost: 245000, fill: '#64748B' },
-      { name: 'OPC Cement', value: 34, cost: 425000, fill: '#E53935' },
-      { name: 'Stone Dust', value: 16, cost: 115000, fill: '#C86D51' },
-      { name: 'River Sand', value: 8, cost: 85000, fill: '#F59E0B' },
-      { name: 'Gypsum & Additives', value: 4, cost: 35000, fill: '#10B981' },
-    ];
+    // 8. Dynamic Sales Trend (Monthly)
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const currentMonthIdx = new Date().getMonth();
+    const salesTrend = Array.from({ length: 6 }, (_, i) => {
+      const mIdx = (currentMonthIdx - 5 + i + 12) % 12;
+      const mName = monthNames[mIdx];
+      const isCurrent = i === 5;
+      return {
+        month: isCurrent ? `${mName} (MTD)` : mName,
+        sales: isCurrent ? monthlySales : 0,
+        target: 500000,
+        expenses: isCurrent ? monthlyExpenses : 0,
+      };
+    });
+
+    // 9. Raw Material Consumption Distribution from real inventory
+    const totalRMVal = rawMaterials.reduce((acc, r) => acc + (r.currentStock * r.averageUnitCost), 0) || 1;
+    const colors = ['#E53935', '#64748B', '#C86D51', '#F59E0B', '#10B981', '#3B82F6'];
+    const rawMaterialBreakdown = rawMaterials.slice(0, 5).map((r, idx) => {
+      const cost = Math.round(r.currentStock * r.averageUnitCost);
+      const value = Math.round((cost / totalRMVal) * 100);
+      return {
+        name: r.name,
+        value: value || 1,
+        cost,
+        fill: colors[idx % colors.length],
+      };
+    });
 
     // 10. Low Stock Alerts
     const lowStockMaterials = rawMaterials.filter(r => r.currentStock <= r.minimumStock);

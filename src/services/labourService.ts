@@ -18,7 +18,7 @@ export const labourService = {
           employeeCode: e.employee_code,
           name: e.name,
           phone: e.phone,
-          address: e.address || 'Labour Camp',
+          address: e.address || '',
           joiningDate: e.joining_date,
           jobType: e.job_type as any,
           wageType: e.wage_type,
