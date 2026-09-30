@@ -2,15 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   ShieldAlert, Building2, CreditCard, Users, TrendingUp, 
-  ArrowUpRight, Sparkles, Database, CheckCircle2, AlertTriangle, ExternalLink 
+  ArrowUpRight, Sparkles, Database, CheckCircle2, AlertTriangle, ExternalLink,
+  FileSpreadsheet
 } from 'lucide-react';
 import { 
   BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, 
   Tooltip, ResponsiveContainer, Legend 
 } from 'recharts';
 import { superAdminService } from '@/services/reportService';
+import { excelExportService } from '@/services/excelExportService';
 import { dbStore } from '@/services/mockDatabase';
 import { useAuth } from '@/context/AuthContext';
+import { useToast } from '@/context/ToastContext';
 import { formatINR, formatDate } from '@/utils/formatters';
 import { Button } from '@/components/ui/Button';
 import { Badge, StatusBadge } from '@/components/ui/Card';
@@ -18,8 +21,10 @@ import { PageHeader, ChartCard } from '@/components/ui/PageHeader';
 
 export const AdminDashboardPage: React.FC = () => {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [exporting, setExporting] = useState(false);
 
   const loadStats = async () => {
     try {
@@ -50,6 +55,19 @@ export const AdminDashboardPage: React.FC = () => {
     { month: 'Sep 2026', mrr: 690000, factories: 88 },
   ];
 
+  const handleExportAdminData = async () => {
+    try {
+      setExporting(true);
+      await excelExportService.exportSuperAdminData();
+      toast.success('Super Admin platform data exported to Excel (.xlsx)!');
+    } catch (err: any) {
+      console.error(err);
+      toast.error('Failed to export platform data. Please try again.');
+    } finally {
+      setExporting(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <PageHeader
@@ -61,6 +79,15 @@ export const AdminDashboardPage: React.FC = () => {
         ]}
         actions={
           <div className="flex items-center gap-2.5">
+            <Button
+              variant="outline"
+              size="md"
+              leftIcon={<FileSpreadsheet className="w-4 h-4 text-emerald-600" />}
+              onClick={handleExportAdminData}
+              isLoading={exporting}
+            >
+              Export Platform (Excel)
+            </Button>
             <Link to="/admin/demo">
               <Button
                 variant="primary"

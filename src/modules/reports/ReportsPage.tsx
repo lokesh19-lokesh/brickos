@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { 
   BarChart3, Printer, Download, Calendar, Filter, TrendingUp, 
-  Layers, Package, Users, DollarSign, CreditCard, Factory, PieChart as PieIcon 
+  Layers, Package, Users, DollarSign, CreditCard, Factory, PieChart as PieIcon,
+  FileSpreadsheet
 } from 'lucide-react';
 import { 
   BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, 
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend 
 } from 'recharts';
 import { reportService } from '@/services/reportService';
+import { excelExportService } from '@/services/excelExportService';
 import { dbStore } from '@/services/mockDatabase';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
@@ -21,6 +23,7 @@ export const ReportsPage: React.FC = () => {
   const { factory } = useAuth();
   const { toast } = useToast();
   const factoryId = factory?.id || '00000000-0000-0000-0000-000000000002';
+  const [exporting, setExporting] = useState(false);
 
   const [activeReportTab, setActiveReportTab] = useState<'pnl' | 'production' | 'stock' | 'sales' | 'labour' | 'receivables'>('pnl');
   const [dateRange, setDateRange] = useState('Aug - Sep 2026');
@@ -52,6 +55,19 @@ export const ReportsPage: React.FC = () => {
     window.print();
   };
 
+  const handleExportAllExcel = async () => {
+    try {
+      setExporting(true);
+      await excelExportService.exportFactoryData(factoryId, factory?.name || 'Plant');
+      toast.success('All factory data exported into multi-sheet Excel file successfully!', 'Excel Export Ready');
+    } catch (err: any) {
+      console.error('Export error:', err);
+      toast.error('Could not export Excel file. Please try again.', 'Export Failed');
+    } finally {
+      setExporting(false);
+    }
+  };
+
   const batches = dbStore.get('productionBatches').filter(b => b.factoryId === factoryId);
   const sales = dbStore.get('saleOrders').filter(s => s.factoryId === factoryId);
   const rawMaterials = dbStore.get('rawMaterials').filter(r => r.factoryId === factoryId);
@@ -75,10 +91,19 @@ export const ReportsPage: React.FC = () => {
               <Button
                 variant="outline"
                 size="md"
-                leftIcon={<Printer className="w-4 h-4 text-[#E53935]" />}
+                leftIcon={<Printer className="w-4 h-4 text-slate-600" />}
                 onClick={handlePrint}
               >
                 Print Report
+              </Button>
+              <Button
+                variant="primary"
+                size="md"
+                leftIcon={<FileSpreadsheet className="w-4 h-4" />}
+                onClick={handleExportAllExcel}
+                isLoading={exporting}
+              >
+                Download All Data (Excel)
               </Button>
             </div>
           }

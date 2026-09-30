@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
   Building2, Plus, ExternalLink, ShieldCheck, 
-  CreditCard, Phone, Mail, MapPin, Users, Edit2, Ban 
+  CreditCard, Phone, Mail, MapPin, Users, Edit2, Ban,
+  FileSpreadsheet
 } from 'lucide-react';
 import { dbStore } from '@/services/mockDatabase';
+import { excelExportService } from '@/services/excelExportService';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import { Factory } from '@/types';
@@ -24,6 +26,7 @@ export const AdminFactoriesPage: React.FC = () => {
 
   const [factories, setFactories] = useState<Factory[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isExporting, setIsExporting] = useState(false);
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -181,6 +184,19 @@ export const AdminFactoriesPage: React.FC = () => {
     },
   ];
 
+  const handleExportAdminData = async () => {
+    try {
+      setIsExporting(true);
+      await excelExportService.exportSuperAdminData();
+      toast.success('Super Admin platform data exported to Excel (.xlsx)!');
+    } catch (err: any) {
+      console.error(err);
+      toast.error('Failed to export platform data. Please try again.');
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <PageHeader
@@ -191,14 +207,25 @@ export const AdminFactoriesPage: React.FC = () => {
           { label: 'Factory Tenants' },
         ]}
         actions={
-          <Button
-            variant="primary"
-            size="md"
-            leftIcon={<Plus className="w-4 h-4" />}
-            onClick={() => setIsModalOpen(true)}
-          >
-            + Provision New Factory
-          </Button>
+          <div className="flex items-center gap-2.5">
+            <Button
+              variant="outline"
+              size="md"
+              leftIcon={<FileSpreadsheet className="w-4 h-4 text-emerald-600" />}
+              onClick={handleExportAdminData}
+              isLoading={isExporting}
+            >
+              Download All Data (Excel)
+            </Button>
+            <Button
+              variant="primary"
+              size="md"
+              leftIcon={<Plus className="w-4 h-4" />}
+              onClick={() => setIsModalOpen(true)}
+            >
+              + Provision New Factory
+            </Button>
+          </div>
         }
       />
 

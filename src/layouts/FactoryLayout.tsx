@@ -5,12 +5,13 @@ import {
   Users, UserCheck, Briefcase, ShoppingBag, FileText, Receipt, 
   CreditCard, BarChart3, Settings, Search, Bell, LogOut, ChevronDown, 
   Menu, X, Sparkles, Plus, CheckCircle2, AlertTriangle, Info, ExternalLink,
-  ShieldAlert, RefreshCw, Home
+  ShieldAlert, RefreshCw, Home, FileSpreadsheet
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import { dbStore } from '@/services/mockDatabase';
 import { notificationService } from '@/services/reportService';
+import { excelExportService } from '@/services/excelExportService';
 import { NotificationItem, UserRole } from '@/types';
 import { GlobalSearchModal } from '@/components/ui/GlobalSearchModal';
 import { SuperAdminAccessModal } from '@/components/common/SuperAdminAccessModal';
@@ -27,6 +28,7 @@ export const FactoryLayout: React.FC = () => {
   const [quickActionOpen, setQuickActionOpen] = useState(false);
   const [demoSwitchOpen, setDemoSwitchOpen] = useState(false);
   const [adminModalOpen, setAdminModalOpen] = useState(false);
+  const [exportingData, setExportingData] = useState(false);
 
   const mainScrollRef = useRef<HTMLElement>(null);
 
@@ -69,6 +71,19 @@ export const FactoryLayout: React.FC = () => {
     await logout();
     navigate('/login');
     toast.info('Logged out successfully');
+  };
+
+  const handleExportAllData = async () => {
+    try {
+      setExportingData(true);
+      const factoryId = factory?.id || '00000000-0000-0000-0000-000000000002';
+      const fileName = await excelExportService.exportFactoryData(factoryId, factory?.name);
+      toast.success(`Factory database exported successfully as ${fileName}`);
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to export factory data to Excel');
+    } finally {
+      setExportingData(false);
+    }
   };
 
   const navGroups = [
@@ -312,6 +327,19 @@ export const FactoryLayout: React.FC = () => {
 
             {/* Right Tools & Profile */}
             <div className="flex items-center gap-2.5">
+              {/* Download All Factory Data in Excel */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleExportAllData}
+                isLoading={exportingData}
+                leftIcon={<FileSpreadsheet className="w-4 h-4 text-emerald-600" />}
+                className="hidden sm:flex font-semibold border-slate-200 hover:border-emerald-300 hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 shadow-2xs cursor-pointer"
+                title="Download all factory records, masters, ledgers, and accounts in an Excel file"
+              >
+                Export All (Excel)
+              </Button>
+
               {/* Quick Action Button */}
               <div className="relative">
                 <Button
@@ -468,8 +496,19 @@ export const FactoryLayout: React.FC = () => {
                       Factory Settings
                     </Link>
                     <button
+                      onClick={() => {
+                        setProfileDropdownOpen(false);
+                        handleExportAllData();
+                      }}
+                      className="w-full text-left p-2 text-xs font-semibold text-emerald-700 hover:bg-emerald-50 rounded-lg flex items-center gap-2 cursor-pointer"
+                    >
+                      <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Download All Data (Excel)</span>
+                    </button>
+                    <div className="border-t border-slate-100 my-1" />
+                    <button
                       onClick={handleLogout}
-                      className="w-full text-left p-2 text-xs font-semibold text-red-600 hover:bg-red-50 rounded-lg flex items-center gap-2"
+                      className="w-full text-left p-2 text-xs font-semibold text-red-600 hover:bg-red-50 rounded-lg flex items-center gap-2 cursor-pointer"
                     >
                       <LogOut className="w-3.5 h-3.5" />
                       <span>Log Out</span>

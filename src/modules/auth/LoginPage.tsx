@@ -8,7 +8,6 @@ import {
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
-import { SuperAdminAccessModal } from '@/components/common/SuperAdminAccessModal';
 import { supabase } from '@/lib/supabase';
 import { authService } from '@/services/authService';
 
@@ -20,7 +19,6 @@ export const LoginPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
-  const [adminModalOpen, setAdminModalOpen] = useState(false);
 
   const { login, signInWithGoogle } = useAuth();
   const { toast } = useToast();
@@ -374,37 +372,19 @@ export const LoginPage: React.FC = () => {
               </form>
 
               {/* Registration footer */}
-              <div className="pt-2 border-t border-slate-100 text-center text-xs text-slate-600 space-y-3">
+              <div className="pt-2 border-t border-slate-100 text-center text-xs text-slate-600">
                 <p>
                   Don't have an enterprise account?{' '}
                   <Link to="/register" className="font-bold text-[#E53935] hover:text-red-700 hover:underline">
                     Create Factory Free (14-Day Access)
                   </Link>
                 </p>
-
-                {/* Super Admin Control Plane Trigger */}
-                <div className="text-[11px] text-slate-400">
-                  Platform Admin?{' '}
-                  <button
-                    type="button"
-                    onClick={() => setAdminModalOpen(true)}
-                    className="font-semibold text-slate-600 hover:text-[#E53935] underline cursor-pointer"
-                  >
-                    Super Admin Portal
-                  </button>
-                </div>
               </div>
             </div>
           </div>
 
         </div>
       </div>
-
-      {/* Super Admin Access Key Modal */}
-      <SuperAdminAccessModal
-        isOpen={adminModalOpen}
-        onClose={() => setAdminModalOpen(false)}
-      />
     </div>
   );
 };

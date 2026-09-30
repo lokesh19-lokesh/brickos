@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Settings, Building2, CreditCard, Shield, Users, History, 
-  CheckCircle2, Save, Plus, Trash2, Key 
+  CheckCircle2, Save, Plus, Trash2, Key, FileSpreadsheet, Download, Database
 } from 'lucide-react';
 import { factoryService } from '@/services/factoryService';
+import { excelExportService } from '@/services/excelExportService';
 import { dbStore } from '@/services/mockDatabase';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
@@ -19,8 +20,9 @@ export const SettingsPage: React.FC = () => {
   const { toast } = useToast();
   const factoryId = factory?.id || '';
 
-  const [activeTab, setActiveTab] = useState<'profile' | 'bank' | 'machines' | 'audit'>('profile');
+  const [activeTab, setActiveTab] = useState<'profile' | 'bank' | 'machines' | 'audit' | 'data'>('profile');
   const [loading, setLoading] = useState(false);
+  const [exporting, setExporting] = useState(false);
 
   // Form State initialized dynamically from live active factory
   const [profileForm, setProfileForm] = useState({
@@ -113,6 +115,19 @@ export const SettingsPage: React.FC = () => {
     }
   };
 
+  const handleExportAllData = async () => {
+    try {
+      setExporting(true);
+      await excelExportService.exportFactoryData(factoryId, factory?.name || 'Plant');
+      toast.success('Full Factory Data exported to multi-sheet Excel file!');
+    } catch (err: any) {
+      console.error(err);
+      toast.error('Failed to export Excel file. Please try again.');
+    } finally {
+      setExporting(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <PageHeader
@@ -122,6 +137,17 @@ export const SettingsPage: React.FC = () => {
           { label: 'Dashboard', href: '/dashboard' },
           { label: 'Settings' },
         ]}
+        actions={
+          <Button
+            variant="outline"
+            size="md"
+            leftIcon={<FileSpreadsheet className="w-4 h-4 text-emerald-600" />}
+            onClick={handleExportAllData}
+            isLoading={exporting}
+          >
+            Export All Data (Excel)
+          </Button>
+        }
       />
 
       {/* Tabs */}
@@ -131,6 +157,7 @@ export const SettingsPage: React.FC = () => {
           { id: 'bank', label: 'Bank & UPI Settlement', icon: CreditCard },
           { id: 'machines', label: 'Machine Lines & Kilns', icon: Settings },
           { id: 'audit', label: 'Security & Audit Trail', icon: History },
+          { id: 'data', label: 'Data Backup & Excel Export', icon: FileSpreadsheet },
         ].map(tab => {
           const Icon = tab.icon;
           return (
@@ -387,6 +414,83 @@ export const SettingsPage: React.FC = () => {
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+
+      {/* TAB 5: DATA BACKUP & EXCEL EXPORT */}
+      {activeTab === 'data' && (
+        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6 max-w-3xl">
+          <div className="border-b border-slate-100 pb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                <FileSpreadsheet className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-slate-900">Complete Plant Data Backup (Excel)</h3>
+                <p className="text-xs text-slate-500">Export all production, financial, sales, inventory, and ledger records into a single multi-sheet Microsoft Excel (.xlsx) file.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200 space-y-3">
+            <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider">Worksheets Included in Download:</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-600">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span><strong>Plant Metadata</strong> - Legal info & GSTIN</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span><strong>Products Master</strong> - Finished brick catalog & prices</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span><strong>Raw Materials</strong> - Live stock levels & thresholds</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span><strong>Production Batches</strong> - Kiln & press manufacturing logs</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span><strong>Sales Orders</strong> - Order details, delivery & billing status</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span><strong>GST Invoices</strong> - Tax invoices, GST breakup, dues</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span><strong>Expenses Ledger</strong> - Fuel, repairs, operational costs</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span><strong>Customers Directory</strong> - Balance dues & credit limits</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span><strong>Vendors Directory</strong> - Suppliers & outstanding balances</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span><strong>Labour & Payroll</strong> - Worker records & wage slips</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <p className="text-xs text-slate-500">Generated file is standard XLSX compatible with MS Excel, Google Sheets & Apple Numbers.</p>
+            <Button
+              variant="primary"
+              size="lg"
+              leftIcon={<Download className="w-4 h-4" />}
+              onClick={handleExportAllData}
+              isLoading={exporting}
+              className="bg-emerald-600 hover:bg-emerald-700 text-white shrink-0"
+            >
+              Download Full Data (.xlsx)
+            </Button>
           </div>
         </div>
       )}

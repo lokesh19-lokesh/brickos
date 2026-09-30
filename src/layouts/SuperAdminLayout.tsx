@@ -3,11 +3,13 @@ import { Link, NavLink, Outlet, useNavigate, useLocation } from 'react-router-do
 import { 
   Shield, LayoutDashboard, Building2, CreditCard, Sparkles, 
   Users, History, Settings, LogOut, ArrowLeft, RefreshCw, Menu, X,
-  Layers, FileText, ChevronDown, CheckCircle2, Search, Bell, Home
+  Layers, FileText, ChevronDown, CheckCircle2, Search, Bell, Home,
+  FileSpreadsheet
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import { superAdminService } from '@/services/reportService';
+import { excelExportService } from '@/services/excelExportService';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Card';
 import { cn } from '@/lib/cn';
@@ -15,6 +17,7 @@ import { cn } from '@/lib/cn';
 export const SuperAdminLayout: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const [demoSwitchOpen, setDemoSwitchOpen] = useState(false);
   const mainScrollRef = useRef<HTMLElement>(null);
   const { user, logout, switchRole } = useAuth();
@@ -34,6 +37,19 @@ export const SuperAdminLayout: React.FC = () => {
       await superAdminService.resetDemoData();
       setIsResetting(false);
       toast.success('Database successfully reset to initial seed state');
+    }
+  };
+
+  const handleExportAdminData = async () => {
+    try {
+      setIsExporting(true);
+      await excelExportService.exportSuperAdminData();
+      toast.success('Super Admin platform data exported to Excel (.xlsx)!');
+    } catch (err: any) {
+      console.error('Export admin data error:', err);
+      toast.error('Failed to export platform data. Please try again.');
+    } finally {
+      setIsExporting(false);
     }
   };
 
@@ -141,6 +157,17 @@ export const SuperAdminLayout: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2.5">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleExportAdminData}
+            isLoading={isExporting}
+            leftIcon={<FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />}
+            className="hidden sm:flex text-xs font-semibold text-emerald-700 border-emerald-200 hover:bg-emerald-50"
+          >
+            Export All (Excel)
+          </Button>
+
           <Button
             variant="outline"
             size="sm"
