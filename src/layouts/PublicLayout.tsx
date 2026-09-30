@@ -34,7 +34,7 @@ export const PublicLayout: React.FC = () => {
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
           <div className="hidden lg:flex items-center gap-2 truncate">
             <span className="bg-[#E53935] text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider shrink-0">New</span>
-            <span className="truncate">Automated Kiln Chamber & Weighbridge Integration now live in BrickFlow ERP 2.0</span>
+            <span className="truncate">Automated Kiln Chamber & Weighbridge Integration now live in BrickOS™ 2.4</span>
           </div>
           <div className="flex items-center gap-4 mx-auto lg:mx-0 shrink-0">
             <a href="tel:+918500693113" className="flex items-center gap-1.5 hover:text-red-400 transition-colors font-medium">
@@ -61,7 +61,7 @@ export const PublicLayout: React.FC = () => {
 
           {/* Center: Desktop Nav for 2xl (>1536px) */}
           <nav className="hidden 2xl:flex items-center gap-6 text-sm font-semibold text-slate-700">
-            <a href="#why-brickflow" className="hover:text-[#E53935] transition-colors whitespace-nowrap">Why BrickFlow</a>
+            <a href="#why-brickflow" className="hover:text-[#E53935] transition-colors whitespace-nowrap">Why BrickOS</a>
             <a href="#features" className="hover:text-[#E53935] transition-colors whitespace-nowrap">Features</a>
             <a href="#modules" className="hover:text-[#E53935] transition-colors whitespace-nowrap">ERP Modules</a>
             <a href="#how-it-works" className="hover:text-[#E53935] transition-colors whitespace-nowrap">How It Works</a>
@@ -71,7 +71,7 @@ export const PublicLayout: React.FC = () => {
 
           {/* Center: Desktop Nav for xl (1280px - 1535px) */}
           <nav className="hidden xl:flex 2xl:hidden items-center gap-3.5 text-xs font-semibold text-slate-700">
-            <a href="#why-brickflow" className="hover:text-[#E53935] transition-colors whitespace-nowrap">Why BrickFlow</a>
+            <a href="#why-brickflow" className="hover:text-[#E53935] transition-colors whitespace-nowrap">Why BrickOS</a>
             <a href="#features" className="hover:text-[#E53935] transition-colors whitespace-nowrap">Features</a>
             <a href="#modules" className="hover:text-[#E53935] transition-colors whitespace-nowrap">Modules</a>
             <a href="#pricing" className="hover:text-[#E53935] transition-colors whitespace-nowrap">Pricing</a>
@@ -80,7 +80,7 @@ export const PublicLayout: React.FC = () => {
 
           {/* Condensed Nav for lg screens (1024px - 1279px, including 1080px) */}
           <nav className="hidden lg:flex xl:hidden items-center gap-2.5 text-xs font-semibold text-slate-700">
-            <a href="#why-brickflow" className="hover:text-[#E53935] transition-colors whitespace-nowrap">Why BrickFlow</a>
+            <a href="#why-brickflow" className="hover:text-[#E53935] transition-colors whitespace-nowrap">Why BrickOS</a>
             <a href="#features" className="hover:text-[#E53935] transition-colors whitespace-nowrap">Features</a>
             <a href="#modules" className="hover:text-[#E53935] transition-colors whitespace-nowrap">Modules</a>
             <a href="#pricing" className="hover:text-[#E53935] transition-colors whitespace-nowrap">Pricing</a>
@@ -167,7 +167,7 @@ export const PublicLayout: React.FC = () => {
         {mobileMenuOpen && (
           <div className="lg:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-3 animate-in fade-in">
             <nav className="flex flex-col gap-2 font-semibold text-slate-700 text-sm">
-              <a href="#why-brickflow" onClick={() => setMobileMenuOpen(false)} className="p-2 hover:bg-slate-50 rounded-lg">Why BrickFlow</a>
+              <a href="#why-brickflow" onClick={() => setMobileMenuOpen(false)} className="p-2 hover:bg-slate-50 rounded-lg">Why BrickOS</a>
               <a href="#features" onClick={() => setMobileMenuOpen(false)} className="p-2 hover:bg-slate-50 rounded-lg">Features</a>
               <a href="#modules" onClick={() => setMobileMenuOpen(false)} className="p-2 hover:bg-slate-50 rounded-lg">ERP Modules</a>
               <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="p-2 hover:bg-slate-50 rounded-lg">Pricing</a>
@@ -268,14 +268,14 @@ export const PublicLayout: React.FC = () => {
                   <MessageSquare className="w-3.5 h-3.5 text-emerald-400" />
                   <a href="https://wa.me/918500693113" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">WhatsApp: +91 85006 93113</a>
                 </li>
-                <li><span>Email: support@brickflow.io</span></li>
+                <li><span>Email: support@brickos.in</span></li>
                 <li><span>HQ: Industrial Tech Hub, Pune, Maharashtra</span></li>
               </ul>
             </div>
           </div>
 
           <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-            <p>© {new Date().getFullYear()} BrickFlow ERP SaaS. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} BrickOS™ Manufacturing Cloud. All rights reserved.</p>
             <div className="flex items-center gap-6">
               <a href="#" className="hover:text-slate-400">Privacy Policy</a>
               <a href="#" className="hover:text-slate-400">Terms of Service</a>

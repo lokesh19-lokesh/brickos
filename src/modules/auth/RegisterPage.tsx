@@ -6,6 +6,7 @@ import {
   Flame, ShieldCheck, Database, Sparkles, AlertCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { SEOHead } from '@/components/common/SEOHead';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 
@@ -145,6 +146,11 @@ export const RegisterPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 py-10 px-4 sm:px-6 lg:px-8 flex flex-col justify-center relative overflow-hidden selection:bg-red-500 selection:text-white">
+      <SEOHead
+        title="Register Your Brick Factory | 14-Day Free Trial"
+        description="Start your 14-day free trial of BrickOS ERP. Automate raw materials, kiln chambers, moulding batch logs, and GST invoices."
+        canonical="https://brickos.in/register"
+      />
       {/* Background Micro-Grid Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_35%,#000_70%,transparent_100%)] opacity-70 pointer-events-none" />
       

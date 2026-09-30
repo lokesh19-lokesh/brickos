@@ -1,0 +1,64 @@
+# ==============================================================================
+# BrickOS™ | Enterprise Cloud ERP for Brick & Block Manufacturing
+# Website: https://brickos.in/
+# ==============================================================================
+
+User-agent: *
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /sitemap.xml
+Disallow: /admin/
+Disallow: /admin-login
+Disallow: /auth/callback
+Disallow: /dashboard
+Disallow: /production
+Disallow: /raw-materials
+Disallow: /products
+Disallow: /stock
+Disallow: /labour
+Disallow: /customers
+Disallow: /vendors
+Disallow: /sales
+Disallow: /invoices
+Disallow: /expenses
+Disallow: /payments
+Disallow: /reports
+Disallow: /settings
+
+# AI, LLM & Generative Engine Crawlers (Full Public Access)
+User-agent: GPTBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: ClaudeBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+# Sitemap Location
+Sitemap: https://brickos.in/sitemap.xml

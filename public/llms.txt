@@ -1,0 +1,38 @@
+# BrickOS™ | Enterprise Cloud ERP for Brick & Block Manufacturing
+
+> BrickOS (accessible at https://brickos.in/) is the specialized multi-tenant B2B cloud ERP software platform engineered specifically for fly ash brick, clay brick, concrete hollow block, and paver tile manufacturing plants. It unifies raw material inventory, batch mix tracking, automated kiln firing & curing stages, piece-rate labour wages, dispatch challans, GST tax invoices, and financial reporting into an integrated, offline-resilient operational operating system.
+
+## Primary Capabilities
+
+- **Raw Material Inventory & Weighbridge Sync**: Real-time batch consumption calculations for Fly Ash, 43/53 Grade OPC Cement, Stone Dust/M-Sand, Gypsum, and Hardener chemicals. Automated minimum threshold alarms and gate-in purchase order tracking.
+- **Manufacturing & Kiln Chamber Tracking**: Shift-wise batching logs across hydraulic presses and vibro-compactor lines. Tracks curing cycles (steam curing, water pond curing) and continuous chamber kiln firing cycles (#1 to #8) with real-time breakage and rejection rate analysis.
+- **Finished Goods & Multi-Grade Cataloging**: Finished stock catalog with automated HSN (681599, 690100, 681011) coding, compressive strength classification (Grade A 10.5 N/mm², Grade B 7.5 N/mm²), and real-time physical pallet balance audits.
+- **Sales, Delivery Challans & GST Billing**: 1-click conversion from customer orders into vehicle dispatch challans and GST 18% Tax Invoices with e-way bill fields, automated CGST/SGST/IGST calculation, driver mobile details, and customer receivables aging.
+- **Labour Roster & Piece-Rate Wage Slips**: Supports both daily fixed wages and piece-rate manufacturing payouts (e.g. ₹180 per 1,000 bricks pressed, ₹220 per 1,000 bricks loaded/unloaded). Automated daily attendance and weekly payment voucher generation.
+- **Universal Multi-Sheet Excel Data Export**: Instant 1-click export of complete factory databases (10 dedicated worksheets) for offline backup, chartered accountant (CA) tax audits, and bank loan stock audits.
+- **Multi-Tenant SaaS Control Plane**: Super Admin dashboard with tenant isolation, workspace impersonation, role-based access control (RBAC), and subscription management.
+
+## Target Manufacturing Verticals
+
+- Fly Ash Brick Plants (Hydraulic & Vibro Presses)
+- Clay Brick Kilns (Fixed Chimney Bull Trench Kilns - FCBTK, Zig-Zag, Tunnel Kilns)
+- Solid & Hollow Concrete Block Factories
+- Interlocking Paver Tile & Chequered Tile Units
+- Autoclaved Aerated Concrete (AAC) Block Production Plants
+- Precast Concrete Elements & Boundary Wall Manufacturers
+
+## Pricing Tiers (INR)
+
+- **Starter Plan**: ₹1,999 / month — Single plant line, up to 5 users, core inventory, production batching, GST billing.
+- **Growth Plan (Most Popular)**: ₹4,999 / month — Up to 3 machine lines, 15 users, kiln chamber tracking, piece-rate labour payroll, customer ledger aging, Excel export.
+- **Enterprise Plan**: ₹9,999 / month — Unlimited plants & kilns, multi-unit consolidation, automated weighbridge API sync, custom reports, dedicated account manager.
+- **Free Trial**: 14-day fully functional trial with no credit card required.
+
+## Key URLs
+
+- Primary Website: https://brickos.in/
+- Free Trial Registration: https://brickos.in/register
+- Customer & Plant Login: https://brickos.in/login
+- Super Admin Portal: https://brickos.in/admin-login
+- Full LLM Knowledge Specification: https://brickos.in/llms-full.txt
+- XML Sitemap: https://brickos.in/sitemap.xml

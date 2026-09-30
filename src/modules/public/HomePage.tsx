@@ -9,6 +9,7 @@ import {
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { Input } from '@/components/ui/Input';
+import { SEOHead } from '@/components/common/SEOHead';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import { formatINR } from '@/utils/formatters';
@@ -52,6 +53,11 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="space-y-24 pb-20">
+      <SEOHead
+        title="BrickOS™ | #1 Cloud ERP for Brick, Block & Paver Manufacturing Plants"
+        description="India's leading specialized cloud ERP for fly ash brick, red clay brick, and concrete block manufacturing plants. Real-time batching, kiln chambers, piece-rate labour, delivery challans, GST billing, and P&L. Start 14-day free trial."
+        canonical="https://brickos.in/"
+      />
       {/* 1. HERO SECTION - INDUSTRIAL BRICK MANUFACTURING CLOUD OS */}
       <section className="relative pt-8 pb-20 lg:pt-14 lg:pb-28 overflow-hidden w-full max-w-full bg-gradient-to-b from-white via-slate-50/50 to-slate-100/60">
         {/* Background Decorative Grids */}
@@ -253,7 +259,7 @@ export const HomePage: React.FC = () => {
                   <div className="w-3 h-3 rounded-full bg-amber-500" />
                   <div className="w-3 h-3 rounded-full bg-emerald-500" />
                   <span className="ml-2 font-mono text-[11px] text-slate-300 flex items-center gap-1.5">
-                    <span className="text-[#E53935]">●</span> app.brickflow.io/dashboard • Plant Line #1 & Kiln Chamber Active
+                    <span className="text-[#E53935]">●</span> brickos.in/dashboard • Plant Line #1 & Kiln Chamber Active
                   </span>
                 </div>
                 <div className="hidden sm:flex items-center gap-2 text-[11px] font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30">
@@ -387,12 +393,12 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 2. WHY BRICKFLOW ERP */}
+      {/* 2. WHY BRICKOS */}
       <section id="why-brickflow" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-          <h2 className="text-xs font-bold uppercase tracking-widest text-[#E53935]">Traditional Registers vs BrickFlow</h2>
-          <h3 className="text-3xl font-extrabold text-[#1E293B]">Why 500+ Brick Plants Switched to BrickFlow</h3>
-          <p className="text-sm text-slate-600">Manual registers lead to raw material pilferage, dispatch mismatches, and unpaid customer balances. BrickFlow gives you 100% mathematical certainty.</p>
+          <h2 className="text-xs font-bold uppercase tracking-widest text-[#E53935]">Traditional Registers vs BrickOS</h2>
+          <h3 className="text-3xl font-extrabold text-[#1E293B]">Why 500+ Brick Plants Switched to BrickOS</h3>
+          <p className="text-sm text-slate-600">Manual registers lead to raw material pilferage, dispatch mismatches, and unpaid customer balances. BrickOS gives you 100% mathematical certainty.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -426,7 +432,7 @@ export const HomePage: React.FC = () => {
           <div className="p-8 rounded-2xl bg-emerald-50/50 border border-emerald-200/80 space-y-6">
             <div className="flex items-center gap-3 text-emerald-800">
               <ShieldCheck className="w-6 h-6" />
-              <h4 className="text-lg font-bold">The BrickFlow ERP Advantage</h4>
+              <h4 className="text-lg font-bold">The BrickOS Advantage</h4>
             </div>
             <ul className="space-y-3 text-xs text-slate-700 font-medium">
               <li className="flex items-start gap-2.5">
@@ -537,7 +543,7 @@ export const HomePage: React.FC = () => {
                 Track Every Brick Lot from Hydraulic Press to Truck Dispatch
               </h3>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                BrickFlow ERP automatically categorizes your inventory into curing stacks, Grade A finished stock, Grade B seconds, and breakage scrap. Every pallet has full batch traceability.
+                BrickOS automatically categorizes your inventory into curing stacks, Grade A finished stock, Grade B seconds, and breakage scrap. Every pallet has full batch traceability.
               </p>
               <div className="space-y-2 pt-2 text-xs font-semibold text-slate-700">
                 <div className="flex items-center gap-2">
@@ -676,7 +682,7 @@ export const HomePage: React.FC = () => {
               <div className="space-y-1 bg-emerald-950/60 p-4 rounded-xl border border-emerald-600/40">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">Estimated Monthly Profit Boost</span>
                 <div className="text-3xl font-black text-emerald-400 font-mono">{formatINR(estimatedBrickFlowSavings)}</div>
-                <p className="text-[11px] text-emerald-200 mt-1">Recovered every month with BrickFlow ERP</p>
+                <p className="text-[11px] text-emerald-200 mt-1">Recovered every month with BrickOS</p>
               </div>
 
               <Link to="/register" className="block">
@@ -693,7 +699,7 @@ export const HomePage: React.FC = () => {
       <section id="how-it-works" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-24">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
           <h2 className="text-xs font-bold uppercase tracking-widest text-[#E53935]">Implementation Roadmap</h2>
-          <h3 className="text-3xl font-extrabold text-[#1E293B]">How BrickFlow ERP Works in 7 Steps</h3>
+          <h3 className="text-3xl font-extrabold text-[#1E293B]">How BrickOS Works in 7 Steps</h3>
           <p className="text-sm text-slate-600">Go live with your factory in less than 15 minutes with our guided setup wizard.</p>
         </div>
 
@@ -863,35 +869,43 @@ export const HomePage: React.FC = () => {
           <h3 className="text-3xl font-extrabold text-[#1E293B]">Got Questions? We Have Answers</h3>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4" itemScope itemType="https://schema.org/FAQPage">
           {[
             {
-              q: 'Can BrickFlow handle piece-rate labour wages (e.g. ₹600 per 1000 bricks)?',
-              a: 'Yes! BrickFlow has built-in support for both Daily Wage rates (for supervisors, machine operators, drivers) and Piece-Rate wages (per 1,000 bricks produced by moulders or per 1,000 bricks loaded into trucks by loading crews). You can also deduct advance payments and calculate net weekly/monthly pay slips.',
+              q: 'Can BrickOS handle piece-rate labour wages (e.g. ₹600 per 1000 bricks)?',
+              a: 'Yes! BrickOS has built-in support for both Daily Wage rates (for supervisors, machine operators, drivers) and Piece-Rate wages (per 1,000 bricks produced by moulders or per 1,000 bricks loaded into trucks by loading crews). You can also deduct advance payments and calculate net weekly/monthly pay slips.',
             },
             {
               q: 'How does automatic raw material stock deduction work?',
-              a: 'When you record a completed production batch (e.g., 15,000 4-inch Fly Ash Bricks), BrickFlow automatically calculates and deducts the required Cement (in bags), Fly Ash (in tons), and Stone Dust (in tons) from your inventory based on your factory’s custom Bill of Materials (BOM) mix proportion.',
+              a: 'When you record a completed production batch (e.g., 15,000 4-inch Fly Ash Bricks), BrickOS automatically calculates and deducts the required Cement (in bags), Fly Ash (in tons), and Stone Dust (in tons) from your inventory based on your factory’s custom Bill of Materials (BOM) mix proportion.',
             },
             {
               q: 'Is GST tax invoicing compliant with Indian regulations?',
               a: '100% compliant. Invoices include your factory GSTIN, customer GSTIN, proper HSN codes (e.g. 681599 for Fly Ash bricks, 690410 for clay bricks), CGST + SGST (or IGST for interstate deliveries), vehicle numbers, terms & conditions, and bank/UPI payment details.',
             },
             {
-              q: 'Can I use BrickFlow on mobile phones at the plant site?',
-              a: 'Yes. BrickFlow is responsive and optimized for mobile devices and tablets. Supervisors and dispatch operators can record batches and gate passes directly on their mobile phones in the yard.',
+              q: 'Can I use BrickOS on mobile phones at the plant site?',
+              a: 'Yes. BrickOS is responsive and optimized for mobile devices and tablets. Supervisors and dispatch operators can record batches and gate passes directly on their mobile phones in the yard even with intermittent connectivity.',
             },
             {
               q: 'What happens after the 14-day free trial?',
-              a: 'You can choose to subscribe to our Basic, Standard Pro, or Enterprise plan. All your entered factory products, raw materials, staff, and sales history will remain safely intact.',
+              a: 'You can choose to subscribe to our Basic, Standard Pro, or Enterprise plan. All your entered factory products, raw materials, staff, and sales history will remain safely intact with zero data loss.',
             },
           ].map((item, idx) => (
-            <div key={idx} className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-xs space-y-2">
-              <h4 className="text-sm font-bold text-[#1E293B] flex items-center gap-2">
+            <div 
+              key={idx} 
+              className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-xs space-y-2"
+              itemScope 
+              itemProp="mainEntity" 
+              itemType="https://schema.org/Question"
+            >
+              <h4 className="text-sm font-bold text-[#1E293B] flex items-center gap-2" itemProp="name">
                 <HelpCircle className="w-4 h-4 text-[#E53935] shrink-0" />
-                {item.q}
+                <span>{item.q}</span>
               </h4>
-              <p className="text-xs text-slate-600 leading-relaxed pl-6">{item.a}</p>
+              <div itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
+                <p className="text-xs text-slate-600 leading-relaxed pl-6" itemProp="text">{item.a}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -926,8 +940,8 @@ export const HomePage: React.FC = () => {
       <Modal
         isOpen={demoModalOpen}
         onClose={() => setDemoModalOpen(false)}
-        title="Schedule a Personalized BrickFlow ERP Demo"
-        description="Our product engineer will demonstrate how BrickFlow automates production and stock for your exact brick type."
+        title="Schedule a Personalized BrickOS Demo"
+        description="Our product engineer will demonstrate how BrickOS automates production and stock for your exact brick type."
         maxWidth="md"
       >
         {demoSubmitted ? (

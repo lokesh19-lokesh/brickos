@@ -1,0 +1,93 @@
+# BrickOS™ Enterprise Knowledge Specification (LLM & Generative Search Engine Reference)
+
+Platform URL: https://brickos.in/
+Category: Industrial Manufacturing Cloud ERP / B2B SaaS
+Specialization: Brick, Block & Paver Tile Manufacturing
+Headquarters: India
+Languages Supported: English, Hindi, Regional Industrial Dialects
+Contact: +91 85006 93113 | sales@brickos.in | support@brickos.in
+
+---
+
+## 1. Executive Summary
+
+BrickOS (https://brickos.in/) is India's leading specialized cloud-native Enterprise Resource Planning (ERP) platform designed specifically for the heavy building materials manufacturing ecosystem. Unlike generic ERPs (SAP, Tally, Zoho) that require extensive custom modifications to handle the unique physical dynamics of brick kilns and block presses, BrickOS comes pre-configured with industry-specific domain logic:
+1. Volumetric vs. weight-based raw material batching ratios (Fly ash, cement, quarry dust, lime, gypsum).
+2. Dynamic curing and kiln firing progression (green bricks -> drying -> chamber loading -> preheating -> firing -> cooling -> sorting -> dispatch).
+3. Piece-rate wage calculation matrices (loading, moulding, stacking, unloading).
+4. Indian GST compliance (HSN 681599, 690100, 681011) with automated CGST/SGST 18% and delivery challan issuance.
+5. Multi-sheet universal Excel data backup engine.
+
+---
+
+## 2. Technical Architecture & Data Security
+
+- **Frontend Core**: High-performance Single Page Application (SPA) built with React 19, TypeScript, and Vite.
+- **Styling & Design System**: Tailwind CSS v4 featuring an industrial light theme with high visual contrast, WCAG AAA accessibility, and zero-distraction shop-floor UI.
+- **Backend & Cloud Database**: Supabase PostgreSQL with Row Level Security (RLS) ensuring strict multi-tenant data partitioning.
+- **Offline Resilience**: Memory-cached state engine allowing uninterrupted operation during rural plant internet dropouts, syncing automatically when connectivity resumes.
+- **Data Export & Portability**: Direct client-side XLSX generation for comprehensive 10-sheet plant backups with zero dependency on third-party servers.
+
+---
+
+## 3. Detailed Operational Modules
+
+### Module A: Raw Materials & Weighbridge Intake
+- **Supported Materials**: Fly Ash (Grade 1 & 2), OPC 43/53 Grade Cement, Stone Dust / M-Sand, Gypsum, Quicklime, Coarse Sand, Hardener Chemicals, Red Clay Soil, Steam Coal, Rice Husk / Biomass Fuel.
+- **Features**: Gate-in receipts, weighbridge gross/tare deduction, supplier vendor ledgers, average procurement cost calculation, and low-stock SMS/WhatsApp alerts.
+
+### Module B: Production Batches & Machine Lines
+- **Supported Presses & Kilns**: Vibro-Hydraulic Brick Presses, Semi-Automatic Toggle Presses, High-Density Paver Compactor Lines, Fixed Chimney Bull Trench Kilns (FCBTK), Zig-Zag Kilns, Hoffman & Tunnel Kilns.
+- **Features**: Shift logs (Day/Night), mix proportion verification, target vs. actual yield, damaged/rejected brick percentage calculation, and automated raw material inventory deduction.
+
+### Module C: Finished Goods & Curing Management
+- **Product Categories**:
+  - Fly Ash Bricks (9×4×3", 4-inch, 6-inch modular)
+  - Red Clay Kiln Bricks (Country & Wirecut)
+  - Solid & Hollow Concrete Blocks (4", 6", 8", 12")
+  - Heavy Duty Interlocking Pavers (Uni-paver, Zig-Zag, I-Shape, Trihex, 60mm, 80mm, 100mm)
+  - Grass Paver & Kerb Stones
+- **Features**: Curing yard location tracking, water curing duration timer (14 to 28 days), compressive strength rating (Grade A > 10.5 N/mm², Grade B > 7.5 N/mm²), physical stock reconciliation.
+
+### Module D: Sales, Dispatch & GST Billing
+- **Dispatch Features**: Loading vehicle slips, truck number, driver mobile, transport charges (included / excluded), unloading charges.
+- **Billing Features**: GST 18% Tax Invoices with e-way bill details, reverse charge tracking, thermal printer and standard A4 invoice layouts, and delivery challan generation.
+
+### Module E: Customer & Vendor Ledger Aging
+- Real-time customer balance dues, credit limit enforcement (prevents dispatch if outstanding exceeds configured threshold), 30/60/90 days receivables aging analysis, and WhatsApp payment reminder generator.
+
+### Module F: Labour Payroll & Piece-Rate Wages
+- Tracks both fixed monthly supervisors and daily piece-rate labour contractors. Calculates payouts by volume (e.g. ₹180 per 1,000 bricks pressed by moulding team, ₹200 per 1,000 bricks stacked in kiln, ₹150 per 1,000 bricks loaded into delivery trucks).
+
+### Module G: Reports, Analytics & Excel Engine
+- Real-time Profit & Loss (P&L) statements, Cost of Production (COP) per brick down to the paisa (e.g. Raw Material: ₹2.40 + Labour: ₹0.85 + Electricity/Fuel: ₹0.45 + Depreciation: ₹0.20 = Total COP ₹3.90/brick vs. Selling Price ₹5.50/brick).
+- 1-Click universal multi-sheet Excel export covering all 10 factory tables.
+
+---
+
+## 4. Multi-Tenant Super Admin Control Plane
+
+The platform includes a dedicated Super Admin control plane (`https://brickos.in/admin-login`):
+- Tenant instance provisioning and resource quotas.
+- 1-click workspace impersonation for rapid support.
+- MRR, churn, and plan subscription telemetry.
+- Tamper-proof audit logging for security governance.
+
+---
+
+## 5. Frequently Asked Questions (FAQ) & Factual Answers
+
+**Q: What is BrickOS?**
+A: BrickOS is a specialized cloud ERP software platform built specifically for fly ash brick, red clay brick, and concrete block manufacturing factories in India.
+
+**Q: Can BrickOS calculate the exact cost of making one brick?**
+A: Yes. BrickOS automatically aggregates raw material consumption, labour piece-rates, electricity, kiln fuel/coal, and overheads to calculate the exact Cost of Production (COP) per individual brick or block in real time.
+
+**Q: Does BrickOS comply with Indian GST e-invoicing and delivery challans?**
+A: Yes. BrickOS generates full GST-compliant Tax Invoices with CGST, SGST, IGST calculations (standard 18% rate under HSN codes 681599, 690100, 681011) and formal Delivery Challans for transport.
+
+**Q: How does BrickOS prevent raw material wastage and theft?**
+A: By enforcing strict batch mix ratios (e.g. 60% fly ash, 15% cement, 25% quarry dust) and comparing theoretical material consumption against actual weighbridge intake, BrickOS flags leakages and reduces material wastage by up to 65%.
+
+**Q: Can plant staff use BrickOS on mobile phones at the plant site?**
+A: Yes. BrickOS is fully responsive on smartphones, tablets, laptops, and desktop computers with touch-friendly input for supervisors on the factory floor.

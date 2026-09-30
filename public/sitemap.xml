@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+                            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+  <!-- 1. Homepage & Primary Marketing Hub -->
+  <url>
+    <loc>https://brickos.in/</loc>
+    <lastmod>2026-09-30T12:00:00+05:30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://brickos.in/hero-brick-factory.jpg</image:loc>
+      <image:title>BrickOS Cloud ERP Industrial Brick Factory Dashboard</image:title>
+      <image:caption>Complete Cloud ERP platform engineered specifically for fly ash brick, clay brick, and concrete block manufacturing plants.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://brickos.in/brick-pallet-stack.jpg</image:loc>
+      <image:title>Finished Brick Inventory & Automated Pallet Stacking</image:title>
+      <image:caption>Real-time curing and inventory tracking across high-density block production lines.</image:caption>
+    </image:image>
+  </url>
+
+  <!-- 2. Self-Service Free Trial Registration -->
+  <url>
+    <loc>https://brickos.in/register</loc>
+    <lastmod>2026-09-30T12:00:00+05:30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- 3. Factory Owner & Employee Sign-In Portal -->
+  <url>
+    <loc>https://brickos.in/login</loc>
+    <lastmod>2026-09-30T12:00:00+05:30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 4. Self-Service Password Recovery -->
+  <url>
+    <loc>https://brickos.in/forgot-password</loc>
+    <lastmod>2026-09-30T12:00:00+05:30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- 5. Key Anchor Sections for Deep-Link Indexing -->
+  <url>
+    <loc>https://brickos.in/#features</loc>
+    <lastmod>2026-09-30T12:00:00+05:30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://brickos.in/#modules</loc>
+    <lastmod>2026-09-30T12:00:00+05:30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://brickos.in/#pricing</loc>
+    <lastmod>2026-09-30T12:00:00+05:30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://brickos.in/#faq</loc>
+    <lastmod>2026-09-30T12:00:00+05:30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://brickos.in/#roi-calculator</loc>
+    <lastmod>2026-09-30T12:00:00+05:30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+</urlset>

@@ -6,6 +6,7 @@ import {
   Clock, RefreshCw, Check
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { SEOHead } from '@/components/common/SEOHead';
 import { authService } from '@/services/authService';
 import { useToast } from '@/context/ToastContext';
 import { supabase } from '@/lib/supabase';
@@ -66,6 +67,11 @@ export const ForgotPasswordPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col justify-center relative overflow-hidden selection:bg-red-500 selection:text-white">
+      <SEOHead
+        title="Recover Your Password"
+        description="Self-service credentials recovery for authorized factory owners, plant supervisors, and executive accounts on BrickOS."
+        canonical="https://brickos.in/forgot-password"
+      />
       {/* Background Industrial Grid & Glow */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_35%,#000_70%,transparent_100%)] opacity-70 pointer-events-none" />
       <div className="absolute -top-40 -right-40 w-96 h-96 bg-red-100/60 rounded-full blur-3xl pointer-events-none" />
