@@ -275,7 +275,21 @@ export const PublicLayout: React.FC = () => {
           </div>
 
           <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-            <p>© {new Date().getFullYear()} BrickOS™ Manufacturing Cloud. All rights reserved.</p>
+            <div className="flex flex-col sm:flex-row items-center gap-1.5 sm:gap-3 text-center sm:text-left">
+              <p>© {new Date().getFullYear()} BrickOS™ Manufacturing Cloud. All rights reserved.</p>
+              <span className="hidden sm:inline text-slate-700">•</span>
+              <p>
+                Powered by{' '}
+                <a 
+                  href="https://thepatternscompany.com/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-slate-400 hover:text-white font-medium underline underline-offset-4 decoration-slate-600 hover:decoration-white transition-colors"
+                >
+                  Patterns Infotech Pvt Ltd.
+                </a>
+              </p>
+            </div>
             <div className="flex items-center gap-6">
               <a href="#" className="hover:text-slate-400">Privacy Policy</a>
               <a href="#" className="hover:text-slate-400">Terms of Service</a>

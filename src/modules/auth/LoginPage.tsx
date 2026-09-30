@@ -378,12 +378,23 @@ export const LoginPage: React.FC = () => {
               </form>
 
               {/* Registration footer */}
-              <div className="pt-2 border-t border-slate-100 text-center text-xs text-slate-600">
+              <div className="pt-2 border-t border-slate-100 text-center text-xs text-slate-600 space-y-2">
                 <p>
                   Don't have an enterprise account?{' '}
                   <Link to="/register" className="font-bold text-[#E53935] hover:text-red-700 hover:underline">
                     Create Factory Free (14-Day Access)
                   </Link>
+                </p>
+                <p className="text-[11px] text-slate-400">
+                  Powered by{' '}
+                  <a
+                    href="https://thepatternscompany.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-slate-500 hover:text-slate-900 font-medium underline underline-offset-2 decoration-slate-300 hover:decoration-slate-700 transition-colors"
+                  >
+                    Patterns Infotech Pvt Ltd.
+                  </a>
                 </p>
               </div>
             </div>

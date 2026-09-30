@@ -659,6 +659,18 @@ export const RegisterPage: React.FC = () => {
             14-Day Free Access
           </span>
         </div>
+
+        <div className="text-center text-[11px] text-slate-400">
+          Powered by{' '}
+          <a
+            href="https://thepatternscompany.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-slate-500 hover:text-slate-900 font-medium underline underline-offset-2 decoration-slate-300 hover:decoration-slate-700 transition-colors"
+          >
+            Patterns Infotech Pvt Ltd.
+          </a>
+        </div>
       </div>
     </div>
   );
